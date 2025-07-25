@@ -1,47 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lst_helpers.c                                      :+:      :+:    :+:   */
+/*   ft_lstdelone.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/18 09:50:44 by vloureir          #+#    #+#             */
-/*   Updated: 2025/07/18 15:03:47 by vloureir         ###   ########.fr       */
+/*   Created: 2025/04/12 21:23:07 by vloureir          #+#    #+#             */
+/*   Updated: 2025/04/15 09:38:24 by vloureir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-t_list	*ft_lst_new(char *data)
+void	ft_lstdelone(t_list *lst, void (*del)(void *))
 {
-	t_list	*node;
-
-	node = malloc(sizeof(t_list));
-	if (!node)
-		return (NULL);
-	node->content = data;
-	node->next = NULL;
-}
-
-size_t	ft_lst_size(t_list *lst)
-{
-	size_t	i;
-
-	i = 0;
-	while (lst)
-	{
-		i++;
-		lst = lst->next;
-	}
-	return (i);
-}
-
-t_list	*ft_lst_last(t_list *lst)
-{
-	t_list	*ptr;
-
-	ptr = lst;
-	while (ptr->next)
-		ptr = ptr->next;
-	return (ptr);
+	if (!lst || !del)
+		return ;
+	del(lst->content);
+	free(lst);
 }
