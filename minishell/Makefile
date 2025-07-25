@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+         #
+#    By: zali <zali@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/11 09:44:49 by vloureir          #+#    #+#              #
-#    Updated: 2025/07/23 09:12:04 by vloureir         ###   ########.fr        #
+#    Updated: 2025/07/25 13:57:45 by zali             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,10 +15,10 @@
 # endif
 
 NAME := minishell
-
+RUN_CMD := $(wildcard runcmd/*.c)
 SRC := $(wildcard *.c)
 
-OBJ := $(SRC:.c=.o)
+OBJ := $(SRC:.c=.o) ${RUN_CMD:.c=.o}
 
 VAL := --leak-check=full --show-leak-kinds=all --track-origins=yes --show-reachable=yes --suppressions=readline.supp
 

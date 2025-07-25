@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zali <zali@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 14:43:55 by vloureir          #+#    #+#             */
-/*   Updated: 2025/07/25 11:26:26 by vloureir         ###   ########.fr       */
+/*   Updated: 2025/07/25 14:09:25 by zali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,16 @@
 # define MINISHELL_H
 
 #include "./libft/includes/libft.h"
+#include "sys/wait.h"
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <fcntl.h>
 #include <string.h>
 #include <unistd.h>
+#include "runcmd/runcmd.h"
 
 //#define _GNU_SOURCE
 //#define _POSIX_C_SOURCE 199309L
@@ -43,29 +46,6 @@ typedef struct s_envp
 // 	struct s_list	*next;
 // 	bool			s_quote;
 // }	t_list;
-
-typedef struct s_cmd
-{
-	int	type;
-}	t_cmd;
-
-typedef struct s_pipe
-{
-	int		type;
-	t_cmd	*left;
-	t_cmd	*right;
-}	t_pipe;
-
-typedef	struct s_redir
-{
-	int		type;
-	t_cmd	*link;
-	char	*file;
-	char	*e_file;
-	int		mode;
-	int		fd;
-	char	symbol;
-}	t_redir;
 
 typedef struct s_shell
 {
@@ -116,5 +96,8 @@ char	**lst_to_argv(t_list *list);
 t_list	*quote_split(char *str, char sep);
 char	*ft_strndup(const char *s, int size);
 int		quote_size(char *str, char c);
+
+// Parsing
+
 
 #endif

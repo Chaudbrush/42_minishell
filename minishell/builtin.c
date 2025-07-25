@@ -272,6 +272,8 @@ void	check_builtins(void)
 	char	buff[2048]; // is this a problem?
 	char	**av;
 
+	if (shell()->line[0] == 0)
+		return ;
 	av = create_av();
 	if (!strncmp(av[0], "exit", 5))
 		handle_exit(av);

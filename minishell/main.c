@@ -21,12 +21,13 @@ int	main(int argc, char **argv, char **envp)
 	while (42)
 	{
 		ft_getline();
-		if (shell()->line)
-			check_builtins();
-//		if (safe_fork() == 0)
-//			parse_and_run();
 		if (!shell()->line)
 			break ;
+		if (shell()->line)
+			check_builtins();
+		if (safe_fork() == 0)
+			run_cmd(shell()->line, envp);
+		wait(0);
 		free(shell()->line);
 		shell()->line = NULL;
 	}
@@ -60,7 +61,7 @@ int	ft_getline(void)
 //	pre_parse();
 	if (shell()->line == NULL)
 		return (-1);
-	printf("%s\n", shell()->line);
+	//printf("%s\n", shell()->line);
 	add_history(shell()->line);
 //		free(*line);
 //	}
