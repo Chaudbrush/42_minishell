@@ -6,7 +6,7 @@
 /*   By: zali <zali@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 17:39:51 by zali              #+#    #+#             */
-/*   Updated: 2025/07/25 14:02:52 by zali             ###   ########.fr       */
+/*   Updated: 2025/07/26 13:40:06 by zali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,10 @@ void	skip_whitespace(char **start, char *end)
 static char	update_and_get_token(char **str, char *end_str)
 {
 	char	ret;
+	char	quotes;
 
 	ret = **str;
+	quotes = 0;
 	if (char_presence(**str, "<>|()&\0"))
 	{
 		if (*(*str + 1) == '>' && **str == '>')
@@ -52,8 +54,19 @@ static char	update_and_get_token(char **str, char *end_str)
 	{
 		ret = 'w';
 		while (*str < end_str && !char_presence(**str, " \t\r\n\v")
-		&& !char_presence(**str, "<>|()&"))
+		&& !char_presence(**str, "<>|()"))
+		{
+			if (**str == '\'' || **str == '\"')
+			{
+				quotes = **str;
+				(*str)++;
+				while (**str != quotes && *str < end_str)
+					(*str)++;
+				(*str)++;
+				continue ;
+			}
 			(*str)++;
+		}
 	}
 	return (ret);
 }

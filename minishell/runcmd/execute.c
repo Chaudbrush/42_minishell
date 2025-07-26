@@ -6,7 +6,7 @@
 /*   By: zali <zali@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 14:38:28 by zali              #+#    #+#             */
-/*   Updated: 2025/07/25 14:25:41 by zali             ###   ########.fr       */
+/*   Updated: 2025/07/26 19:41:29 by zali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,12 @@ static void exec_recursive(t_cmd *cmd, char **envp)
 {
 	t_execcmd	*execcmd;
 	char		*str_ptr;
+	char		**expanded_argv;
 
 	execcmd = (t_execcmd *)cmd;
 	str_ptr = ft_strjoin("/bin/", execcmd->argv[0]); 	
+	expanded_argv = expansion(execcmd);
+	printf("%s", expanded_argv[1]);
 	execve(str_ptr, execcmd->argv, envp);
 	free(str_ptr);
 	execve(execcmd->argv[0], execcmd->argv, envp);

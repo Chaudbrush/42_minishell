@@ -6,7 +6,7 @@
 /*   By: zali <zali@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 16:36:13 by zali              #+#    #+#             */
-/*   Updated: 2025/07/25 14:02:56 by zali             ###   ########.fr       */
+/*   Updated: 2025/07/26 19:39:17 by zali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,13 +83,14 @@ static t_cmd	*parsestr(char **str, char *end_str)
 	exec_cmd = (t_execcmd *) init_t_execcmd();
 	ret = (t_cmd *) exec_cmd; 
 	ret = parseredirects(ret, str, end_str); 
-	while (!ft_exists_wskip(str, end_str, "<>|()&") && *str < end_str)
+	while (!ft_exists_wskip(str, end_str, "<>|()") && *str < end_str)
 	{
 		token = get_token(str, end_str, &ptr, &end_ptr);
 		if (!token)
 			break ;
 		exec_cmd->argv[argc] = ptr; 
 		exec_cmd->eargv[argc] = end_ptr; 
+		exec_cmd->size++;
 		argc++;
 		if (argc >= MAX_SIZE)
 			exit(EXIT_FAILURE); // Proper exit func
@@ -102,10 +103,8 @@ static t_cmd	*parsestr(char **str, char *end_str)
 
 static t_cmd	*parsepipe(char **str, char *end_str)
 {
-	char	*s;
 	t_cmd	*cmd;
 
-	s = *str;
 	cmd = parsestr(str, end_str);
 	if (ft_exists_wskip(str, end_str, "|"))
 	{

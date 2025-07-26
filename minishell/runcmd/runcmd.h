@@ -17,6 +17,7 @@ typedef	struct execcmd
 	int		type;
 	char	*argv[MAX_SIZE];
 	char	*eargv[MAX_SIZE];
+	int		size;
 }	t_execcmd;
 
 
@@ -60,6 +61,9 @@ void	skip_whitespace(char **start, char *end);
 int		char_presence(char c, char *str);
 char	get_token(char **str, char *end_str, char **ptr, char **end_ptr);
 int		ft_exists_wskip(char **str, char *end_str, char *set);
+
+//expansion
+char	**expansion(t_execcmd *execcmd);
 
 // Protected Calls
 //int		safe_fork(void);
