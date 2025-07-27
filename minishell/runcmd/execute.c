@@ -6,7 +6,7 @@
 /*   By: zali <zali@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 14:38:28 by zali              #+#    #+#             */
-/*   Updated: 2025/07/25 14:25:41 by zali             ###   ########.fr       */
+/*   Updated: 2025/07/27 14:58:23 by zali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,21 +36,24 @@ static void exec_recursive(t_cmd *cmd, char **envp)
 {
 	t_execcmd	*execcmd;
 	char		*str_ptr;
+	char		**expanded_argv;
 
 	execcmd = (t_execcmd *)cmd;
-	str_ptr = ft_strjoin("/bin/", execcmd->argv[0]); 	
-	execve(str_ptr, execcmd->argv, envp);
+	expanded_argv = expansion(execcmd);
+	str_ptr = ft_strjoin("/bin/", expanded_argv[0]); 	
+	execve(str_ptr, expanded_argv, envp);
 	free(str_ptr);
 	execve(execcmd->argv[0], execcmd->argv, envp);
-	if (execcmd->argv[0][0] == '.' && execcmd->argv[0][1] == '/')
-		perror(execcmd->argv[0]);
+	if (expanded_argv[0][0] == '.' && expanded_argv[0][1] == '/')
+		perror(expanded_argv[0]);
 	else
 	{
 		str_ptr = ft_strjoin(execcmd->argv[0], ": command not found\n"); 
 		ft_putstr_fd(str_ptr, STDERR_FILENO);
 		free(str_ptr);
 	}
-	exit(EXIT_FAILURE);
+	clear_av(expanded_argv);
+	return ;
 }
 
 static int	handle_heredoc(t_cmd *cmd)
