@@ -6,7 +6,7 @@
 /*   By: zali <zali@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 14:43:55 by vloureir          #+#    #+#             */
-/*   Updated: 2025/07/26 20:23:46 by zali             ###   ########.fr       */
+/*   Updated: 2025/07/27 17:37:36 by zali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@
 #include <fcntl.h>
 #include <string.h>
 #include <unistd.h>
-#include "runcmd/runcmd.h"
+#include "./runcmd/runcmd.h"
+#include "./expansion/expansion.h"
 
 //#define _GNU_SOURCE
 //#define _POSIX_C_SOURCE 199309L
@@ -83,6 +84,7 @@ void	print_exit(char *str);
 int		check_tokens(char *str);
 void	handle_prints(char *str);
 int		check_invalid(char *str);
+void	clear_av(char **av);
 
 // Main
 t_shell	*shell(void);
@@ -96,8 +98,5 @@ char	**lst_to_argv(t_list *list);
 t_list	*quote_split(char *str, char sep);
 char	*ft_strndup(const char *s, int size);
 int		quote_size(char *str, char c);
-
-// Parsing
-
 
 #endif

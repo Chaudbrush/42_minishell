@@ -3,8 +3,8 @@
 # define RUNCMD_H
 # define MAX_SIZE 15
 
-#include "../minishell.h"
 #include "../libft/includes/libft.h"
+#include "../minishell.h"
 
 enum {
 	PIPE,
