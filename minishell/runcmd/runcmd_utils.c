@@ -6,7 +6,7 @@
 /*   By: zali <zali@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 17:39:51 by zali              #+#    #+#             */
-/*   Updated: 2025/07/26 13:40:06 by zali             ###   ########.fr       */
+/*   Updated: 2025/07/28 15:41:59 by zali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,16 @@ static char	update_and_get_token(char **str, char *end_str)
 
 	ret = **str;
 	quotes = 0;
-	if (char_presence(**str, "<>|()&\0"))
+	if (char_presence(**str, "<>|()"))
 	{
 		if (*(*str + 1) == '>' && **str == '>')
 			ret = '+';
 		else if (*(*str + 1) == '<' && **str == '<')
 			ret = '-';
-		else if (*(*str + 1) == '|' && **str == '|')
-			ret = 'o';
-		else if (*(*str + 1) == '&' && **str == '&')
-			ret = 'a';
+		// else if (*(*str + 1) == '|' && **str == '|')
+		// 	ret = 'o';
+		// else if (*(*str + 1) == '&' && **str == '&')
+		// 	ret = 'a';
 		else
 			(*str)--;
 		*str = *str + 2;
@@ -62,7 +62,8 @@ static char	update_and_get_token(char **str, char *end_str)
 				(*str)++;
 				while (**str != quotes && *str < end_str)
 					(*str)++;
-				(*str)++;
+				if (*str < end_str)
+					(*str)++;
 				continue ;
 			}
 			(*str)++;

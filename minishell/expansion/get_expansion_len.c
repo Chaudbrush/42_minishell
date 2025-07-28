@@ -18,8 +18,13 @@ int	get_expansion_len(char *src)
 		if (*src == '\'')
 		{
 			src++;
-			while (*src++ != '\'')
+			while (*src != '\'' && *src)
+			{
+				src++;
 				i++;
+			}
+			if (*src)
+				src++;
 			continue ;
 		}
 		if (*src == '\"')
@@ -36,7 +41,8 @@ int	get_expansion_len(char *src)
 				src++;
 				i++;
 			}
-			src++;
+			if (*src)
+				src++;
 			continue ;
 		}
 		src++;
