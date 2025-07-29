@@ -1,5 +1,5 @@
 
-#include "minishell.h"
+#include "builtin.h"
 
 char	*ft_strndup(const char *s, int size)
 {
@@ -20,8 +20,6 @@ int	quote_size(char *str, char c)
 {
 	int	i;
 
-	// if (c == '"')
-	// 	check_expansion();
 	i = 0;
 	i++;
 	while(str[i] != c && str[i])
@@ -46,14 +44,23 @@ t_list	*quote_split(char *str, char sep)
 		len = 0;
 		while (str[i] == sep && str[i])
 			i++;
-		if (str[i] == '"' || str[i] == '\'')
+		while (str[i] != sep && str[i])
 		{
-			len = quote_size(&str[i], str[i]);
-			i += len;
-		}
-		else
-		{
-			while (str[i] != sep && str[i])
+			if (str[i] == '"' || str[i] == '\'')
+			{
+				int		opened = 1;
+				char	c = str[i];
+				while (opened)
+				{
+					i++;
+					len++;
+					if (str[i] == c && str[i])
+						opened--;
+				}
+				i++;
+				len++;
+			}
+			else
 			{
 				i++;
 				len++;

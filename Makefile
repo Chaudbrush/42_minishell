@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: zali <zali@student.42.fr>                  +#+  +:+       +#+         #
+#    By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/11 09:44:49 by vloureir          #+#    #+#              #
-#    Updated: 2025/07/29 12:57:41 by zali             ###   ########.fr        #
+#    Updated: 2025/07/29 21:44:42 by vloureir         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,10 +15,15 @@
 # endif
 
 NAME := minishell
-RUN_CMD := $(wildcard runcmd/*.c)
-EXPAN_CMD := $(wildcard expansion/*.c)
+
 SRC := $(wildcard *.c)
-OBJ := $(SRC:.c=.o) $(RUN_CMD:.c=.o) $(EXPAN_CMD:.c=.o)
+ENVP := $(wildcard envp/*.c)
+SIGNAL := $(wildcard signals/*.c)
+RUN_CMD := $(wildcard runcmd/*.c)
+BUILTIN := $(wildcard builtin/*.c)
+EXPAN_CMD := $(wildcard expansion/*.c)
+
+OBJ := $(SRC:.c=.o) $(ENVP:.c=.o) $(SIGNAL:.c=.o) $(RUN_CMD:.c=.o) $(BUILTIN:.c=.o) $(EXPAN_CMD:.c=.o)
 
 VAL := --leak-check=full --show-leak-kinds=all --track-origins=yes --show-reachable=yes --suppressions=readline.supp
 

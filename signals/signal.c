@@ -1,5 +1,5 @@
 
-#include "minishell.h"
+#include "signal.h"
 
 void	_handler(int signal)
 {

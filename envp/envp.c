@@ -1,5 +1,4 @@
-
-#include "minishell.h"
+#include "envp.h"
 
 t_envp	*getenv_list(char *str)
 {
@@ -7,7 +6,7 @@ t_envp	*getenv_list(char *str)
 	t_envp	*ptr;
 
 	len = ft_strlen(str);
-	ptr = shell()->envp;
+	ptr = shell()->envp_l;
 	while (ptr)
 	{
 		if (ft_strncmp(ptr->data, str, len) == 0)
@@ -25,7 +24,24 @@ void	envp_and_shlvl(char **envp)
 	if (!envp)
 		return ;
 	shell()->level++;
+	printf("in: %d\n", shell()->level);
 	init_envp(envp);
+	node = getenv_list("SHLVL");
+	if (!node)
+		return ;
+	free(node->data);
+	new = ft_itoa(shell()->level);
+	node->data = ft_strjoin("SHLVL=", new);
+	free(new);
+}
+
+void	update_shlvl(void)
+{
+	t_envp	*node;
+	char	*new;
+
+	shell()->level++;
+	printf("out: %d\n", shell()->level);
 	node = getenv_list("SHLVL");
 	if (!node)
 		return ;
@@ -40,7 +56,7 @@ void	init_envp(char **envp)
 	int		i;
 	t_envp	*node;
 	
-	shell()->envp = NULL;
+	shell()->envp_l = NULL;
 	if (!envp)
 		return ; // If this return procs, maybe have a backup envp hardcoded?
 	i = 0;
@@ -49,15 +65,15 @@ void	init_envp(char **envp)
 		node = malloc(sizeof(t_envp));
 		if (!node)
 		{
-			clear_envp(shell()->envp);
+			clear_envp(shell()->envp_l);
 			return ; // TODO: should return an int to indicate an error
 		}
 		node->prev = NULL;
 		node->data = ft_strdup(envp[i]);
-		node->next = shell()->envp;
-		if (shell()->envp)
-		shell()->envp->prev = node;
-		shell()->envp = node;
+		node->next = shell()->envp_l;
+		if (shell()->envp_l)
+		shell()->envp_l->prev = node;
+		shell()->envp_l = node;
 		shell()->envp_size++;
 		i++;
 	}
@@ -66,34 +82,32 @@ void	init_envp(char **envp)
 // Delete this later
 void	print_list(t_envp *list)
 {
-//	t_envp	*ptr;
-
 	while (list)
 	{
-		printf("%s\n\n", list->data);
-//		ptr = list;
+		printf("%s\n", list->data);
 		list = list->next;
 	}
-	printf("\nEND: %p\n", list);
-	// printf("\n|--------------------------------------------|\n");
-	// while (ptr)
-	// {
-	// 	printf("%s\n\n", ptr->data);
-	// 	ptr = ptr->prev;
-	// }
-	// printf("\nSTART: %p\n", ptr);
 }
 
-void	clear_envp(t_envp *list)
+char	**envp_to_av(void)
 {
-	t_envp	*ptr;
-	
-	ptr = list;
-	while (ptr)
+	int		i;
+	int		size;
+	char	**av;
+	t_envp	*list;
+
+	i = 0;
+	size = ft_dlistsize(shell()->envp_l);
+	list = shell()->envp_l;
+	av = malloc(sizeof(char *) * (size + 1));
+	if (!av)
+		return (NULL);
+	av[size] = NULL;
+	while (i < size)
 	{
+		av[i] = list->data;
 		list = list->next;
-		free(ptr->data);
-		free(ptr);
-		ptr = list;
+		i++;
 	}
+	return (av);
 }

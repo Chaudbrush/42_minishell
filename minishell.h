@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zali <zali@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 14:43:55 by vloureir          #+#    #+#             */
-/*   Updated: 2025/07/29 12:42:59 by zali             ###   ########.fr       */
+/*   Updated: 2025/07/29 21:48:27 by vloureir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ typedef struct s_shell
 	char				*line;
 	char				*token;
 	char				**cmds;
-	t_envp				*envp;
+	t_envp				*envp_l;
 	int					envp_size;
 	unsigned char		exit_flag;
 	int					level;
