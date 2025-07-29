@@ -15,6 +15,30 @@ static int	append_var(char *str, char *dest)
 	return (i);
 }
 
+static void	handle_quotes(char **src, char *dest, int *dest_index)
+{
+	char	quotes;
+
+	quotes = **src;
+	if (**src != '\'' && **src != '\"')
+		return ;
+	(*src)++;
+	while (**src != quotes && **src)
+	{
+		if (**src == '$' && quotes == '\"')
+		{
+			(*src)++;
+			*dest_index += append_var(expand_dollar(src, NULL), dest + *dest_index);
+			continue ;
+		}
+		dest[*dest_index] = **src;
+		(*dest_index)++;
+		(*src)++;
+	}
+	if (**src)
+		(*src)++;
+}
+
 void	copy_expansion(char *src, char **destination, int src_size)
 {
 	int		i;
@@ -31,33 +55,9 @@ void	copy_expansion(char *src, char **destination, int src_size)
 			i += append_var(expand_dollar(&src, NULL), dest + i);
 			continue ;
 		}
-		if (*src == '\'')
-		{
-			src++;
-			while (*src != '\'' && *src)
-			{
-				dest[i++] = *src;
-				src++;
-			}
-			if (*src)
-				src++;
-			continue ;
-		}
-		if (*src == '\"')
-		{
-			src++;
-			while (*src != '\"' && *src)
-			{
-				if (*src == '$')
-				{
-					src++;
-					i += append_var(expand_dollar(&src, NULL), dest + i);
-					continue ;
-				}
-				dest[i++] = *src;
-				src++;
-			}
-			src++;
+		if (*src == '\'' || *src == '\"')
+		{	
+			handle_quotes(&src, dest, &i);
 			continue ;
 		}
 		dest[i] = src[i]; 

@@ -6,7 +6,7 @@
 /*   By: zali <zali@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 14:43:55 by vloureir          #+#    #+#             */
-/*   Updated: 2025/07/27 17:37:36 by zali             ###   ########.fr       */
+/*   Updated: 2025/07/29 12:42:59 by zali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,13 +84,16 @@ void	print_exit(char *str);
 int		check_tokens(char *str);
 void	handle_prints(char *str);
 int		check_invalid(char *str);
-void	clear_av(char **av);
+void	clear_av(char **av); // also used in execute.c
 
 // Main
 t_shell	*shell(void);
-int		safe_fork(void);
 int		ft_getline(void);
 void	envp_and_shlvl(char **envp);
+
+//safe_utils.c
+int		safe_fork(void);
+void	*safe_malloc(int size);
 
 // Quote Split
 void	clear_q_list(t_list *list);

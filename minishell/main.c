@@ -35,16 +35,6 @@ int	main(int argc, char **argv, char **envp)
 	return (0); // Return 0 here ??
 }
 
-int	safe_fork(void)
-{
-	int	pid;
-	
-	pid = fork();
-	if (pid == -1)
-		exit (1);
-	return (pid);
-}
-
 int	ft_getline(void)
 {
 //	char	*prompt;
