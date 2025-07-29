@@ -15,7 +15,7 @@ static int	append_var(char *str, char *dest)
 	return (i);
 }
 
-void	handle_quotes(char **src, char *dest, int *dest_index)
+static void	handle_quotes(char **src, char *dest, int *dest_index)
 {
 	char	quotes;
 
