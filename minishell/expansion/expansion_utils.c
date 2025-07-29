@@ -50,4 +50,3 @@ char	*expand_dollar(char **src, int *i)
 	*src = *src + j;
 	return (str);
 }
-
