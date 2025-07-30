@@ -1,5 +1,5 @@
 
-#include "signal.h"
+#include "signals.h"
 
 void	_handler(int signal)
 {

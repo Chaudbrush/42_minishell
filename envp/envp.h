@@ -3,6 +3,8 @@
 
 #include "../minishell.h"
 
+typedef struct s_envp t_envp;
+
 // List Utils
 void	clear_envp(t_envp *list);
 int		ft_dlistsize(t_envp *list);
