@@ -6,7 +6,7 @@
 /*   By: zali <zali@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 14:38:28 by zali              #+#    #+#             */
-/*   Updated: 2025/07/30 15:10:04 by zali             ###   ########.fr       */
+/*   Updated: 2025/07/30 15:31:43 by zali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ static int	handle_heredoc(t_cmd *cmd)
 	int			hd_pipe[2];
 	int			currentin_fd;
 	int			terminal_fd;
-	t_redircmd	*redircmd;
 
 	if (pipe(hd_pipe) < 0)
 		perror("pipe error");
