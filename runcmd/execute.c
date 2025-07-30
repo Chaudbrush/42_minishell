@@ -6,7 +6,7 @@
 /*   By: zali <zali@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 14:38:28 by zali              #+#    #+#             */
-/*   Updated: 2025/07/27 14:58:23 by zali             ###   ########.fr       */
+/*   Updated: 2025/07/30 15:10:04 by zali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,25 +56,43 @@ static void exec_recursive(t_cmd *cmd, char **envp)
 	return ;
 }
 
+static void	read_line_heredoc(int write_fd, char *delimiter)
+{
+	char	*ptr;
+
+	ptr = NULL;
+	while (1)
+	{
+		ptr = readline(">");
+		if (ft_strcmp(ptr, delimiter) == 0)
+		{
+			free(ptr);
+			break ;
+		}
+		write(write_fd, ptr, ft_strlen(ptr));
+		write(write_fd, "\n", 1);
+		free(ptr);
+	}
+}
+
 static int	handle_heredoc(t_cmd *cmd)
 {
-	char		*ptr;
 	int			hd_pipe[2];
+	int			currentin_fd;
+	int			terminal_fd;
 	t_redircmd	*redircmd;
 
 	if (pipe(hd_pipe) < 0)
 		perror("pipe error");
-	ptr = NULL;
-	redircmd = (t_redircmd *) cmd;
-	while (1)
-	{
-		ptr = readline(">");
-		if (ft_strcmp(ptr, redircmd->file) == 0)
-			break ;
-		write(hd_pipe[1], ptr, ft_strlen(ptr));
-		write(hd_pipe[1], "\n", 1);
-		free(ptr);
-	}
+	currentin_fd = dup(STDIN_FILENO); 
+	terminal_fd = open("/dev/tty", O_RDONLY);
+	if (terminal_fd < 0)
+		perror("open /dev/tty");
+	dup2(terminal_fd, STDIN_FILENO);
+	close(terminal_fd);
+	read_line_heredoc(hd_pipe[1], ((t_redircmd *) cmd)->file);
+	dup2(currentin_fd, STDIN_FILENO);
+	close(currentin_fd);
 	close(hd_pipe[1]);
 	return (hd_pipe[0]);
 }
@@ -153,18 +171,12 @@ static void pipe_recursive(t_cmd *cmd, char **envp)
 	waitpid(left_pid, &wait_val, 0);
 	right_pid = safe_fork();
 	if (right_pid == 0)
-	{
-	
-		if (((t_pipecmd *)cmd)->right->type == PIPE)
-			exec_tree(((t_pipecmd *)cmd)->right, envp, 1);
-		else
-		{
-			if (!process_heredocs(((t_pipecmd *)cmd)->right))
-				dup2(pipe_fd[0], STDIN_FILENO);
-			close(pipe_fd[0]);
-			close(pipe_fd[1]);
-			exec_tree(((t_pipecmd *)cmd)->right, envp, 1);
-		}
+	{	
+		if (!process_heredocs(((t_pipecmd *)cmd)->right))
+			dup2(pipe_fd[0], STDIN_FILENO);
+		close(pipe_fd[0]);
+		close(pipe_fd[1]);
+		exec_tree(((t_pipecmd *)cmd)->right, envp, 1);
 		exit(EXIT_FAILURE);
 	}
 	close(pipe_fd[0]);
