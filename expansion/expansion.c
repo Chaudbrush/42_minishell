@@ -13,7 +13,7 @@ static int	is_expandable(char *str)
 	return (0);
 }
 
-static void	perform_expansion(char *src, char **dest)
+void	perform_expansion(char *src, char **dest)
 {
 	int i;
 

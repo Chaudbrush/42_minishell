@@ -60,7 +60,7 @@ void	copy_expansion(char *src, char **destination, int src_size)
 			handle_quotes(&src, dest, &i);
 			continue ;
 		}
-		dest[i] = src[i]; 
+		dest[i] = *src++; 
 		i++;
 	}
 	dest[i] = 0;
