@@ -6,7 +6,7 @@
 /*   By: zali <zali@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 16:39:05 by zali              #+#    #+#             */
-/*   Updated: 2025/07/27 14:55:37 by zali             ###   ########.fr       */
+/*   Updated: 2025/08/02 19:19:27 by zali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,9 @@ t_cmd	*init_t_execcmd(void)
 	execcmd = malloc(sizeof(t_execcmd));
 	execcmd->type = EXEC;
 	execcmd->size = 0;
+	execcmd->max_size = MAX_SIZE;
+	execcmd->argv = safe_malloc(sizeof(char *) * MAX_SIZE);
+	execcmd->eargv = safe_malloc(sizeof(char *) * MAX_SIZE);
 	return ((t_cmd *)execcmd);
 }
 

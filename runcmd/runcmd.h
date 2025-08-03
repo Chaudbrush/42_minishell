@@ -1,7 +1,7 @@
 #ifndef RUNCMD_H
 
 # define RUNCMD_H
-# define MAX_SIZE 15
+# define MAX_SIZE 2
 
 #include "../libft/includes/libft.h"
 #include "../minishell.h"
@@ -15,8 +15,9 @@ enum {
 typedef	struct execcmd
 {
 	int		type;
-	char	*argv[MAX_SIZE];
-	char	*eargv[MAX_SIZE];
+	char	**argv;
+	char	**eargv;
+	int		max_size;
 	int		size;
 }	t_execcmd;
 

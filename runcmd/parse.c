@@ -6,7 +6,7 @@
 /*   By: zali <zali@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 16:36:13 by zali              #+#    #+#             */
-/*   Updated: 2025/07/27 14:48:00 by zali             ###   ########.fr       */
+/*   Updated: 2025/08/03 14:19:51 by zali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,28 @@ static t_cmd	*parseredirects(t_cmd *cmd, char **str, char *end_str)
 	return (cmd);
 }
 
+void	double_argv_size(t_execcmd *cmd)
+{
+	char	**new_argv;
+	char	**new_eargv;
+	int		i;
+
+	new_argv = safe_malloc(sizeof(char *) * (cmd->max_size * 2));
+	new_eargv = safe_malloc(sizeof(char *) * (cmd->max_size * 2));
+	i = 0;
+	while (i < cmd->max_size)
+	{
+		new_argv[i] = cmd->argv[i];
+		new_eargv[i] = cmd->eargv[i];
+		i++;
+	}
+	cmd->max_size *= 2;
+	free(cmd->argv);
+	free(cmd->eargv);
+	cmd->argv = new_argv;
+	cmd->eargv = new_eargv;
+}
+
 static t_cmd	*parsestr(char **str, char *end_str)
 {
 	int			argc;
@@ -92,8 +114,8 @@ static t_cmd	*parsestr(char **str, char *end_str)
 		exec_cmd->eargv[argc] = end_ptr; 
 		exec_cmd->size++;
 		argc++;
-		if (argc >= MAX_SIZE)
-			exit(EXIT_FAILURE); // Proper exit func
+		if (argc == MAX_SIZE)
+			double_argv_size(exec_cmd);
 		ret = parseredirects(ret, str, end_str); 
 	}
 	exec_cmd->argv[argc] = 0;

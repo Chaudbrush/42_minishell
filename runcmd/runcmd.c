@@ -6,7 +6,7 @@
 /*   By: zali <zali@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:30:06 by zali              #+#    #+#             */
-/*   Updated: 2025/07/25 14:08:56 by zali             ###   ########.fr       */
+/*   Updated: 2025/08/03 14:18:34 by zali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ static void	free_trees(t_cmd *cmd)
 {
 	if (cmd->type == EXEC)
 	{
+		free(((t_execcmd *) cmd)->argv);
+		free(((t_execcmd *) cmd)->eargv);
 		free(cmd);
 		cmd = NULL;
 		return ;
@@ -77,7 +79,7 @@ void	run_cmd(char *str, char **envp)
 
 	end_str = str + ft_strlen(str);
 	cmd = parsecmd(str, end_str);
-//	printf("PTR in fork: %s\n", str);
+	// printf("PTR in fork: %s\n", str);
 	//show_cmd_tree(cmd);
 	exec_tree(cmd, envp, 0);
 	free_trees(cmd);
