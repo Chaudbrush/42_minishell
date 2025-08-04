@@ -11,6 +11,7 @@ void	check_builtins(void)
 	if (shell()->line[0] == 0)
 		return ;
 	av = create_av();
+	expansion_av(av);
 	if (!strcmp(av[0], "exit"))
 		handle_exit(av);
 	else if (av[0][0] == '$')

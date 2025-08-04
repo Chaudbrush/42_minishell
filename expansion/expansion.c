@@ -41,3 +41,24 @@ char	**expansion(t_execcmd *execcmd)
 	strs[i] = 0;
 	return (strs);
 }
+
+void	expansion_av(char **av)
+{
+	char	*tmp;
+	int		i;
+
+	i = 0;
+	while (av[i])
+	{
+		if (is_expandable(av[i]))
+		{
+			tmp = av[i];
+//			printf("tmp: %s\n", tmp); // Delete later
+//			fflush(stdout);
+			perform_expansion(tmp, &av[i]);
+//			printf("%s\n", av[i]); // Delete later
+			free(tmp);
+		}
+		i++;
+	}
+}

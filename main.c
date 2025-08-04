@@ -17,10 +17,11 @@ int	main(int argc, char **argv, char **envp)
 	sig_handler();
 	while (42)
 	{
-		ft_getline();
+		if (ft_getline() == 1)
+			continue ;
 		if (!shell()->line)
 			break ;
-		if (shell()->line)
+		if (shell()->line) // This needs to peek for <|>
 			check_builtins();
 		if (safe_fork() == 0)
 			run_cmd(shell()->line, envp);
@@ -32,11 +33,11 @@ int	main(int argc, char **argv, char **envp)
 	return (0);
 }
 
-int	ft_getline(void)
-{
-	shell()->line = readline("minishell:$ ");
-	if (shell()->line == NULL)
-		return (-1);
-	add_history(shell()->line);
-	return (0);
-}
+// int	ft_getline(void)
+// {
+// 	shell()->line = readline("minishell:$ ");
+// 	if (shell()->line == NULL)
+// 		return (-1);
+// 	add_history(shell()->line);
+// 	return (0);
+// }

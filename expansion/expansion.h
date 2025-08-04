@@ -5,6 +5,7 @@
 
 typedef struct execcmd t_execcmd;
 
+void	expansion_av(char **av);
 char	**expansion(t_execcmd *execcmd);
 char	*expand_dollar(char **src, int *i);
 int		get_expansion_len(char *src);

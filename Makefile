@@ -6,7 +6,7 @@
 #    By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/11 09:44:49 by vloureir          #+#    #+#              #
-#    Updated: 2025/07/30 15:29:24 by vloureir         ###   ########.fr        #
+#    Updated: 2025/08/04 16:58:08 by vloureir         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,9 +21,10 @@ ENVP := $(wildcard envp/*.c)
 SIGNAL := $(wildcard signals/*.c)
 RUN_CMD := $(wildcard runcmd/*.c)
 BUILTIN := $(wildcard builtin/*.c)
+READLINE := $(wildcard readline/*.c)
 EXPAN_CMD := $(wildcard expansion/*.c)
 
-OBJ := $(SRC:.c=.o) $(ENVP:.c=.o) $(SIGNAL:.c=.o) $(RUN_CMD:.c=.o) $(BUILTIN:.c=.o) $(EXPAN_CMD:.c=.o)
+OBJ := $(SRC:.c=.o) $(ENVP:.c=.o) $(SIGNAL:.c=.o) $(RUN_CMD:.c=.o) $(BUILTIN:.c=.o) $(READLINE:.c=.o) $(EXPAN_CMD:.c=.o)
 
 VAL := --leak-check=full --show-leak-kinds=all --track-origins=yes --show-reachable=yes --suppressions=readline.supp
 
