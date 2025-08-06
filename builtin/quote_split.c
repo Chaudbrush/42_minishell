@@ -1,21 +1,6 @@
 
 #include "builtin.h"
 
-char	*ft_strndup(const char *s, int size)
-{
-	int		i;
-	char	*new;
-
-	new = malloc(sizeof(char) * (size + 1));
-	if (!new)
-		return (NULL);
-	i = -1;
-	while (s[++i] && i < size)
-		new[i] = s[i];
-	new[i] = '\0';
-	return (new);
-}
-
 int	quote_size(char *str, char c)
 {
 	int	i;

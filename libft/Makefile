@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: zali <zali@student.42.fr>                  +#+  +:+       +#+         #
+#    By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/12 20:29:48 by vloureir          #+#    #+#              #
-#    Updated: 2025/07/25 14:10:56 by zali             ###   ########.fr        #
+#    Updated: 2025/08/05 15:26:06 by vloureir         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,8 @@ SRC := src/ft_isalpha.c src/ft_isdigit.c src/ft_isalnum.c src/ft_isascii.c \
 		src/ft_strnstr.c src/ft_atoi.c src/ft_calloc.c src/ft_strdup.c \
 		src/ft_substr.c src/ft_strjoin.c src/ft_strtrim.c src/ft_split.c \
 		src/ft_itoa.c src/ft_strmapi.c src/ft_striteri.c src/ft_putchar_fd.c \
-		src/ft_putstr_fd.c src/ft_putendl_fd.c src/ft_putnbr_fd.c
+		src/ft_putstr_fd.c src/ft_putendl_fd.c src/ft_putnbr_fd.c \
+		src/ft_atol.c src/ft_atoll.c src/ft_atoll_u.c src/ft_strndup.c
 
 OBJ := $(SRC:.c=.o)
 

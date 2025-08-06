@@ -11,14 +11,13 @@ int	ft_getline(void)
 		ft_putstr_fd("syntax error, open quotes\n", 2);
 		return (1);
 	}
-	if (check_parentesis(shell()->line))
+	if (check_invalid_tokens(shell()->line))
 	{
-		ft_putstr_fd("syntax error, unexpected parentesis\n", 2);
+		ft_putstr_fd("syntax error, token '()\\' are not supported \n", 2);
 		return (1);
 	}
 	return (0);
 }
-
 
 int	check_quotes(char *str)
 {
@@ -48,7 +47,7 @@ int	check_quotes(char *str)
 	return (quote);
 }
 
-int	check_parentesis(char *str)
+int	check_invalid_tokens(char *str)
 {
 	int		i;
 	char	c;
@@ -56,7 +55,7 @@ int	check_parentesis(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == '(' || str[i] == ')')
+		if (str[i] == '(' || str[i] == ')' || str[i] == '\\')
 			return (str[i]);
 		if (str[i] == '\'' || str[i] == '\"')
 		{

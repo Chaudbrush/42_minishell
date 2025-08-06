@@ -23,32 +23,31 @@ void	envp_and_shlvl(char **envp)
 	
 	if (!envp)
 		return ;
-	shell()->level++;
-	printf("in: %d\n", shell()->level);
 	init_envp(envp);
 	node = getenv_list("SHLVL");
 	if (!node)
-		return ;
-	free(node->data);
+		shell()->level = 1;
+	if (node)
+	{
+		update_shlvl(node);
+		free(node->data);
+	}
 	new = ft_itoa(shell()->level);
 	node->data = ft_strjoin("SHLVL=", new);
 	free(new);
 }
 
-void	update_shlvl(void)
+void	update_shlvl(t_envp *node)
 {
-	t_envp	*node;
-	char	*new;
+	int	i;
+	int	lvl;
 
-	shell()->level++;
-	printf("out: %d\n", shell()->level);
-	node = getenv_list("SHLVL");
-	if (!node)
-		return ;
-	free(node->data);
-	new = ft_itoa(shell()->level);
-	node->data = ft_strjoin("SHLVL=", new);
-	free(new);
+	i = 0;
+	while (node->data[i] != '=')
+		i++;
+	i++;
+	lvl = ft_atoi(&node->data[i]);
+	shell()->level = lvl + 1;
 }
 
 void	init_envp(char **envp)

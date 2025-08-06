@@ -1,4 +1,3 @@
-
 #include "signals.h"
 
 void	_handler(int signal)
@@ -13,8 +12,8 @@ void	_handler(int signal)
 
 void	sig_handler(void)
 {
-	struct sigaction sa;
-	
+	struct sigaction	sa;
+
 	sa.sa_handler = &_handler;
 	sa.sa_flags = SA_RESTART;
 	signal(SIGTSTP, SIG_IGN); // Ctrl Z - Do we need this??

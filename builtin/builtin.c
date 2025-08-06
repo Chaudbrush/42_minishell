@@ -26,7 +26,7 @@ void	check_builtins(void)
 		handle_export(av);
 	else if (!strcmp(av[0], "unset"))
 		handle_unset(av);
-	else if (!strcmp(av[0], "env"))
-		print_list(shell()->envp_l);
+	// else if (!strcmp(av[0], "env"))
+	// 	print_list(shell()->envp_l);
 	clear_av(av);
 }

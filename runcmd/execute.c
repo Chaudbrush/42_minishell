@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zali <zali@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 14:38:28 by zali              #+#    #+#             */
-/*   Updated: 2025/07/30 15:31:43 by zali             ###   ########.fr       */
+/*   Updated: 2025/08/05 11:23:32 by vloureir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,11 @@ static int	process_heredocs(t_cmd *cmd);
 
 void	exec_tree(t_cmd *cmd, char **envp, int piped)
 {
-	
+	char	**env;
+
+	env = envp_to_av();
 	if (cmd->type == EXEC)
-		exec_recursive(cmd, envp);
+		exec_recursive(cmd, env);
 	else if (cmd->type == PIPE)
 		pipe_recursive(cmd, envp);
 	else if (cmd->type == REDIR)
@@ -30,6 +32,7 @@ void	exec_tree(t_cmd *cmd, char **envp, int piped)
 			process_heredocs(cmd);
 		redir_recursive(cmd, envp);
 	}
+	free(env);
 }
 
 static void exec_recursive(t_cmd *cmd, char **envp)

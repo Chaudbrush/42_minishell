@@ -1,28 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strndup.c                                       :+:      :+:    :+:   */
+/*   ft_atoll.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/10 11:30:17 by vloureir          #+#    #+#             */
-/*   Updated: 2025/08/05 15:24:07 by vloureir         ###   ########.fr       */
+/*   Created: 2025/04/10 11:13:29 by vloureir          #+#    #+#             */
+/*   Updated: 2025/08/05 14:15:53 by vloureir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strndup(const char *s, int size)
+long long	ft_atoll(const char *nptr)
 {
-	int		i;
-	char	*new;
+	int			i;
+	int			sign;
+	long long	nb;
 
-	new = malloc(sizeof(char) * (size + 1));
-	if (!new)
-		return (NULL);
-	i = -1;
-	while (s[++i] && i < size)
-		new[i] = s[i];
-	new[i] = '\0';
-	return (new);
+	i = 0;
+	nb = 0;
+	sign = 1;
+	while ((nptr[i] >= '\t' && nptr[i] <= '\r') || nptr[i] == ' ')
+		i++;
+	if (nptr[i] == '-' || nptr[i] == '+')
+	{
+		if (nptr[i] == '-')
+			sign = -sign;
+		i++;
+	}
+	while (nptr[i] >= '0' && nptr[i] <= '9')
+		nb = (nb * 10) + nptr[i++] - '0';
+	return (nb * sign);
 }

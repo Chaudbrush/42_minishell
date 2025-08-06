@@ -3,11 +3,13 @@
 
 #include "../minishell.h"
 
+typedef struct s_list t_list;
+
 // Cd
 void	handle_cd(char **av);
 
 // Echo
-int	check_flag(char *str);
+int		check_flag(char *str);
 void	handle_echo(char **av);
 
 // Export
@@ -21,6 +23,7 @@ char	*create_string(char *str);
 int		find_index(char **av, int i);
 
 // Exit
+int		not_num(char *str);
 void	handle_exit(char **av);
 
 // Exit Status
@@ -37,6 +40,6 @@ void	clear_q_list(t_list *list);
 char	**lst_to_argv(t_list *list);
 int		quote_size(char *str, char c);
 t_list	*quote_split(char *str, char sep);
-char	*ft_strndup(const char *s, int size);
+//char	*ft_strndup(const char *s, int size);
 
 #endif
