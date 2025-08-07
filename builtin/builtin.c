@@ -3,30 +3,31 @@
 // Export and unset are weird, they ignore everything, until they find the = symbol
 // Whats's after the symbol, becomes the value to be stored
 // What is before the symbol, becomes the name of the variable, but it stops at the first space
-void	check_builtins(void)
+int	check_builtins(void)
 {
 	char	buff[2048]; // is this a problem?
 	char	**av;
 
 	if (shell()->line[0] == 0)
-		return ;
+		return (0);
 	av = create_av();
 	expansion_av(av);
 	if (!strcmp(av[0], "exit"))
-		handle_exit(av);
+		return (handle_exit(av), clear_av(av), 1);
 	else if (av[0][0] == '$')
-		handle_prints(shell()->line);
+		return (handle_prints(shell()->line), clear_av(av), 1);
 	else if (!strcmp(av[0], "cd"))
-		handle_cd(av);
+		return (handle_cd(av), clear_av(av), 1);
 	else if (!strcmp(av[0], "pwd"))
-		(printf("%s\n", getcwd(buff, 2048)));
+		return ((printf("%s\n", getcwd(buff, 2048))), clear_av(av), 1);
 	else if (!strcmp(av[0], "echo"))
-		handle_echo(av);
+		return (handle_echo(av), clear_av(av), 1);
 	else if (!strcmp(av[0], "export"))
-		handle_export(av);
+		return (handle_export(av), clear_av(av), 1);
 	else if (!strcmp(av[0], "unset"))
-		handle_unset(av);
+		return (handle_unset(av), clear_av(av), 1);
 	// else if (!strcmp(av[0], "env"))
 	// 	print_list(shell()->envp_l);
-	clear_av(av);
+//	clear_av(av);
+	return (clear_av(av), 0);
 }

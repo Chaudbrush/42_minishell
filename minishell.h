@@ -6,7 +6,7 @@
 /*   By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 14:43:55 by vloureir          #+#    #+#             */
-/*   Updated: 2025/08/06 16:19:13 by vloureir         ###   ########.fr       */
+/*   Updated: 2025/08/07 13:53:01 by vloureir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
+typedef struct cmd t_cmd;
+
 typedef struct s_envp
 {
 	char			*data;
@@ -45,10 +47,13 @@ typedef struct s_shell
 	char			*token;
 	char			**cmds;
 	t_envp			*envp_l;
+	t_cmd			*cmd;
 	char			**envp_av;
 	int				envp_size;
 	unsigned char	exit_flag;
 	int				level;
+	int				parent_pid;
+	int				child_pid;
 }	t_shell;
 
 // Delete this later
@@ -57,7 +62,7 @@ void	print_list(t_envp *list);
 // Main
 t_shell	*shell(void);
 int		ft_getline(void);
-void	check_builtins(void);
+
 
 //safe_utils.c
 int		safe_fork(void);

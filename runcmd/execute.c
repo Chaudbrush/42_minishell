@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   execute.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/20 14:38:28 by zali              #+#    #+#             */
-/*   Updated: 2025/08/05 11:23:32 by vloureir         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "runcmd.h"
 
@@ -19,11 +8,8 @@ static int	process_heredocs(t_cmd *cmd);
 
 void	exec_tree(t_cmd *cmd, char **envp, int piped)
 {
-	char	**env;
-
-	env = envp_to_av();
 	if (cmd->type == EXEC)
-		exec_recursive(cmd, env);
+		exec_recursive(cmd, envp);
 	else if (cmd->type == PIPE)
 		pipe_recursive(cmd, envp);
 	else if (cmd->type == REDIR)
@@ -32,7 +18,10 @@ void	exec_tree(t_cmd *cmd, char **envp, int piped)
 			process_heredocs(cmd);
 		redir_recursive(cmd, envp);
 	}
-	free(env);
+	clear_envp(shell()->envp_l);
+	free(envp);
+	free_trees(shell()->cmd);
+	exit (EXIT_FAILURE);
 }
 
 static void exec_recursive(t_cmd *cmd, char **envp)
@@ -41,7 +30,13 @@ static void exec_recursive(t_cmd *cmd, char **envp)
 	char		*str_ptr;
 	char		**expanded_argv;
 
+	printf("hello1\n");
+	if (check_builtins())
+		return ;
+	printf("hello2\n");
 	execcmd = (t_execcmd *)cmd;
+	if (!execcmd->argv[0])
+		exit(EXIT_FAILURE);
 	expanded_argv = expansion(execcmd);
 	str_ptr = ft_strjoin("/bin/", expanded_argv[0]); 	
 	execve(str_ptr, expanded_argv, envp);
@@ -56,6 +51,7 @@ static void exec_recursive(t_cmd *cmd, char **envp)
 		free(str_ptr);
 	}
 	clear_av(expanded_argv);
+	shell()->exit_flag = 127;
 	return ;
 }
 
@@ -168,7 +164,7 @@ static void pipe_recursive(t_cmd *cmd, char **envp)
 		dup2(pipe_fd[1], STDOUT_FILENO);
 		close(pipe_fd[1]);
 		exec_tree(((t_pipecmd *)cmd)->left, envp, 1);
-		exit(EXIT_FAILURE);
+		exit (EXIT_FAILURE);
 	}
 	waitpid(left_pid, &wait_val, 0);
 	right_pid = safe_fork();
@@ -179,10 +175,11 @@ static void pipe_recursive(t_cmd *cmd, char **envp)
 		close(pipe_fd[0]);
 		close(pipe_fd[1]);
 		exec_tree(((t_pipecmd *)cmd)->right, envp, 1);
-		exit(EXIT_FAILURE);
+		exit(EXIT_FAILURE) ;
 	}
 	close(pipe_fd[0]);
 	close(pipe_fd[1]);
 	waitpid(right_pid, &wait_val, 0);
-	exit(wait_val);
+	shell()->exit_flag = wait_val;
+	return ;
 }

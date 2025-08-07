@@ -53,13 +53,15 @@ t_cmd	*init_t_execcmd(void);
 // Parse
 t_cmd	*parsecmd(char *str, char *end_str);
 
+
 // Execution
 void	exec_tree(t_cmd *cmd, char **envp, int piped);
 
 // Run Command && Utils
-void	run_cmd(char *str, char **envp);
+void	run_cmd(char *str);
 void	skip_whitespace(char **start, char *end);
 int		char_presence(char c, char *str);
+void	free_trees(t_cmd *cmd);
 char	get_token(char **str, char *end_str, char **ptr, char **end_ptr);
 int		ft_exists_wskip(char **str, char *end_str, char *set);
 

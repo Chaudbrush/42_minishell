@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   runcmd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zali <zali@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 13:30:06 by zali              #+#    #+#             */
-/*   Updated: 2025/08/03 14:18:34 by zali             ###   ########.fr       */
+/*   Updated: 2025/08/07 12:59:00 by vloureir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "runcmd.h"
 
-static void	free_trees(t_cmd *cmd)
+void	free_trees(t_cmd *cmd)
 {
 	if (cmd->type == EXEC)
 	{
@@ -45,9 +45,16 @@ void	show_cmd_tree(t_cmd *cmd)
 	int	i;
 	i = 0;
 
+	if (!cmd)
+	{
+		printf("NULL\n");
+		return ;
+	}
 	if (cmd->type == EXEC)
 	{
 		printf("exec.\n");
+		if (((t_execcmd *)cmd)->argv[0] == NULL)
+			printf("NO ARGS\n");
 		while (((t_execcmd *)cmd)->argv[i])
 			printf("%s ", ((t_execcmd *)cmd)->argv[i++]);
 		printf("\n");
@@ -72,16 +79,17 @@ void	show_cmd_tree(t_cmd *cmd)
 	}
 }
 
-void	run_cmd(char *str, char **envp)
+void	run_cmd(char *str)
 {
 	t_cmd	*cmd;	
 	char	*end_str;
+	char	**env;
 
+	env = envp_to_av();
 	end_str = str + ft_strlen(str);
 	cmd = parsecmd(str, end_str);
+	shell()->cmd = cmd;
 	// printf("PTR in fork: %s\n", str);
-	//show_cmd_tree(cmd);
-	exec_tree(cmd, envp, 0);
-	free_trees(cmd);
-	exit(EXIT_SUCCESS);
+	// show_cmd_tree(cmd);
+	exec_tree(cmd, env, 0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zali <zali@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 16:36:13 by zali              #+#    #+#             */
-/*   Updated: 2025/08/03 14:19:51 by zali             ###   ########.fr       */
+/*   Updated: 2025/08/07 11:51:48 by vloureir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ static t_cmd	*parsestr(char **str, char *end_str)
 		exec_cmd->eargv[argc] = end_ptr; 
 		exec_cmd->size++;
 		argc++;
-		if (argc == MAX_SIZE)
+		if (argc == exec_cmd->max_size)
 			double_argv_size(exec_cmd);
 		ret = parseredirects(ret, str, end_str); 
 	}

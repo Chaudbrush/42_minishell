@@ -5,6 +5,9 @@
 
 typedef struct s_list t_list;
 
+// Builtin
+int	check_builtins(void);
+
 // Cd
 void	handle_cd(char **av);
 
