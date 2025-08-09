@@ -3,11 +3,29 @@
 
 static void pipe_recursive(t_cmd *cmd, char **envp);
 static void exec_recursive(t_cmd *cmd, char **envp);
-static void redir_recursive(t_cmd *cmd, char **envp);
+static void redir_recursive(t_cmd *cmd, char **envp, int is_heredoc_top);
 static int	process_heredocs(t_cmd *cmd);
+
+int	is_heredoc_top(t_cmd *cmd)
+{
+	t_redircmd	*redircmd;
+
+	while (cmd->type == REDIR)
+	{
+		redircmd = ((t_redircmd *) cmd);
+		if (redircmd->redir_type == '-')
+			return (1);
+		if (redircmd->redir_type == '<')
+			return (0);
+		cmd = redircmd->link;
+	}
+	return (0);
+}
 
 void	exec_tree(t_cmd *cmd, char **envp, int piped)
 {
+	if (!cmd)
+		return ;
 	if (cmd->type == EXEC)
 		exec_recursive(cmd, envp);
 	else if (cmd->type == PIPE)
@@ -16,7 +34,10 @@ void	exec_tree(t_cmd *cmd, char **envp, int piped)
 	{
 		if (!piped)
 			process_heredocs(cmd);
-		redir_recursive(cmd, envp);
+		redir_recursive(cmd, envp, is_heredoc_top(cmd));
+		while (cmd->type == REDIR)
+			cmd = ((t_redircmd *) cmd)->link;
+		exec_tree(cmd, envp, 0);
 	}
 	clear_envp(shell()->envp_l);
 	free(envp);
@@ -30,13 +51,11 @@ static void exec_recursive(t_cmd *cmd, char **envp)
 	char		*str_ptr;
 	char		**expanded_argv;
 
-	printf("hello1\n");
 	if (check_builtins())
 		return ;
-	printf("hello2\n");
 	execcmd = (t_execcmd *)cmd;
 	if (!execcmd->argv[0])
-		exit(EXIT_FAILURE);
+		return ;
 	expanded_argv = expansion(execcmd);
 	str_ptr = ft_strjoin("/bin/", expanded_argv[0]); 	
 	execve(str_ptr, expanded_argv, envp);
@@ -131,20 +150,19 @@ static int process_heredocs(t_cmd *cmd)
 		return (0);
 }
 
-static void redir_recursive(t_cmd *cmd, char **envp)
+static void redir_recursive(t_cmd *cmd, char **envp, int is_heredoc_top)
 {
 	t_redircmd	*redircmd;
 	
 	redircmd = (t_redircmd *)cmd;
-	if (redircmd->redir_type != '-')
+	if (redircmd->link->type == REDIR)
+		redir_recursive(redircmd->link, envp, is_heredoc_top);
+	if (redircmd->redir_type != '-' && !is_heredoc_top)
 	{
 		close(redircmd->fd);
 		if (open(redircmd->file, redircmd->mode, 0644) < 0)
 			exit(EXIT_FAILURE);
 	}
-	if (redircmd->link->type == REDIR)
-		redir_recursive(redircmd->link, envp);
-	exec_tree(((t_redircmd *)cmd)->link, envp, 0);
 }
 
 static void pipe_recursive(t_cmd *cmd, char **envp)
