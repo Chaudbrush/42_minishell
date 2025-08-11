@@ -6,13 +6,13 @@
 #    By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/11 09:44:49 by vloureir          #+#    #+#              #
-#    Updated: 2025/08/04 16:58:08 by vloureir         ###   ########.fr        #
+#    Updated: 2025/08/09 20:13:38 by vloureir         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-# ifndef VERBOSE
-# MAKEFLAGS += --silent
-# endif
+#ifndef VERBOSE
+#MAKEFLAGS += --silent
+#endif
 
 NAME := minishell
 

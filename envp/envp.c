@@ -21,7 +21,7 @@ void	envp_and_shlvl(char **envp)
 	t_envp	*node;
 	char	*new;
 	
-	if (!envp)
+	if (!envp[0])
 		return ;
 	init_envp(envp);
 	node = getenv_list("SHLVL");

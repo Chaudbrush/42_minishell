@@ -41,10 +41,10 @@ int	check_invalid(char *str)
 	int	i;
 
 	i = 0;
+	if (ft_isdigit(str[i]))
+		return (1);
 	while (str[i])
 	{
-		if (ft_isdigit(str[i]))
-			return (1);
 		if (check_illegal(str[i]))
 			return (1);
 		i++;
@@ -109,20 +109,20 @@ void	handle_export(char **av)
 		}
 		str = create_string(av[index]);
 		if (!str)
-			break ;			
+			break ;
 		node = getenv_list(str);
 		free(str);
 		if (node)
 		{
 			free(node->data);
-			node->data = av[index]; // Need to expand here ?
+			node->data = ft_strdup(av[index]);
 		}
 		else
 		{
 			node = malloc(sizeof(node));
 			if (!node)
 				return ;
-			node->data = ft_strdup(av[index]); // Expand
+			node->data = ft_strdup(av[index]);
 			last = ft_dlist_last(shell()->envp_l);
 			last->next = node;
 			node->prev = last;

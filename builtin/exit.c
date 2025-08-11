@@ -19,16 +19,22 @@ void	handle_exit(char **av)
 		ft_putstr_fd("exit: ", 2);
 		ft_putstr_fd(av[1], 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
+		clear_envp(shell()->envp_l);
+		clear_av(av);
 		exit (2);
 	}
 	if (shell()->level > 2)
 	{
 		printf("exit\n");
+		clear_envp(shell()->envp_l);
+		clear_av(av);
 		exit (0); // Always zero????
 	}
 	else
 	{
 		printf("logout\n");
+		clear_envp(shell()->envp_l);
+		clear_av(av);
 		exit (shell()->exit_flag);
 	}
 }
