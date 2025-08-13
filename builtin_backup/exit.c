@@ -1,12 +1,11 @@
 #include "builtin.h"
 
 // Exit numbers are unsigned chars
-void	handle_exit(char **av, int *b_flag)
+void	handle_exit(char **av)
 {
 	int	i;
 
 	i = 0;
-	*b_flag = 1;
 	while(av[i])
 		i++;
 	if (i > 2)

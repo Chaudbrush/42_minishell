@@ -24,12 +24,11 @@ void	clear_av(char **av)
 	free(av);
 }
 
-void	handle_unset(char **av, int *b_flag)
+void	handle_unset(char **av)
 {
 	int		i;
 	t_envp	*to_del;
 
-	*b_flag = 1;
 	i = 1;
 	while (av[i])
 	{

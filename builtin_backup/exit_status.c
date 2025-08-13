@@ -14,9 +14,8 @@ void	print_exit(char *str)
 	shell()->exit_flag = 127;
 }
 
-void	handle_prints(char *str, int *b_flag)
+void	handle_prints(char *str)
 {
-	*b_flag = 1;
 	(void)str;
 	if (!strncmp(shell()->line, "$?", 2))
 		print_exit(&shell()->line[2]);

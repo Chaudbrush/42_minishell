@@ -23,7 +23,7 @@ int	main(int argc, char **argv, char **envp)
 			continue ;
 		if (!shell()->line)
 			break ;
-		if (!peek_tokens(shell()->line, "<|>") && check_builtins())
+		if (!peek_tokens(shell()->line, "<|>") && check_builtins(NULL))
 			continue ;
 		pid = safe_fork();
 		shell()->child_pid = pid;

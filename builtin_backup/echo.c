@@ -14,14 +14,13 @@ int	check_flag(char *str)
 	return (1);
 }
 
-void	handle_echo(char **av, int *b_flag)
+void	handle_echo(char **av)
 {
 	int	i;
 	int	flag;
 
 	i = 1;
 	flag = 0;
-	*b_flag = 1;
 	shell()->exit_flag = 0;
 	if (!ft_strncmp(av[1], "-n", 2) && check_flag(av[1]))
 	{
@@ -33,8 +32,7 @@ void	handle_echo(char **av, int *b_flag)
 	while (av[i])
 	{
 		ft_putstr_fd(av[i], 1);
-		if (av[i + 1])
-			ft_putstr_fd(" ", 1);
+		ft_putstr_fd(" ", 1);
 		i++;
 	}
 	if (!flag)

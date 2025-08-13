@@ -89,14 +89,13 @@ char	*create_string(char *str)
 	return (ret);
 }
 
-void	handle_export(char **av, int *b_flag)
+void	handle_export(char **av)
 {
 	int		index;
 	char	*str;
 	t_envp	*node;
 	t_envp	*last;
 
-	*b_flag = 1;
 	index = 1;
 	while (index > 0)
 	{

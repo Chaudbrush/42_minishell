@@ -1,8 +1,7 @@
 #include "builtin.h"
 
-void	handle_cd(char **av, int *b_flag)
+void	handle_cd(char **av)
 {
-	*b_flag = 1;
 	if (av[2]) // If this triggers, ignore first argument, even if valid
 	{
 		ft_putstr_fd("cd: too many arguments\n", 2);

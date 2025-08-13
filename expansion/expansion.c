@@ -53,12 +53,34 @@ void	expansion_av(char **av)
 		if (is_expandable(av[i]))
 		{
 			tmp = av[i];
-//			printf("tmp: %s\n", tmp); // Delete later
-//			fflush(stdout);
 			perform_expansion(tmp, &av[i]);
-//			printf("%s\n", av[i]); // Delete later
 			free(tmp);
 		}
 		i++;
 	}
 }
+
+// void	expansion_exit(void)
+// {
+// 	char	*tmp;
+// 	t_envp	*node;
+// 	t_envp	*last;
+
+// 	node = getenv_list(shell()->envp_l);
+// 	if (node)
+// 	{
+// 		free(node->data);
+// 		node->data = ft_itoa(shell()->level);
+// 	}
+// 	else
+// 	{
+// 		node = malloc(sizeof(t_envp));
+// 		if (!node)
+// 			return ;
+// 		node->data = ft_itoa(shell()->level);
+// 		last = list_last;
+// 		last->next = node;
+// 		node->prev = last;
+// 		node->next = NULL;
+// 	}
+// }

@@ -6,17 +6,14 @@
 typedef struct s_list t_list;
 
 // Builtin
-int	check_builtins(char **av);
+int	check_builtins(void);
 
 // Cd
-void	handle_cd(char **av, int *b_flag);
+void	handle_cd(char **av);
 
 // Echo
 int		check_flag(char *str);
-void	handle_echo(char **av, int *b_flag);
-
-// Env
-void	handle_env(int *b_flag);
+void	handle_echo(char **av);
 
 // Export
 int		ft_isdigit(int c);
@@ -24,25 +21,22 @@ void	clear_av(char **av);
 int		check_illegal(char c);
 int		check_tokens(char *str);
 int		check_invalid(char *str);
+void	handle_export(char **av);
 char	*create_string(char *str);
 int		find_index(char **av, int i);
-void	handle_export(char **av, int *b_flag);
 
 // Exit
 int		not_num(char *str);
-void	handle_exit(char **av, int *b_flag);
+void	handle_exit(char **av);
 
 // Exit Status
 void	print_exit(char *str);
-void	handle_prints(char *str, int *b_flag);
-
-// Pwd
-void	handle_pwd(int *b_flag);
+void	handle_prints(char *str);
 
 // Unset
 char	**create_av(void);
 void	clear_av(char **av);
-void	handle_unset(char **av, int *b_flag);
+void	handle_unset(char **av);
 
 // Quote Split
 void	clear_q_list(t_list *list);
