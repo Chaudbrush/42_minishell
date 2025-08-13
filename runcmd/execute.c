@@ -65,7 +65,7 @@ static void exec_recursive(t_cmd *cmd, char **envp)
 		perror(expanded_argv[0]);
 	else
 	{
-		str_ptr = ft_strjoin(execcmd->argv[0], ": command not found\n"); 
+		str_ptr = ft_strjoin(expanded_argv[0], ": command not found\n"); 
 		ft_putstr_fd(str_ptr, STDERR_FILENO);
 		free(str_ptr);
 	}

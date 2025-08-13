@@ -17,8 +17,6 @@ int	check_builtins(char **av)
 	}
 	if (!strcmp(av[0], "exit"))
 		handle_exit(av, &is_builtin);
-//	else if (av[0][0] == '$') // THIS IS NOT A BUILTIN - IT IS JUST AN EXPANSION, THEN YOU TRY TO EXECUTE THE COMMAND
-//		handle_prints(shell()->line, &is_builtin);
 	else if (!strcmp(av[0], "cd"))
 		handle_cd(av, &is_builtin);
 	else if (!strcmp(av[0], "pwd"))

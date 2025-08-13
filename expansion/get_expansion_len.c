@@ -35,7 +35,7 @@ int	get_expansion_len(char *src)
 		if (*src == '$')
 		{
 			src++;
-			expand_dollar(&src, &i);
+			free(expand_dollar(&src, &i));
 			continue ;
 		}
 		if (*src == '\'' || *src == '\"')
