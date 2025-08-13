@@ -12,6 +12,7 @@ static int	append_var(char *str, char *dest)
 		dest[i] = str[i];
 		i++;
 	}
+	free(str);
 	return (i);
 }
 
