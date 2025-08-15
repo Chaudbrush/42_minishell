@@ -42,7 +42,7 @@ void	exec_tree(t_cmd *cmd, char **envp, int piped)
 	clear_envp(shell()->envp_l);
 	free(envp);
 	free_trees(shell()->cmd);
-	exit (EXIT_FAILURE);
+	exit (127);
 }
 
 static void exec_recursive(t_cmd *cmd, char **envp)
@@ -70,7 +70,7 @@ static void exec_recursive(t_cmd *cmd, char **envp)
 		free(str_ptr);
 	}
 	clear_av(expanded_argv);
-	shell()->exit_flag = 127;
+//	shell()->exit_flag = 127;
 	return ;
 }
 
@@ -182,7 +182,7 @@ static void pipe_recursive(t_cmd *cmd, char **envp)
 		dup2(pipe_fd[1], STDOUT_FILENO);
 		close(pipe_fd[1]);
 		exec_tree(((t_pipecmd *)cmd)->left, envp, 1);
-		exit (EXIT_FAILURE);
+//		exit (127);
 	}
 	waitpid(left_pid, &wait_val, 0);
 	right_pid = safe_fork();
@@ -193,11 +193,11 @@ static void pipe_recursive(t_cmd *cmd, char **envp)
 		close(pipe_fd[0]);
 		close(pipe_fd[1]);
 		exec_tree(((t_pipecmd *)cmd)->right, envp, 1);
-		exit(EXIT_FAILURE) ;
+//		exit(127);
 	}
 	close(pipe_fd[0]);
 	close(pipe_fd[1]);
 	waitpid(right_pid, &wait_val, 0);
-	shell()->exit_flag = wait_val;
+//	shell()->exit_flag = WEXITSTATUS(wait_val);
 	return ;
 }

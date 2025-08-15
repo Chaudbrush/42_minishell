@@ -22,8 +22,9 @@ void	envp_and_shlvl(char **envp)
 	char	*new;
 	
 	if (!envp[0])
-		return ;
-	init_envp(envp);
+		small_envp();
+	else
+		init_envp(envp);
 	node = getenv_list("SHLVL");
 	if (!node)
 		shell()->level = 1;
@@ -55,9 +56,6 @@ void	init_envp(char **envp)
 	int		i;
 	t_envp	*node;
 	
-	shell()->envp_l = NULL;
-	if (!envp)
-		return ; // If this return procs, maybe have a backup envp hardcoded?
 	i = 0;
 	while (envp[i])
 	{
@@ -75,16 +73,6 @@ void	init_envp(char **envp)
 		shell()->envp_l = node;
 		shell()->envp_size++;
 		i++;
-	}
-}
-
-// Delete this later
-void	print_list(t_envp *list)
-{
-	while (list)
-	{
-		printf("%s\n", list->data);
-		list = list->next;
 	}
 }
 
@@ -109,4 +97,26 @@ char	**envp_to_av(void)
 		i++;
 	}
 	return (av);
+}
+
+void	small_envp(void)
+{
+	char	buff[4026];
+	t_envp	*node;
+
+	node = malloc(sizeof(t_envp));
+	if (!node)
+		return ;
+	node->data = ft_strdup("HOME=/home");
+	ft_dlist_addback(&shell()->envp_l, node);
+	node = malloc(sizeof(t_envp));
+	if (!node)
+		return ;
+	node->data = ft_strjoin("PWD=", getcwd(buff, 4096));
+	ft_dlist_addback(&shell()->envp_l, node);
+	node = malloc(sizeof(t_envp));
+	if (!node)
+		return ;
+	node->data = ft_strjoin("SHLVL=", ft_itoa(shell()->level));
+	ft_dlist_addback(&shell()->envp_l, node);
 }

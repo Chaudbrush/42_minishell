@@ -15,6 +15,12 @@ int	check_builtins(char **av)
 		expansion_av(av);
 		av_flag = 1;
 	}
+	if (!strcmp(av[0], "$?"))
+	{	
+		printf("hi\n");
+		printf("%d\n", shell()->exit_flag);
+		return (1);
+	}
 	if (!strcmp(av[0], "exit"))
 		handle_exit(av, &is_builtin);
 	else if (!strcmp(av[0], "cd"))

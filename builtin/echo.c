@@ -22,13 +22,12 @@ void	handle_echo(char **av, int *b_flag)
 	i = 1;
 	flag = 0;
 	*b_flag = 1;
-	shell()->exit_flag = 0;
 	if (!ft_strncmp(av[1], "-n", 2) && check_flag(av[1]))
 	{
 		flag = 1;
 		i++;
 	}
-	else if (!ft_strncmp(av[i], "$?", 3))
+	else if (!ft_strcmp(av[i], "$?"))
 		ft_putnbr_fd(shell()->exit_flag, 1);
 	while (av[i])
 	{
@@ -39,4 +38,5 @@ void	handle_echo(char **av, int *b_flag)
 	}
 	if (!flag)
 		write(1, "\n", 1);
+	shell()->exit_flag = 0;
 }

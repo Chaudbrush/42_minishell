@@ -59,28 +59,3 @@ void	expansion_av(char **av)
 		i++;
 	}
 }
-
-// void	expansion_exit(void)
-// {
-// 	char	*tmp;
-// 	t_envp	*node;
-// 	t_envp	*last;
-
-// 	node = getenv_list(shell()->envp_l);
-// 	if (node)
-// 	{
-// 		free(node->data);
-// 		node->data = ft_itoa(shell()->level);
-// 	}
-// 	else
-// 	{
-// 		node = malloc(sizeof(t_envp));
-// 		if (!node)
-// 			return ;
-// 		node->data = ft_itoa(shell()->level);
-// 		last = list_last;
-// 		last->next = node;
-// 		node->prev = last;
-// 		node->next = NULL;
-// 	}
-// }

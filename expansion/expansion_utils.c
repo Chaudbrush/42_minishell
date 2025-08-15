@@ -44,7 +44,7 @@ char	*expand_dollar(char **src, int *i)
 	if (**src == '?')
 	{
 		j++;
-		str = ft_itoa(shell()->exit_flag); 
+		str = ft_itoa(shell()->exit_flag);
 	}
 	else
 	{
