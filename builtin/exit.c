@@ -24,7 +24,7 @@ void	handle_exit(char **av, int *b_flag)
 		clear_av(av);
 		exit (2);
 	}
-	if (shell()->level > 2)
+	if (shell()->level > 1)
 	{
 		printf("exit\n");
 		clear_envp(shell()->envp_l);
@@ -36,7 +36,7 @@ void	handle_exit(char **av, int *b_flag)
 		printf("logout\n");
 		clear_envp(shell()->envp_l);
 		clear_av(av);
-		exit (shell()->exit_flag);
+		exit (0); // Always zero????
 	}
 }
 
