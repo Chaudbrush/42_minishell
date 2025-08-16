@@ -1,13 +1,6 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "./builtin/builtin.h"
-# include "./envp/envp.h"
-# include "./expansion/expansion.h"
-# include "./libft/includes/libft.h"
-# include "readline/readline.h"
-# include "./runcmd/runcmd.h"
-# include "./signals/signals.h"
 # include <fcntl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -18,6 +11,16 @@
 # include <string.h>
 # include <sys/wait.h>
 # include <unistd.h>
+# include "./builtin/builtin.h"
+# include "./envp/envp.h"
+# include "./libft/includes/libft.h"
+# include "./expansion/expansion.h"
+# include "readline/readline.h"
+# include "./runcmd/cmd_struct.h"
+# include "./parse/parse.h"
+# include "./execute/execute.h"
+# include "./runcmd/runcmd.h"
+# include "./signals/signals.h"
 
 typedef struct cmd t_cmd;
 
