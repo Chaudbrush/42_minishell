@@ -6,11 +6,11 @@
 /*   By: zali <zali@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 16:39:05 by zali              #+#    #+#             */
-/*   Updated: 2025/08/02 19:19:27 by zali             ###   ########.fr       */
+/*   Updated: 2025/08/16 19:34:11 by zali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "runcmd.h"
+#include "cmd_struct.h"
 
 t_cmd	*init_t_execcmd(void)
 {
@@ -25,7 +25,7 @@ t_cmd	*init_t_execcmd(void)
 	return ((t_cmd *)execcmd);
 }
 
-t_cmd	*init_t_pipecmd(t_cmd *left, t_cmd *right)
+t_cmd	*init_t_pipecmd(t_cmd *left, t_cmd *right, t_list **cmd_list)
 {
 	t_pipecmd	*pipecmd;
 
@@ -33,6 +33,7 @@ t_cmd	*init_t_pipecmd(t_cmd *left, t_cmd *right)
 	pipecmd->left = left;
 	pipecmd->right = right;
 	pipecmd->type = PIPE; 
+	ft_lstadd_front(cmd_list, ft_lstnew(pipecmd));
 	return ((t_cmd *)pipecmd);
 }
 
