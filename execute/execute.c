@@ -42,10 +42,11 @@ static void	exec_recursive(t_cmd *cmd, char **envp)
 		clear_av(expanded_argv);
 		return ;
 	}
+	if (ft_strchr(expanded_argv[0], '/'))
+		execve(expanded_argv[0], expanded_argv, envp);
 	str_ptr = ft_strjoin("/bin/", expanded_argv[0]);
 	execve(str_ptr, expanded_argv, envp);
 	free(str_ptr);
-	execve(execcmd->argv[0], execcmd->argv, envp);
 	if (expanded_argv[0][0] == '.' && expanded_argv[0][1] == '/')
 		perror(expanded_argv[0]);
 	else
