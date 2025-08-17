@@ -38,7 +38,10 @@ static void	exec_recursive(t_cmd *cmd, char **envp)
 		return ;
 	expanded_argv = expansion(execcmd);
 	if (check_builtins(expanded_argv))
+	{
+		clear_av(expanded_argv);
 		return ;
+	}
 	str_ptr = ft_strjoin("/bin/", expanded_argv[0]);
 	execve(str_ptr, expanded_argv, envp);
 	free(str_ptr);
