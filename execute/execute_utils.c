@@ -19,12 +19,14 @@ int	is_heredoc_top(t_cmd *cmd)
 static void	read_line_heredoc(int write_fd, char *delimiter)
 {
 	char	*ptr;
+	char	*expan_delim;
 
 	ptr = NULL;
+	perform_expansion(delimiter, &expan_delim);
 	while (1)
 	{
 		ptr = readline(">");
-		if (ft_strcmp(ptr, delimiter) == 0)
+		if (ft_strcmp(ptr, expan_delim) == 0)
 		{
 			free(ptr);
 			break ;
@@ -33,6 +35,7 @@ static void	read_line_heredoc(int write_fd, char *delimiter)
 		write(write_fd, "\n", 1);
 		free(ptr);
 	}
+	free(expan_delim);
 }
 
 static int	handle_heredoc(t_cmd *cmd)
