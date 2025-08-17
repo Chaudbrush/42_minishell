@@ -8,7 +8,10 @@ void	_handler(int signal)
 	(void)signal;
 	shell()->exit_flag = 130;
 	if (shell()->parent_pid != pid) 
+	{
+		write(1, "\n", 1);
 		kill(pid, 9);
+	}
 	else if (pid == shell()->parent_pid && !shell()->child_pid)
 	{
 		write(1, "\n", 1);
@@ -17,7 +20,6 @@ void	_handler(int signal)
 		rl_redisplay();	
 		return ;
 	}
-	write(1, "\n", 1);
 }
 
 void	sig_handler(void)
