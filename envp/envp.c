@@ -122,6 +122,11 @@ void	small_envp(void)
 	node = malloc(sizeof(t_envp));
 	if (!node)
 		return ;
-	node->data = ft_strdup("_=/user/bin/env");
+	node->data = ft_strdup("_=/usr/bin/env");
+	ft_dlist_addback(&shell()->envp_l, node);
+	node = malloc(sizeof(t_envp));
+	if (!node)
+		return ;
+	node->data = ft_strdup("TERM=xterm-256color");
 	ft_dlist_addback(&shell()->envp_l, node);
 }
