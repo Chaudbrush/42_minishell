@@ -39,6 +39,7 @@ typedef struct s_shell
 	char			**cmds;
 	t_envp			*envp_l;
 	t_cmd			*cmd;
+	char			*expan_delim;
 	char			**envp_av;
 	int				envp_size;
 	unsigned char	exit_flag;

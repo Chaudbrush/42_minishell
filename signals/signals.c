@@ -11,8 +11,10 @@ void	_handler(int signal)
 	{
 		clear_envp(shell()->envp_l);
 		free_trees(shell()->cmd);
+		free(shell()->envp_av);
+		free(shell()->expan_delim);
 		write(1, "\n", 1);
-		kill(pid, 9);
+		exit(shell()->exit_flag);
 	}
 	else if (pid == shell()->parent_pid && !shell()->child_pid)
 	{
