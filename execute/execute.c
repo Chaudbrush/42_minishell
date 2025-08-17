@@ -62,6 +62,7 @@ static void	exec_recursive(t_cmd *cmd, char **envp)
 static void	redir_recursive(t_cmd *cmd, char **envp, int is_heredoc_top)
 {
 	t_redircmd	*redircmd;
+	char		*err_ptr;
 
 	redircmd = (t_redircmd *)cmd;
 	if (redircmd->link->type == REDIR)
@@ -70,7 +71,13 @@ static void	redir_recursive(t_cmd *cmd, char **envp, int is_heredoc_top)
 	{
 		close(redircmd->fd);
 		if (open(redircmd->file, redircmd->mode, 0644) < 0)
-			exit(EXIT_FAILURE);
+		{
+			err_ptr = ft_strjoin("err: no such file or directory: ", redircmd->file);
+			ft_putstr_fd(err_ptr, 2);
+			ft_putstr_fd("\n", 2);
+			free(err_ptr);
+			return ;
+		}
 	}
 }
 
