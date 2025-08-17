@@ -3,6 +3,8 @@
 
 #include "../minishell.h"
 
+#define EXEC_FAIL 127
+
 typedef struct cmd t_cmd;
 typedef struct execcmd t_execcmd;
 typedef struct pipecmd t_pipecmd;

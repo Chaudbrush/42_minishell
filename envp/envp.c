@@ -119,4 +119,9 @@ void	small_envp(void)
 		return ;
 	node->data = ft_strjoin("SHLVL=", ft_itoa(shell()->level));
 	ft_dlist_addback(&shell()->envp_l, node);
+	node = malloc(sizeof(t_envp));
+	if (!node)
+		return ;
+	node->data = ft_strdup("_=/user/bin/env");
+	ft_dlist_addback(&shell()->envp_l, node);
 }
