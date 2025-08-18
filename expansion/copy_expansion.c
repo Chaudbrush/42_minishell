@@ -29,7 +29,8 @@ static void	handle_quotes(char **src, char *dest, int *dest_index)
 		if (**src == '$' && quotes == '\"')
 		{
 			(*src)++;
-			*dest_index += append_var(expand_dollar(src, NULL), dest + *dest_index);
+			*dest_index += append_var(expand_dollar(src, NULL),
+					dest + *dest_index);
 			continue ;
 		}
 		dest[*dest_index] = **src;
@@ -57,11 +58,11 @@ void	copy_expansion(char *src, char **destination, int src_size)
 			continue ;
 		}
 		if (*src == '\'' || *src == '\"')
-		{	
+		{
 			handle_quotes(&src, dest, &i);
 			continue ;
 		}
-		dest[i] = *src++; 
+		dest[i] = *src++;
 		i++;
 	}
 	dest[i] = 0;

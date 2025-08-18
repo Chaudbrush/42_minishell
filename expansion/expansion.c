@@ -15,7 +15,7 @@ static int	is_expandable(char *str)
 
 void	perform_expansion(char *src, char **dest)
 {
-	int i;
+	int	i;
 
 	if (!src)
 		return ;

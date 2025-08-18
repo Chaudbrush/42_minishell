@@ -1,9 +1,9 @@
 #ifndef EXPANSION_H
 # define EXPANSION_H
 
-#include "../minishell.h"
+# include "../minishell.h"
 
-typedef struct execcmd t_execcmd;
+typedef struct execcmd	t_execcmd;
 
 void	expansion_av(char **av);
 char	**expansion(t_execcmd *execcmd);
