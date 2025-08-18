@@ -26,8 +26,6 @@ int	ft_exists_wskip(char **str, char *end_str, char *set)
 void	nullify(t_cmd *cmd)
 {
 	int			i;
-	t_redircmd	*redircmd;
-	t_pipecmd	*pipecmd;
 	t_execcmd	*execcmd;
 
 	i = 0;
@@ -41,15 +39,13 @@ void	nullify(t_cmd *cmd)
 	}
 	else if (cmd->type == PIPE)
 	{
-		pipecmd = (t_pipecmd *)cmd;
-		nullify(pipecmd->left);
-		nullify(pipecmd->right);
+		nullify(((t_pipecmd *) cmd)->left);
+		nullify(((t_pipecmd *) cmd)->right);
 	}
 	else if (cmd->type == REDIR)
 	{
-		redircmd = (t_redircmd *)cmd;
-		nullify(redircmd->link);
-		*redircmd->end_file = '\0';
+		nullify(((t_redircmd *)cmd)->link);
+		*((t_redircmd *) cmd)->end_file = '\0';
 	}
 }
 

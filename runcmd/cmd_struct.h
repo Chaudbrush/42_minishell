@@ -3,13 +3,14 @@
 # define MAX_SIZE 2
 # include "../minishell.h"
 
-enum {
+enum
+{
 	PIPE,
 	EXEC,
 	REDIR
 };
 
-typedef	struct execcmd
+typedef struct execcmd
 {
 	int		type;
 	char	**argv;
@@ -17,7 +18,6 @@ typedef	struct execcmd
 	int		max_size;
 	int		size;
 }	t_execcmd;
-
 
 typedef struct cmd
 {
@@ -43,7 +43,7 @@ typedef struct redircmd
 }	t_redircmd;
 
 // Structs inits
-t_cmd	*init_t_redircmd(t_cmd *cmd, char *sfile, char *efile, int mode, int fd);
+t_cmd	*init_t_redircmd(char *sfile, char *efile, int mode, int fd);
 t_cmd	*init_t_pipecmd(t_cmd *left, t_cmd *right, t_list **cmd_list);
-t_cmd	*init_t_execcmd(void); 
+t_cmd	*init_t_execcmd(void);
 #endif

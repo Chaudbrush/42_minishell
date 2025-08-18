@@ -1,8 +1,8 @@
 #include "parse.h"
 
-void skip_word(char **str, char *end_str)
+void	skip_word(char **str, char *end_str)
 {
-	char quotes;
+	char	quotes;
 
 	quotes = 0;
 	while (*str < end_str && !char_presence(**str, " \t\r\n\v")

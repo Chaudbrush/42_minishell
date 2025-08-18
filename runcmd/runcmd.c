@@ -9,7 +9,5 @@ void	run_cmd(char *str)
 	cmd = parsecmd(str, end_str);
 	shell()->cmd = cmd;
 	shell()->envp_av = envp_to_av();
-	// printf("PTR in fork: %s\n", str);
-	// show_cmd_tree(cmd);
 	exec_tree(cmd, shell()->envp_av, 0);
 }

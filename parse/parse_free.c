@@ -36,7 +36,7 @@ void	free_list(t_list **cmd_list, int free_cmd)
 
 	while (*cmd_list)
 	{
-		cmd = (t_cmd *) ((*cmd_list)->content);
+		cmd = (t_cmd *)((*cmd_list)->content);
 		if (free_cmd)
 		{
 			if (cmd->type == EXEC)
