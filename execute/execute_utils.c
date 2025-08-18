@@ -93,4 +93,3 @@ int	process_heredocs(t_cmd *cmd)
 	else
 		return (0);
 }
-
