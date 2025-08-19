@@ -1,13 +1,12 @@
 #include "builtin.h"
 
-// Exit numbers are unsigned chars
 void	handle_exit(char **av, int *b_flag)
 {
 	int	i;
 
 	i = 0;
 	*b_flag = 1;
-	while(av[i])
+	while (av[i])
 		i++;
 	if (i > 2)
 	{
@@ -15,7 +14,8 @@ void	handle_exit(char **av, int *b_flag)
 		shell()->exit_flag = 127;
 		return ;
 	}
-	if (i > 1 && (ft_atoll_u(av[1]) > LONG_MAX || ft_strlen(av[1]) > 19 || not_num(av[1])))
+	if (i > 1 && (ft_atoll_u(av[1]) > LONG_MAX || ft_strlen(av[1]) > 19
+			|| not_num(av[1])))
 	{
 		ft_putstr_fd("exit: ", 2);
 		ft_putstr_fd(av[1], 2);
@@ -24,20 +24,10 @@ void	handle_exit(char **av, int *b_flag)
 		clear_av(av);
 		exit (2);
 	}
-	if (shell()->level > 1)
-	{
-		printf("exit\n");
-		clear_envp(shell()->envp_l);
-		clear_av(av);
-		exit (0); // Always zero????
-	}
-	else
-	{
-		printf("logout\n");
-		clear_envp(shell()->envp_l);
-		clear_av(av);
-		exit (0); // Always zero????
-	}
+	printf("exit\n");
+	clear_envp(shell()->envp_l);
+	clear_av(av);
+	exit (0);
 }
 
 int	not_num(char *str)

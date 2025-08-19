@@ -19,7 +19,7 @@ void	init_envp(char **envp);
 t_envp	*getenv_list(char *str);
 void	update_shlvl(t_envp *node);
 void	envp_and_shlvl(char **envp);
-
+t_envp	*ft_dlist_new(char *str);
 
 
 #endif

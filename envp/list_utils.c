@@ -55,6 +55,19 @@ void	ft_dlist_addback(t_envp **lst, t_envp *node)
 	}
 }
 
+t_envp	*ft_dlist_new(char *str)
+{
+	t_envp	*node;
+
+	node = malloc(sizeof(t_envp));
+	if (!node)
+		return (NULL);
+	node->data = str;
+	node->prev = NULL;
+	node->next = NULL;
+	return (node);
+}
+
 void	print_list(t_envp *list)
 {
 	while (list)

@@ -4,6 +4,7 @@ t_cmd	*create_token_redir(char token, t_cmd *cmd, char *ptr, char *ptr_end)
 {
 	t_cmd	*redircmd;
 
+	redircmd = NULL;
 	if (token == '<')
 		redircmd = init_t_redircmd(ptr, ptr_end, O_RDONLY, 0);
 	else if (token == '-')

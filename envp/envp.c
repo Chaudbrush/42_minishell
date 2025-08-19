@@ -22,20 +22,26 @@ void	envp_and_shlvl(char **envp)
 	char	*new;
 	
 	if (!envp[0])
-		small_envp();
+		return (small_envp());
 	else
 		init_envp(envp);
 	node = getenv_list("SHLVL");
-	if (!node)
-		shell()->level = 1;
 	if (node)
 	{
 		update_shlvl(node);
 		free(node->data);
+		new = ft_itoa(shell()->level);
+		node->data = ft_strjoin("SHLVL=", new);
+		free(new);
 	}
-	new = ft_itoa(shell()->level);
-	node->data = ft_strjoin("SHLVL=", new);
-	free(new);
+	else
+	{
+		shell()->level = 1;
+		new = ft_itoa(shell()->level);
+		node = ft_dlist_new(ft_strjoin("SHLVL=", new));
+		ft_dlist_addback(&shell()->envp_l, node);
+		free(new);
+	}
 }
 
 void	update_shlvl(t_envp *node)
@@ -104,11 +110,6 @@ void	small_envp(void)
 	char	buff[4026];
 	t_envp	*node;
 
-	node = malloc(sizeof(t_envp));
-	if (!node)
-		return ;
-	node->data = ft_strdup("HOME=/home");
-	ft_dlist_addback(&shell()->envp_l, node);
 	node = malloc(sizeof(t_envp));
 	if (!node)
 		return ;

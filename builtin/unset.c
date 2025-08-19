@@ -4,7 +4,7 @@ char	**create_av(void)
 {
 	char	**result;
 	t_list	*list;
-	
+
 	list = quote_split(shell()->line, ' ');
 	result = lst_to_argv(list);
 	clear_q_list(list);

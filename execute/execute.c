@@ -80,7 +80,6 @@ static void	pipe_recursive(t_cmd *cmd, char **envp)
 	left_pid = safe_fork();
 	if (left_pid == 0)
 		pipe_left(pipe_fd[0], pipe_fd[1], cmd, envp);
-	waitpid(left_pid, &wait_val, 0);
 	right_pid = safe_fork();
 	if (right_pid == 0)
 		pipe_right(pipe_fd[0], pipe_fd[1], cmd, envp);

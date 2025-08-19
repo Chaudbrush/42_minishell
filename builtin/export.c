@@ -94,7 +94,6 @@ void	handle_export(char **av, int *b_flag)
 	int		index;
 	char	*str;
 	t_envp	*node;
-	t_envp	*last;
 
 	*b_flag = 1;
 	index = 1;
@@ -102,7 +101,7 @@ void	handle_export(char **av, int *b_flag)
 	{
 		index = find_index(av, index);
 		if (index == -1)
-			return ; // wrong syntax
+			continue ; // wrong syntax
 		if (check_tokens(av[index]) || check_invalid(av[index]))
 		{
 			index++;
@@ -120,14 +119,8 @@ void	handle_export(char **av, int *b_flag)
 		}
 		else
 		{
-			node = malloc(sizeof(node));
-			if (!node)
-				return ;
-			node->data = ft_strdup(av[index]);
-			last = ft_dlist_last(shell()->envp_l);
-			last->next = node;
-			node->prev = last;
-			node->next = NULL;
+			node = ft_dlist_new(ft_strdup(av[index]));
+			ft_dlist_addback(&shell()->envp_l, node);
 		}
 		index++;
 	}

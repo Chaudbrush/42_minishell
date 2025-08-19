@@ -22,7 +22,7 @@ void	handle_echo(char **av, int *b_flag)
 	i = 1;
 	flag = 0;
 	*b_flag = 1;
-	if (!ft_strncmp(av[1], "-n", 2) && check_flag(av[1]))
+	if (av[i] && !ft_strncmp(av[1], "-n", 2) && check_flag(av[1]))
 	{
 		flag = 1;
 		i++;

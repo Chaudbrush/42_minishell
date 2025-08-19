@@ -1,15 +1,16 @@
 #ifndef BUILTIN_H
 # define BUILTIN_H
 
-#include "../minishell.h"
+# include "../minishell.h"
 
-typedef struct s_list t_list;
+typedef struct s_list	t_list;
 
 // Builtin
-int	check_builtins(char **av);
+int		check_builtins(char **av);
 
 // Cd
 void	handle_cd(char **av, int *b_flag);
+void	update_pwd(char *str, char *buff);
 
 // Echo
 int		check_flag(char *str);
@@ -49,6 +50,5 @@ void	clear_q_list(t_list *list);
 char	**lst_to_argv(t_list *list);
 int		quote_size(char *str, char c);
 t_list	*quote_split(char *str, char sep);
-//char	*ft_strndup(const char *s, int size);
 
 #endif
