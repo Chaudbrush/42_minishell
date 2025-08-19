@@ -1,15 +1,5 @@
 #include "expansion.h"
 
-static char	*extract_val(char *str)
-{
-	if (!str)
-		return (NULL);
-	while (*str && *str != '=')
-		str++;
-	str++;
-	return (str);
-}
-
 static char	*search_envp(char *start, char *end)
 {
 	char	*str;
@@ -48,7 +38,7 @@ char	*expand_dollar(char **src, int *i)
 	}
 	else
 	{
-		while (!char_presence((*src)[j], " \t\r\n\v\"$/")
+		while (!char_presence((*src)[j], " \t\r\n\v\"$/\'")
 				&& !check_illegal((*src)[j]) && (*src)[j])
 			j++;
 		str = search_envp(*src, *src + j);

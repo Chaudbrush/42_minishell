@@ -4,6 +4,7 @@
 # include "../minishell.h"
 
 typedef struct s_list	t_list;
+typedef struct s_envp	t_envp;
 
 // Builtin
 int		check_builtins(char **av);
@@ -11,6 +12,7 @@ int		check_builtins(char **av);
 // Cd
 void	handle_cd(char **av, int *b_flag);
 void	update_pwd(char *str, char *buff);
+void	handle_home(char *str, char *buff);
 
 // Echo
 int		check_flag(char *str);
@@ -18,8 +20,12 @@ void	handle_echo(char **av, int *b_flag);
 
 // Env
 void	handle_env(int *b_flag);
+void	print_env(t_envp *list);
 
 // Export
+
+void	print_export(void);
+
 int		ft_isdigit(int c);
 void	clear_av(char **av);
 int		check_illegal(char c);

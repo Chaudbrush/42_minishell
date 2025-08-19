@@ -3,5 +3,15 @@
 void	handle_env(int *b_flag)
 {
 	*b_flag = 1;
-	print_list(shell()->envp_l);
+	print_env(shell()->envp_l);
+}
+
+void	print_env(t_envp *list)
+{
+	while (list)
+	{
+		if (ft_strchr(list->data, '='))
+			printf("%s\n", list->data);
+		list = list->next;
+	}
 }

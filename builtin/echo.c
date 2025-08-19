@@ -27,7 +27,7 @@ void	handle_echo(char **av, int *b_flag)
 		flag = 1;
 		i++;
 	}
-	else if (!ft_strcmp(av[i], "$?"))
+	else if (av[i] && !ft_strcmp(av[i], "$?"))
 		ft_putnbr_fd(shell()->exit_flag, 1);
 	while (av[i])
 	{

@@ -21,5 +21,6 @@ void	update_shlvl(t_envp *node);
 void	envp_and_shlvl(char **envp);
 t_envp	*ft_dlist_new(char *str);
 
+char	*extract_val(char *str);
 
 #endif

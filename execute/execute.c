@@ -1,7 +1,7 @@
 #include "execute.h"
 
-static void	pipe_recursive(t_cmd *cmd, char **envp);
-static void	exec_recursive(t_cmd *cmd, char **envp);
+static int	pipe_recursive(t_cmd *cmd, char **envp);
+static int	exec_recursive(t_cmd *cmd, char **envp);
 static void	redir_recursive(t_cmd *cmd, char **envp, int is_heredoc_top);
 
 void	exec_tree(t_cmd *cmd, char **envp, int piped)
@@ -9,9 +9,9 @@ void	exec_tree(t_cmd *cmd, char **envp, int piped)
 	if (!cmd)
 		return ;
 	if (cmd->type == EXEC)
-		exec_recursive(cmd, envp);
+		shell()->exit_flag = exec_recursive(cmd, envp);
 	else if (cmd->type == PIPE)
-		pipe_recursive(cmd, envp);
+		shell()->exit_flag = pipe_recursive(cmd, envp);
 	else if (cmd->type == REDIR)
 	{
 		if (!piped)
@@ -24,22 +24,23 @@ void	exec_tree(t_cmd *cmd, char **envp, int piped)
 	clear_envp(shell()->envp_l);
 	free(envp);
 	free_trees(shell()->cmd);
-	exit(EXEC_FAIL);
+	exit(shell()->exit_flag);
 }
 
-static void	exec_recursive(t_cmd *cmd, char **envp)
+static int	exec_recursive(t_cmd *cmd, char **envp)
 {
 	t_execcmd	*execcmd;
 	char		**expanded_argv;
 
 	execcmd = (t_execcmd *)cmd;
+	// shell()->exit_flag = 130;
 	if (!execcmd->argv[0])
-		return ;
+		return (0);
 	expanded_argv = expansion(execcmd);
 	if (!check_builtins(expanded_argv))
 		execute_cmd(expanded_argv, envp);
 	clear_av(expanded_argv);
-	return ;
+	return (EXEC_FAIL);
 }
 
 static void	redir_recursive(t_cmd *cmd, char **envp, int is_heredoc_top)
@@ -68,7 +69,7 @@ static void	redir_recursive(t_cmd *cmd, char **envp, int is_heredoc_top)
 	}
 }
 
-static void	pipe_recursive(t_cmd *cmd, char **envp)
+static int	pipe_recursive(t_cmd *cmd, char **envp)
 {
 	int	pipe_fd[2];
 	int	wait_val;
@@ -80,11 +81,12 @@ static void	pipe_recursive(t_cmd *cmd, char **envp)
 	left_pid = safe_fork();
 	if (left_pid == 0)
 		pipe_left(pipe_fd[0], pipe_fd[1], cmd, envp);
+
 	right_pid = safe_fork();
 	if (right_pid == 0)
 		pipe_right(pipe_fd[0], pipe_fd[1], cmd, envp);
 	close(pipe_fd[0]);
 	close(pipe_fd[1]);
 	waitpid(right_pid, &wait_val, 0);
-	return ;
+	return (WEXITSTATUS(wait_val));
 }

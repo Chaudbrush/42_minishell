@@ -2,16 +2,28 @@
 
 void	handle_cd(char **av, int *b_flag)
 {
+	int		i;
 	char	*tmp;
 	char	buff[4096];
 
+	i = 0;
+	while (av[i])
+		i++;
 	*b_flag = 1;
 	tmp = getcwd(buff, 4096);
-	if (av[2])
+	if (!tmp)
+	{
+		chdir("/home");
+		update_pwd(tmp, buff);
+		return ;
+	}
+	if (i > 2)
 	{
 		ft_putstr_fd("cd: too many arguments\n", 2);
 		shell()->exit_flag = 1;
 	}
+	else if (!av[1])
+		handle_home(tmp, buff);
 	else if (chdir(av[1]) == -1)
 	{
 		perror(shell()->line);
@@ -19,6 +31,31 @@ void	handle_cd(char **av, int *b_flag)
 	}
 	else
 		update_pwd(tmp, buff);
+}
+
+void	handle_home(char *str, char *buff)
+{
+	char	*tmp;
+	t_envp	*node;
+
+	node = getenv_list("HOME");
+	if (!node)
+	{
+		ft_putstr_fd("cd: HOME not set\n", 2);
+		shell()->exit_flag = 1;
+		return ;
+	}
+	else
+	{
+		tmp = extract_val(node->data);
+		if (chdir(tmp) == -1)
+		{
+			perror(shell()->line);
+			shell()->exit_flag = 1;
+			return ;
+		}
+	}
+	update_pwd(str, buff);
 }
 
 void	update_pwd(char *str, char *buff)

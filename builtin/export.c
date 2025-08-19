@@ -54,7 +54,6 @@ int	check_invalid(char *str)
 	return (0);
 }
 
-
 int	find_index(char **av, int i)
 {
 	int	j;
@@ -81,9 +80,12 @@ char	*create_string(char *str)
 	char	*ret;
 
 	len = 0;
-	while (str[len] != '=')
+	while (str[len] && str[len] != '=')
 		len++;
-	ret = ft_strndup(str, len);
+	if (!len)
+		ret = ft_strdup(str);
+	else
+		ret = ft_strndup(str, len);
 	if (!ret)
 		return (NULL);
 	return (ret);
@@ -95,33 +97,91 @@ void	handle_export(char **av, int *b_flag)
 	char	*str;
 	t_envp	*node;
 
-	*b_flag = 1;
-	index = 1;
-	while (index > 0)
-	{
-		index = find_index(av, index);
-		if (index == -1)
-			continue ; // wrong syntax
-		if (check_tokens(av[index]) || check_invalid(av[index]))
-		{
-			index++;
-			continue ;
-		}
-		str = create_string(av[index]);
-		if (!str)
-			break ;
-		node = getenv_list(str);
-		free(str);
-		if (node)
-		{
-			free(node->data);
-			node->data = ft_strdup(av[index]);
-		}
-		else
-		{
-			node = ft_dlist_new(ft_strdup(av[index]));
-			ft_dlist_addback(&shell()->envp_l, node);
-		}
+	index = 0;
+	while (av[index])
 		index++;
+	*b_flag = 1;
+	if (index == 1)
+		return (print_export());
+	else
+	{
+		index = 1;
+		while (av[index])
+		{
+			// index = find_index(av, index);
+			// if (index == -1)
+			// 	continue ; // wrong syntax
+			if (check_tokens(av[index]) || check_invalid(av[index]))
+			{
+				index++;
+				continue ;
+			}
+			str = create_string(av[index]);
+			if (!str)
+				break ;
+			node = getenv_list(str);
+			free(str);
+			if (node)
+			{
+				free(node->data);
+				node->data = ft_strdup(av[index]);
+			}
+			else
+			{
+				node = ft_dlist_new(ft_strdup(av[index]));
+				ft_dlist_addback(&shell()->envp_l, node);
+			}
+			index++;
+		}
 	}
 }
+
+void	print_export(void)
+{
+	t_envp	*ptr;
+
+	ptr = shell()->envp_l;
+	while(ptr)
+	{
+		printf("declare -x ");
+		printf("%s\n", ptr->data);
+		ptr = ptr->next;
+	}
+}
+
+// void	handle_export(char **av, int *b_flag)
+// {
+// 	int		index;
+// 	char	*str;
+// 	t_envp	*node;
+
+// 	*b_flag = 1;
+// 	index = 1;
+// 	while (index > 0)
+// 	{
+// 		index = find_index(av, index);
+// 		if (index == -1)
+// 			continue ; // wrong syntax
+// 		if (check_tokens(av[index]) || check_invalid(av[index]))
+// 		{
+// 			index++;
+// 			continue ;
+// 		}
+// 		str = create_string(av[index]);
+// 		if (!str)
+// 			break ;
+// 		node = getenv_list(str);
+// 		free(str);
+// 		if (node)
+// 		{
+// 			free(node->data);
+// 			node->data = ft_strdup(av[index]);
+// 		}
+// 		else
+// 		{
+// 			node = ft_dlist_new(ft_strdup(av[index]));
+// 			ft_dlist_addback(&shell()->envp_l, node);
+// 		}
+// 		index++;
+// 	}
+// }

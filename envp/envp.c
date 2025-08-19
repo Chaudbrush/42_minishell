@@ -1,5 +1,15 @@
 #include "envp.h"
 
+char	*extract_val(char *str)
+{
+	if (!str)
+		return (NULL);
+	while (*str && *str != '=')
+		str++;
+	str++;
+	return (str);
+}
+
 t_envp	*getenv_list(char *str)
 {
 	int		len;
@@ -9,6 +19,8 @@ t_envp	*getenv_list(char *str)
 	ptr = shell()->envp_l;
 	while (ptr)
 	{
+		if (!ptr->data)
+			break ;
 		if (ft_strncmp(ptr->data, str, len) == 0)
 			return (ptr);
 		ptr = ptr->next;
