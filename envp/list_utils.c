@@ -68,12 +68,11 @@ t_envp	*ft_dlist_new(char *str)
 	return (node);
 }
 
-void	print_list(t_envp *list)
-{
-	while (list)
-	{
-		printf("%s\n", list->data);
-		list = list->next;
-	}
-}
-
+// void	print_list(t_envp *list)
+// {
+// 	while (list)
+// 	{
+// 		printf("%s\n", list->data);
+// 		list = list->next;
+// 	}
+// }

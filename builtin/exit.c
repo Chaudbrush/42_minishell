@@ -1,5 +1,7 @@
 #include "builtin.h"
 
+static int	invalid_exit(char **av);
+
 void	handle_exit(char **av, int *b_flag)
 {
 	int	i;
@@ -14,15 +16,24 @@ void	handle_exit(char **av, int *b_flag)
 		shell()->exit_flag = 127;
 		return ;
 	}
-	if (i > 1 && (ft_atoll_u(av[1]) > LONG_MAX || ft_strlen(av[1]) > 19
-			|| not_num(av[1])))
+	if (i > 1)
 	{
-		ft_putstr_fd("exit: ", 2);
-		ft_putstr_fd(av[1], 2);
-		ft_putstr_fd(": numeric argument required\n", 2);
-		clear_envp(shell()->envp_l);
-		clear_av(av);
-		exit (2);
+		if (invalid_exit(av))
+		{
+			ft_putstr_fd("exit: ", 2);
+			ft_putstr_fd(av[1], 2);
+			ft_putstr_fd(": numeric argument required\n", 2);
+			clear_envp(shell()->envp_l);
+			clear_av(av);
+			exit (2);
+		}
+		else
+		{
+			printf("exit\n");
+			clear_envp(shell()->envp_l);
+			clear_av(av);
+			exit (ft_atoi(av[1]));
+		}
 	}
 	printf("exit\n");
 	clear_envp(shell()->envp_l);
@@ -41,5 +52,13 @@ int	not_num(char *str)
 			return (1);
 		i++;
 	}
+	return (0);
+}
+
+static int	invalid_exit(char **av)
+{
+	if (ft_atoll_u(av[1]) > LONG_MAX || ft_strlen(av[1]) > 19
+			|| not_num(av[1]))
+		return (1);
 	return (0);
 }

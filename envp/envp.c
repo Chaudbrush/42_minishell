@@ -32,11 +32,13 @@ void	envp_and_shlvl(char **envp)
 {
 	t_envp	*node;
 	char	*new;
+	char	buff[4096];
 	
 	if (!envp[0])
 		return (small_envp());
 	else
 		init_envp(envp);
+	ft_strlcpy(shell()->pwd, getcwd(buff, 4096), 1024);
 	node = getenv_list("SHLVL");
 	if (node)
 	{
@@ -81,7 +83,7 @@ void	init_envp(char **envp)
 		if (!node)
 		{
 			clear_envp(shell()->envp_l);
-			return ; // TODO: should return an int to indicate an error
+			return ;
 		}
 		node->prev = NULL;
 		node->data = ft_strdup(envp[i]);
@@ -116,33 +118,6 @@ char	**envp_to_av(void)
 	}
 	return (av);
 }
-
-// void	small_envp(void)
-// {
-// 	char	buff[4026];
-// 	t_envp	*node;
-
-// 	node = malloc(sizeof(t_envp));
-// 	if (!node)
-// 		return ;
-// 	node->data = ft_strjoin("PWD=", getcwd(buff, 4096));
-// 	ft_dlist_addback(&shell()->envp_l, node);
-// 	node = malloc(sizeof(t_envp));
-// 	if (!node)
-// 		return ;
-// 	node->data = ft_strjoin("SHLVL=", ft_itoa(shell()->level));
-// 	ft_dlist_addback(&shell()->envp_l, node);
-// 	node = malloc(sizeof(t_envp));
-// 	if (!node)
-// 		return ;
-// 	node->data = ft_strdup("_=/usr/bin/env");
-// 	ft_dlist_addback(&shell()->envp_l, node);
-// 	node = malloc(sizeof(t_envp));
-// 	if (!node)
-// 		return ;
-// 	node->data = ft_strdup("TERM=xterm-256color");
-// 	ft_dlist_addback(&shell()->envp_l, node);
-// }
 
 void	small_envp(void)
 {

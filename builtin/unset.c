@@ -5,7 +5,7 @@ char	**create_av(void)
 	char	**result;
 	t_list	*list;
 
-	list = quote_split(shell()->line, ' ');
+	list = quote_split(shell()->line);
 	result = lst_to_argv(list);
 	clear_q_list(list);
 	return (result);
@@ -47,4 +47,5 @@ void	handle_unset(char **av, int *b_flag)
 		}
 		i++;
 	}
+	shell()->exit_flag = 0;
 }

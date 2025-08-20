@@ -52,9 +52,10 @@ void	clear_av(char **av);
 void	handle_unset(char **av, int *b_flag);
 
 // Quote Split
+t_list	*quote_split(char *str);
 void	clear_q_list(t_list *list);
 char	**lst_to_argv(t_list *list);
 int		quote_size(char *str, char c);
-t_list	*quote_split(char *str, char sep);
+
 
 #endif

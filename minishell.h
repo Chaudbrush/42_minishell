@@ -46,6 +46,8 @@ typedef struct s_shell
 	int				level;
 	int				parent_pid;
 	int				child_pid;
+	char			pwd[1024];
+	char			oldpwd[1024];
 }	t_shell;
 
 // Delete this later

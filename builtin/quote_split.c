@@ -1,18 +1,9 @@
 
 #include "builtin.h"
 
-int	quote_size(char *str, char c)
-{
-	int	i;
+static int is_whitespace(char c);
 
-	i = 0;
-	i++;
-	while(str[i] != c && str[i])
-		i++;
-	return (i + 1);
-}
-
-t_list	*quote_split(char *str, char sep)
+t_list	*quote_split(char *str)
 {
 	int		i;
 	int		len;
@@ -27,9 +18,9 @@ t_list	*quote_split(char *str, char sep)
 	while (str[i])
 	{
 		len = 0;
-		while (str[i] == sep && str[i])
+		while (is_whitespace(str[i]) && str[i])
 			i++;
-		while (str[i] != sep && str[i])
+		while (!is_whitespace(str[i]) && str[i])
 		{
 			if (str[i] == '"' || str[i] == '\'')
 			{
@@ -93,4 +84,30 @@ void	clear_q_list(t_list *list)
 		free(ptr);
 		ptr = list;
 	}
+}
+
+int	quote_size(char *str, char c)
+{
+	int	i;
+
+	i = 0;
+	i++;
+	while(str[i] != c && str[i])
+		i++;
+	return (i + 1);
+}
+
+static int is_whitespace(char c)
+{
+	int			i;
+	const char	*whitespace = " \t\n\v\f\r";
+
+	i = 0;
+	while (whitespace[i])
+	{
+		if (whitespace[i] == c)
+			return (1);
+		i++;
+	}
+	return (0);	
 }

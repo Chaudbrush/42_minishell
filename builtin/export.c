@@ -45,17 +45,18 @@ int	check_invalid(char *str)
 		return (1);
 	while (str[i])
 	{
-		if (check_illegal(str[i]))
+		if (check_illegal(str[i]) || str[i] == '$') // Adding the $ didnt solve it, since it is going to the expansion first
 		{
 			ft_putstr_fd("export: ", 2);
 			ft_putstr_fd(str, 2);
 			ft_putstr_fd(": not a valid identifier\n", 2);
+			shell()->exit_flag = 1;
 			return (1);
 		}
 		i++;
 	}
-	if (str[0] == '$' || str[i - 1] == '$')
-		return (1);
+	// if (str[0] == '$' || str[i - 1] == '$')
+	// 	return (1);
 	return (0);
 }
 
@@ -106,6 +107,7 @@ void	handle_export(char **av, int *b_flag)
 	while (av[index])
 		index++;
 	*b_flag = 1;
+	shell()->exit_flag = 0;
 	if (index == 1)
 		return (print_export());
 	else
@@ -113,9 +115,6 @@ void	handle_export(char **av, int *b_flag)
 		index = 1;
 		while (av[index])
 		{
-			// index = find_index(av, index);
-			// if (index == -1)
-			// 	continue ; // wrong syntax
 			if (check_tokens(av[index]) || check_invalid(av[index]))
 			{
 				index++;
@@ -153,40 +152,3 @@ void	print_export(void)
 		ptr = ptr->next;
 	}
 }
-
-// void	handle_export(char **av, int *b_flag)
-// {
-// 	int		index;
-// 	char	*str;
-// 	t_envp	*node;
-
-// 	*b_flag = 1;
-// 	index = 1;
-// 	while (index > 0)
-// 	{
-// 		index = find_index(av, index);
-// 		if (index == -1)
-// 			continue ; // wrong syntax
-// 		if (check_tokens(av[index]) || check_invalid(av[index]))
-// 		{
-// 			index++;
-// 			continue ;
-// 		}
-// 		str = create_string(av[index]);
-// 		if (!str)
-// 			break ;
-// 		node = getenv_list(str);
-// 		free(str);
-// 		if (node)
-// 		{
-// 			free(node->data);
-// 			node->data = ft_strdup(av[index]);
-// 		}
-// 		else
-// 		{
-// 			node = ft_dlist_new(ft_strdup(av[index]));
-// 			ft_dlist_addback(&shell()->envp_l, node);
-// 		}
-// 		index++;
-// 	}
-// }

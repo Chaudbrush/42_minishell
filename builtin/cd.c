@@ -30,7 +30,10 @@ void	handle_cd(char **av, int *b_flag)
 		shell()->exit_flag = 1;
 	}
 	else
+	{
 		update_pwd(tmp, buff);
+		shell()->exit_flag = 0;
+	}
 }
 
 void	handle_home(char *str, char *buff)
@@ -54,6 +57,7 @@ void	handle_home(char *str, char *buff)
 			shell()->exit_flag = 1;
 			return ;
 		}
+		shell()->exit_flag = 0;
 	}
 	update_pwd(str, buff);
 }
@@ -62,21 +66,29 @@ void	update_pwd(char *str, char *buff)
 {
 	t_envp	*node;
 
+	(void)str;
 	node = getenv_list("OLDPWD");
 	if (node)
 	{
 		free(node->data);
-		node->data = ft_strjoin("OLDPWD=", str);
+		node->data = ft_strjoin("OLDPWD=", shell()->pwd);
+		ft_strlcpy(shell()->oldpwd, shell()->pwd, 1024);
 	}
 	else
 	{
-		node = ft_dlist_new(ft_strjoin("OLDPWD=", str));
+		node = ft_dlist_new(ft_strjoin("OLDPWD=", shell()->pwd));
 		ft_dlist_addback(&shell()->envp_l, node);
+		ft_strlcpy(shell()->oldpwd, shell()->pwd, 1024);
 	}
 	node = getenv_list("PWD");
 	if (node)
 	{
 		free(node->data);
 		node->data = ft_strjoin("PWD=", getcwd(buff, 4096));
+		ft_strlcpy(shell()->pwd, buff, 1024);
 	}
+	else
+		ft_strlcpy(shell()->pwd, getcwd(buff, 4096), 1024);
+	printf("pwd: %s\n", shell()->pwd); // Delete later
+	printf("oldpwd: %s\n", shell()->oldpwd);
 }
