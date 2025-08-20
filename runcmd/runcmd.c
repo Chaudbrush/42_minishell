@@ -9,5 +9,6 @@ void	run_cmd(char *str)
 	cmd = parsecmd(str, end_str);
 	shell()->cmd = cmd;
 	shell()->envp_av = envp_to_av();
-	exec_tree(cmd, shell()->envp_av, 0);
+	preprocess_heredoc(cmd);
+	exec_tree(cmd, shell()->envp_av);
 }

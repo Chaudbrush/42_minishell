@@ -1,6 +1,6 @@
 #ifndef CMD_STRUCT_H
 # define CMD_STRUCT_H
-# define MAX_SIZE 2
+# define MAX_SIZE 15
 # include "../minishell.h"
 
 enum
@@ -40,6 +40,7 @@ typedef struct redircmd
 	int		mode;
 	int		fd;
 	char	redir_type;
+	int		heredoc_fdin;
 }	t_redircmd;
 
 // Structs inits

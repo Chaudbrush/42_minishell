@@ -2,9 +2,9 @@
 
 static int	pipe_recursive(t_cmd *cmd, char **envp);
 static int	exec_recursive(t_cmd *cmd, char **envp);
-static void	redir_recursive(t_cmd *cmd, char **envp, int is_heredoc_top);
+static void	redir_recursive(t_cmd *cmd, char **envp);
 
-void	exec_tree(t_cmd *cmd, char **envp, int piped)
+void	exec_tree(t_cmd *cmd, char **envp)
 {
 	if (!cmd)
 		return ;
@@ -14,12 +14,10 @@ void	exec_tree(t_cmd *cmd, char **envp, int piped)
 		shell()->exit_flag = pipe_recursive(cmd, envp);
 	else if (cmd->type == REDIR)
 	{
-		if (!piped)
-			process_heredocs(cmd);
-		redir_recursive(cmd, envp, is_heredoc_top(cmd));
+		redir_recursive(cmd, envp);
 		while (cmd->type == REDIR)
 			cmd = ((t_redircmd *)cmd)->link;
-		exec_tree(cmd, envp, 0);
+		exec_tree(cmd, envp);
 	}
 	clear_envp(shell()->envp_l);
 	free(envp);
@@ -33,7 +31,6 @@ static int	exec_recursive(t_cmd *cmd, char **envp)
 	char		**expanded_argv;
 
 	execcmd = (t_execcmd *)cmd;
-	// shell()->exit_flag = 130;
 	if (!execcmd->argv[0])
 		return (0);
 	expanded_argv = expansion(execcmd);
@@ -43,29 +40,32 @@ static int	exec_recursive(t_cmd *cmd, char **envp)
 	return (EXEC_FAIL);
 }
 
-static void	redir_recursive(t_cmd *cmd, char **envp, int is_heredoc_top)
+static void	redir_recursive(t_cmd *cmd, char **envp)
 {
 	t_redircmd	*redircmd;
 	char		*err_ptr;
 
 	redircmd = (t_redircmd *)cmd;
 	if (redircmd->link->type == REDIR)
-		redir_recursive(redircmd->link, envp, is_heredoc_top);
-	if (redircmd->redir_type != '-' && !is_heredoc_top)
+		redir_recursive(redircmd->link, envp);
+	if (redircmd->redir_type == '-')
 	{
-		close(redircmd->fd);
-		if (open(redircmd->file, redircmd->mode, 0644) < 0)
-		{
-			err_ptr = ft_strjoin("err: no such file or directory: ",
-					redircmd->file);
-			ft_putstr_fd(err_ptr, 2);
-			ft_putstr_fd("\n", 2);
-			free(err_ptr);
-			clear_envp(shell()->envp_l);
-			free(envp);
-			free_trees(shell()->cmd);
-			exit(EXIT_FAILURE);
-		}
+		dup2(redircmd->heredoc_fdin, STDIN_FILENO);
+		close(redircmd->heredoc_fdin);
+		return ;
+	}
+	close(redircmd->fd);
+	if (open(redircmd->file, redircmd->mode, 0644) < 0)
+	{
+		err_ptr = ft_strjoin("err: no such file or directory: ",
+				redircmd->file);
+		ft_putstr_fd(err_ptr, 2);
+		ft_putstr_fd("\n", 2);
+		free(err_ptr);
+		clear_envp(shell()->envp_l);
+		free(envp);
+		free_trees(shell()->cmd);
+		exit(EXIT_FAILURE);
 	}
 }
 
@@ -81,12 +81,12 @@ static int	pipe_recursive(t_cmd *cmd, char **envp)
 	left_pid = safe_fork();
 	if (left_pid == 0)
 		pipe_left(pipe_fd[0], pipe_fd[1], cmd, envp);
-
 	right_pid = safe_fork();
 	if (right_pid == 0)
 		pipe_right(pipe_fd[0], pipe_fd[1], cmd, envp);
 	close(pipe_fd[0]);
 	close(pipe_fd[1]);
+	waitpid(left_pid, NULL, 0);
 	waitpid(right_pid, &wait_val, 0);
 	return (WEXITSTATUS(wait_val));
 }

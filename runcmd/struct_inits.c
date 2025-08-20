@@ -37,6 +37,7 @@ t_cmd	*init_t_redircmd(char *sfile, char *efile, int mode, int fd)
 	}
 	redircmd->type = REDIR;
 	redircmd->file = sfile;
+	redircmd->heredoc_fdin = -1;
 	redircmd->end_file = efile;
 	redircmd->mode = mode;
 	redircmd->fd = fd;

@@ -33,7 +33,7 @@ void	sig_handler(void)
 	ft_memset(&sa, 0, sizeof(sa));
 	sa.sa_handler = &_handler;
 	sa.sa_flags = SA_RESTART;
-	signal(SIGTSTP, SIG_IGN); // Ctrl Z - Do we need this??
-	signal(SIGQUIT, SIG_IGN); // Ctrl '\'
-	sigaction(SIGINT, &sa, NULL); // Ctrl C
+	signal(SIGTSTP, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	sigaction(SIGINT, &sa, NULL);
 }
