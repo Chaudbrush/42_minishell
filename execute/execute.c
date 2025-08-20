@@ -1,5 +1,6 @@
 #include "execute.h"
 
+static int	check_dir(char *str);
 static int	pipe_recursive(t_cmd *cmd, char **envp);
 static int	exec_recursive(t_cmd *cmd, char **envp);
 static void	redir_recursive(t_cmd *cmd, char **envp);
@@ -34,6 +35,8 @@ static int	exec_recursive(t_cmd *cmd, char **envp)
 	if (!execcmd->argv[0])
 		return (0);
 	expanded_argv = expansion(execcmd);
+	if (check_dir(expanded_argv[0]))
+		return (clear_av(expanded_argv), 126);
 	if (!check_builtins(expanded_argv))
 		execute_cmd(expanded_argv, envp);
 	clear_av(expanded_argv);
@@ -89,4 +92,17 @@ static int	pipe_recursive(t_cmd *cmd, char **envp)
 	waitpid(left_pid, NULL, 0);
 	waitpid(right_pid, &wait_val, 0);
 	return (WEXITSTATUS(wait_val));
+}
+
+static int	check_dir(char *str)
+{
+	if (!chdir(str))
+	{
+		ft_putstr_fd("error: ", 2);
+		ft_putstr_fd(str, 2);
+		ft_putstr_fd(": Is a directory\n", 2);
+		shell()->exit_flag = 126;
+		return (1);
+	}	
+	return (0);
 }

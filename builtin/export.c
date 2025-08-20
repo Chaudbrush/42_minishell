@@ -46,7 +46,12 @@ int	check_invalid(char *str)
 	while (str[i])
 	{
 		if (check_illegal(str[i]))
+		{
+			ft_putstr_fd("export: ", 2);
+			ft_putstr_fd(str, 2);
+			ft_putstr_fd(": not a valid identifier\n", 2);
 			return (1);
+		}
 		i++;
 	}
 	if (str[0] == '$' || str[i - 1] == '$')

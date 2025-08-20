@@ -117,29 +117,46 @@ char	**envp_to_av(void)
 	return (av);
 }
 
+// void	small_envp(void)
+// {
+// 	char	buff[4026];
+// 	t_envp	*node;
+
+// 	node = malloc(sizeof(t_envp));
+// 	if (!node)
+// 		return ;
+// 	node->data = ft_strjoin("PWD=", getcwd(buff, 4096));
+// 	ft_dlist_addback(&shell()->envp_l, node);
+// 	node = malloc(sizeof(t_envp));
+// 	if (!node)
+// 		return ;
+// 	node->data = ft_strjoin("SHLVL=", ft_itoa(shell()->level));
+// 	ft_dlist_addback(&shell()->envp_l, node);
+// 	node = malloc(sizeof(t_envp));
+// 	if (!node)
+// 		return ;
+// 	node->data = ft_strdup("_=/usr/bin/env");
+// 	ft_dlist_addback(&shell()->envp_l, node);
+// 	node = malloc(sizeof(t_envp));
+// 	if (!node)
+// 		return ;
+// 	node->data = ft_strdup("TERM=xterm-256color");
+// 	ft_dlist_addback(&shell()->envp_l, node);
+// }
+
 void	small_envp(void)
 {
 	char	buff[4026];
 	t_envp	*node;
 
-	node = malloc(sizeof(t_envp));
-	if (!node)
-		return ;
-	node->data = ft_strjoin("PWD=", getcwd(buff, 4096));
+	node = ft_dlist_new(ft_strjoin("PWD=", getcwd(buff, 4096)));
 	ft_dlist_addback(&shell()->envp_l, node);
-	node = malloc(sizeof(t_envp));
-	if (!node)
-		return ;
-	node->data = ft_strjoin("SHLVL=", ft_itoa(shell()->level));
+	node = ft_dlist_new(ft_strjoin("SHLVL=", ft_itoa(shell()->level)));
 	ft_dlist_addback(&shell()->envp_l, node);
-	node = malloc(sizeof(t_envp));
-	if (!node)
-		return ;
-	node->data = ft_strdup("_=/usr/bin/env");
+	node = ft_dlist_new(ft_strdup("_=/usr/bin/env"));
 	ft_dlist_addback(&shell()->envp_l, node);
-	node = malloc(sizeof(t_envp));
-	if (!node)
-		return ;
-	node->data = ft_strdup("TERM=xterm-256color");
+	node = ft_dlist_new(ft_strdup("TERM=xterm-256color"));
 	ft_dlist_addback(&shell()->envp_l, node);
+	node = ft_dlist_new(ft_strdup("PATH=/usr/local/bin:/usr/bin:/sbin:/bin"));
+	ft_dlist_addback(&shell()->envp_l, node);;
 }
