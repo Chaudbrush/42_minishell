@@ -22,6 +22,7 @@ void	execute_cmd(char **expanded_argv, char **envp)
 {
 	char	*str_ptr;
 
+	sig_handler_child();
 	if (ft_strchr(expanded_argv[0], '/'))
 		execve(expanded_argv[0], expanded_argv, envp);
 	str_ptr = ft_strjoin("/bin/", expanded_argv[0]);
@@ -40,6 +41,7 @@ void	execute_cmd(char **expanded_argv, char **envp)
 
 static int	has_bin(void)
 {
+	char	*tmp;
 	size_t	len;
 	t_envp	*node;
 
@@ -47,7 +49,9 @@ static int	has_bin(void)
 	if (!node)
 		return (0);
 	len = ft_strlen(node->data);
-	if (ft_strnstr(node->data, "/bin", len))
+	tmp = ft_strnstr(node->data, "/bin", len);
+	if (tmp && (!ft_strncmp(tmp, "/bin", 5) || !ft_strncmp(tmp, "/bin:", 5)
+			|| !ft_strncmp(tmp, "/bin/", 5)))
 		return (1);
 	return (0);
 }

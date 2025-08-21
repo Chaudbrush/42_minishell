@@ -12,16 +12,7 @@ void	handle_cd(char **av, int *b_flag)
 	*b_flag = 1;
 	tmp = getcwd(buff, 4096);
 	if (!tmp)
-	{
-		chdir("/home");
-		update_pwd(tmp, buff);
-		return ;
-	}
-	if (i > 2)
-	{
-		ft_putstr_fd("cd: too many arguments\n", 2);
-		shell()->exit_flag = 1;
-	}
+		return handle_invalid(tmp, buff, i);
 	else if (!av[1])
 		handle_home(tmp, buff);
 	else if (chdir(av[1]) == -1)
@@ -34,6 +25,20 @@ void	handle_cd(char **av, int *b_flag)
 		update_pwd(tmp, buff);
 		shell()->exit_flag = 0;
 	}
+}
+
+void	handle_invalid(char *tmp, char *buff, int i)
+{
+	if (i > 2)
+	{
+		ft_putstr_fd("cd: too many arguments\n", 2);
+		shell()->exit_flag = 1;
+		return ;
+	}
+
+
+	chdir("/home");
+	update_pwd(tmp, buff);	
 }
 
 void	handle_home(char *str, char *buff)
@@ -89,6 +94,4 @@ void	update_pwd(char *str, char *buff)
 	}
 	else
 		ft_strlcpy(shell()->pwd, getcwd(buff, 4096), 1024);
-	printf("pwd: %s\n", shell()->pwd); // Delete later
-	printf("oldpwd: %s\n", shell()->oldpwd);
 }

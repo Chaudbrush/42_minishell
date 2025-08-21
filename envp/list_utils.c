@@ -14,7 +14,7 @@ t_envp	*ft_dlist_last(t_envp *lst)
 void	clear_envp(t_envp *list)
 {
 	t_envp	*ptr;
-	
+
 	ptr = list;
 	while (ptr)
 	{

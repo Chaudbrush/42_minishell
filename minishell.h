@@ -22,7 +22,7 @@
 # include "./runcmd/runcmd.h"
 # include "./signals/signals.h"
 
-typedef struct cmd t_cmd;
+typedef struct cmd	t_cmd;
 
 typedef struct s_envp
 {
@@ -56,7 +56,6 @@ void	print_list(t_envp *list);
 // Main
 t_shell	*shell(void);
 int		ft_getline(void);
-
 
 //safe_utils.c
 int		safe_fork(void);

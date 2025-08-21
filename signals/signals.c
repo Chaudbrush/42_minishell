@@ -17,13 +17,15 @@ void	_handler(int signal)
 		exit(shell()->exit_flag);
 	}
 	else if (pid == shell()->parent_pid && !shell()->child_pid)
-	{
-		write(1, "\n", 1);
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
-		return ;
-	}
+		get_new_line();
+}
+
+void	get_new_line(void)
+{
+	write(1, "\n", 1);
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
 }
 
 void	sig_handler(void)
@@ -36,4 +38,42 @@ void	sig_handler(void)
 	signal(SIGTSTP, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 	sigaction(SIGINT, &sa, NULL);
+}
+
+void	_handler2(int signal)
+{
+	(void)signal;
+	printf("alooooo\n");
+	ft_putstr_fd("Quit (core dumped)", 2);
+	get_new_line();
+	exit(131);
+}
+
+// void	sig_handler_parent(void)
+// {
+// 	struct sigaction	sa;
+
+// 	ft_memset(&sa, 0, sizeof(sa));
+// 	sa.sa_handler = &_handler;
+// 	sa.sa_flags = SA_RESTART;
+// 	signal(SIGTSTP, SIG_IGN);
+// 	signal(SIGQUIT, SIG_IGN);
+// 	sigaction(SIGINT, &sa, NULL);
+// }
+
+void	sig_handler_child(void)
+{
+	struct sigaction	sa;
+
+	ft_memset(&sa, 0, sizeof(sa));
+
+	sigaction(SIGINT, &sa, NULL);
+	sa.sa_handler = &_handler2;
+	sa.sa_flags = SA_RESTART;
+	sigaction(SIGQUIT, &sa, NULL);
+	
+	sa.sa_handler = &_handler;
+	sa.sa_flags = SA_RESTART;
+	signal(SIGTSTP, SIG_IGN);
+
 }

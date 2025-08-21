@@ -103,6 +103,6 @@ static int	check_dir(char *str)
 		ft_putstr_fd(": Is a directory\n", 2);
 		shell()->exit_flag = 126;
 		return (1);
-	}	
+	}
 	return (0);
 }

@@ -5,7 +5,7 @@ void	advance_string(char *str, char c, int *i)
 	*i += 1;
 	while (str[*i] != c && str[*i])
 		*i += 1;
-	*i += 1;	
+	*i += 1;
 }
 
 int	peek_tokens(char *str, char *tokens)

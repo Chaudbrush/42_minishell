@@ -1,29 +1,5 @@
 #include "builtin.h"
 
-char	**create_av(void)
-{
-	char	**result;
-	t_list	*list;
-
-	list = quote_split(shell()->line);
-	result = lst_to_argv(list);
-	clear_q_list(list);
-	return (result);
-}
-
-void	clear_av(char **av)
-{
-	int	i;
-
-	i = 0;
-	while (av[i])
-	{
-		free(av[i]);
-		i++;
-	}
-	free(av);
-}
-
 void	handle_unset(char **av, int *b_flag)
 {
 	int		i;

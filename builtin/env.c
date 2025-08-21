@@ -11,11 +11,6 @@ void	print_env(t_envp *list)
 {
 	while (list)
 	{
-		// if (!list->data)
-		// {
-		// 	list = list->next;
-		// 	continue ;
-		// }
 		if (ft_strchr(list->data, '='))
 			printf("%s\n", list->data);
 		list = list->next;

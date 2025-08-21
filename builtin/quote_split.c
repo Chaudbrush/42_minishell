@@ -1,9 +1,8 @@
-
 #include "builtin.h"
 
-static int is_whitespace(char c);
+static void	advace_string(char *str, char *sep, int *i, int *len);
 
-t_list	*quote_split(char *str)
+t_list	*quote_split(char *str, char *sep)
 {
 	int		i;
 	int		len;
@@ -18,30 +17,9 @@ t_list	*quote_split(char *str)
 	while (str[i])
 	{
 		len = 0;
-		while (is_whitespace(str[i]) && str[i])
+		while (char_presence(str[i], sep) && str[i])
 			i++;
-		while (!is_whitespace(str[i]) && str[i])
-		{
-			if (str[i] == '"' || str[i] == '\'')
-			{
-				int		opened = 1;
-				char	c = str[i];
-				while (opened)
-				{
-					i++;
-					len++;
-					if (str[i] == c && str[i])
-						opened--;
-				}
-				i++;
-				len++;
-			}
-			else
-			{
-				i++;
-				len++;
-			}
-		}
+		advace_string(str, sep, &i, &len);
 		if (len)
 		{
 			new = ft_strndup(&str[i - len], len);
@@ -52,62 +30,31 @@ t_list	*quote_split(char *str)
 	return (list);
 }
 
-char	**lst_to_argv(t_list *list)
+static void	advace_string(char *str, char *sep, int *i, int *len)
 {
-	int		i;
-	int		size;
-	char	**argv;
+	int		opened;
+	char	c;
 
-	size = ft_lstsize(list);
-	argv = malloc(sizeof(char *) * (size + 1));
-	if (!argv)
-		return (NULL);
-	argv[size] = NULL;
-	i = 0;
-	while (i < size)
+	while (!char_presence(str[*i], sep) && str[*i])
 	{
-		argv[i] = list->content;
-		list = list->next;
-		i++;
+		if (str[*i] == '"' || str[*i] == '\'')
+		{
+			opened = 1;
+			c = str[*i];
+			while (opened)
+			{
+				*i += 1;
+				*len += 1;
+				if (str[*i] == c && str[*i])
+					opened--;
+			}
+			*i += 1;
+			*len += 1;
+		}
+		else
+		{
+			*i += 1;
+			*len += 1;
+		}
 	}
-	return (argv);
-}
-
-void	clear_q_list(t_list *list)
-{
-	t_list	*ptr;
-
-	ptr = list;
-	while (ptr)
-	{
-		list = list->next;
-		free(ptr);
-		ptr = list;
-	}
-}
-
-int	quote_size(char *str, char c)
-{
-	int	i;
-
-	i = 0;
-	i++;
-	while(str[i] != c && str[i])
-		i++;
-	return (i + 1);
-}
-
-static int is_whitespace(char c)
-{
-	int			i;
-	const char	*whitespace = " \t\n\v\f\r";
-
-	i = 0;
-	while (whitespace[i])
-	{
-		if (whitespace[i] == c)
-			return (1);
-		i++;
-	}
-	return (0);	
 }

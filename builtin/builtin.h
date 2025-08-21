@@ -13,6 +13,7 @@ int		check_builtins(char **av);
 void	handle_cd(char **av, int *b_flag);
 void	update_pwd(char *str, char *buff);
 void	handle_home(char *str, char *buff);
+void	handle_invalid(char *tmp, char *buff, int i);
 
 // Echo
 int		check_flag(char *str);
@@ -36,7 +37,6 @@ int		find_index(char **av, int i);
 void	handle_export(char **av, int *b_flag);
 
 // Exit
-int		not_num(char *str);
 void	handle_exit(char **av, int *b_flag);
 
 // Exit Status
@@ -47,15 +47,15 @@ void	handle_prints(char *str, int *b_flag);
 void	handle_pwd(int *b_flag);
 
 // Unset
-char	**create_av(void);
-void	clear_av(char **av);
 void	handle_unset(char **av, int *b_flag);
 
 // Quote Split
-t_list	*quote_split(char *str);
+t_list	*quote_split(char *str, char *sep);
+
+// Split Utils
+char	**create_av(void);
+void	clear_av(char **av);
 void	clear_q_list(t_list *list);
 char	**lst_to_argv(t_list *list);
-int		quote_size(char *str, char c);
-
 
 #endif
