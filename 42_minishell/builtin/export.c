@@ -57,8 +57,6 @@ int	check_invalid(char *str)
 		}
 		i++;
 	}
-	// if (str[0] == '$' || str[i - 1] == '$')
-	// 	return (1);
 	return (0);
 }
 

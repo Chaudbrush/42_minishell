@@ -45,7 +45,9 @@ int	check_invalid(char *str)
 		return (1);
 	while (str[i])
 	{
-		if (check_illegal(str[i]) || str[i] == '$') // Adding the $ didnt solve it, since it is going to the expansion first
+		if (str[i] == '=')
+			break ;
+		if (check_illegal(str[i]))
 		{
 			ft_putstr_fd("export: ", 2);
 			ft_putstr_fd(str, 2);
@@ -55,8 +57,6 @@ int	check_invalid(char *str)
 		}
 		i++;
 	}
-	// if (str[0] == '$' || str[i - 1] == '$')
-	// 	return (1);
 	return (0);
 }
 
@@ -126,6 +126,11 @@ void	handle_export(char **av)
 			free(str);
 			if (node)
 			{
+				if (!ft_strchr(av[index], '='))
+				{
+					index++;
+					continue ;
+				}
 				free(node->data);
 				node->data = ft_strdup(av[index]);
 			}
