@@ -5,13 +5,12 @@ static void	handle_valid(char **av);
 static int	invalid_exit(char **av);
 static void	handle_invalid(char **av);
 
-void	handle_exit(char **av, int *b_flag)
+void	handle_exit(char **av)
 {
 	int	i;
 
 	i = 0;
-	*b_flag = 1;
-	while (av[i])
+	while (av[i] && !peek_tokens(av[i], "<>"))
 		i++;
 	if (i > 2)
 	{
@@ -29,6 +28,8 @@ void	handle_exit(char **av, int *b_flag)
 	printf("exit\n");
 	clear_envp(shell()->envp_l);
 	clear_av(av);
+	free_trees(shell()->cmd);
+	free(shell()->envp_av);
 	exit (0);
 }
 

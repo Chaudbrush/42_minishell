@@ -1,35 +1,33 @@
 #include "builtin.h"
 
-int	check_builtins(char **av)
+int	is_builtin(char **av)
 {
-	int		is_builtin;
-	int		av_flag;
-
-	if (shell()->line[0] == 0)
+	if (!*av)
 		return (0);
-	av_flag = 0;
-	is_builtin = 0;
-	if (!av)
-	{
-		av = create_av();
-		expansion_av(av);
-		av_flag = 1;
-	}
+	return (!ft_strcmp(av[0], "cd") || !ft_strcmp(av[0], "exit")
+			|| !ft_strcmp(av[0], "pwd") || !ft_strcmp(av[0], "echo")
+			|| !ft_strcmp(av[0], "export") || !ft_strcmp(av[0], "unset")
+			|| !ft_strcmp(av[0], "env"));
+}
+
+void	builtin_call(char **av)
+{
+	printf("%s - %s\n", av[0], av[1]);
+	if (shell()->line[0] == 0)
+		return ;
 	if (!strcmp(av[0], "exit"))
-		handle_exit(av, &is_builtin);
+		handle_exit(av);
 	else if (!strcmp(av[0], "cd"))
-		handle_cd(av, &is_builtin);
+		handle_cd(av);
 	else if (!strcmp(av[0], "pwd"))
-		handle_pwd(&is_builtin);
+		handle_pwd();
 	else if (!strcmp(av[0], "echo"))
-		handle_echo(av, &is_builtin);
+		handle_echo(av);
 	else if (!strcmp(av[0], "export"))
-		handle_export(av, &is_builtin);
+		handle_export(av);
 	else if (!strcmp(av[0], "unset"))
-		handle_unset(av, &is_builtin);
+		handle_unset(av);
 	else if (!strcmp(av[0], "env"))
-		handle_env(&is_builtin);
-	if (av_flag)
-		clear_av(av);
-	return (is_builtin);
+		handle_env();
+	clear_av(av);
 }

@@ -1,15 +1,68 @@
 #include "runcmd.h"
 
+int	run_cmd_builtin_check(t_cmd *cmd)
+{
+	t_execcmd	*execcmd;
+	t_cmd		*temp;
+	char		**expanded_argv;
+
+	temp = cmd;
+	if (temp->type == REDIR)
+	{
+		while (((t_redircmd *)temp)->link->type == REDIR)
+			temp = ((t_redircmd *)temp)->link;
+		execcmd = (t_execcmd *)(((t_redircmd *)temp)->link); 
+	}
+	else
+		execcmd = (t_execcmd *)temp;
+	expanded_argv = expansion(execcmd);
+	if (is_builtin(expanded_argv))
+	{
+		preprocess_heredoc(cmd);
+		if (temp->type == REDIR)
+		{
+			((t_redircmd *)temp)->link = NULL;
+			if (safe_fork() == 0)
+			{
+				redir_recursive(cmd, NULL);
+				free_trees(cmd);
+				free_trees((t_cmd *)execcmd);
+				clear_envp(shell()->envp_l);
+				clear_av(expanded_argv);
+				exit(EXIT_SUCCESS);
+			}
+			wait(NULL);
+		}
+		builtin_call(expanded_argv);
+		free_trees(cmd);
+		if (cmd != (t_cmd *)execcmd)
+			free_trees((t_cmd *)execcmd);
+		return (1);
+	}
+	clear_av(expanded_argv);
+	return (0);
+}
+
 void	run_cmd(char *str)
 {
 	t_cmd	*cmd;	
-	char	*end_str;
+	int		pid;
+	int		waitval;
 
-//	signal(SIGQUIT, SIG_DFL);
-	end_str = str + ft_strlen(str);
-	cmd = parsecmd(str, end_str);
+	cmd = parsecmd(str, str + ft_strlen(str));
 	shell()->cmd = cmd;
-	shell()->envp_av = envp_to_av();
-	preprocess_heredoc(cmd);
-	exec_tree(cmd, shell()->envp_av);
+	if (cmd->type != PIPE)
+		if (run_cmd_builtin_check(cmd))
+			return ;
+	pid = safe_fork();
+	shell()->child_pid = pid;
+	if (pid == 0)
+	{
+		shell()->envp_av = envp_to_av();
+		preprocess_heredoc(cmd);
+		exec_tree(cmd, shell()->envp_av);
+	}
+	waitpid(pid, &waitval, 0);
+	shell()->exit_flag = WEXITSTATUS(waitval);
+	free_trees(cmd);
 }

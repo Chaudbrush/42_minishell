@@ -97,7 +97,7 @@ char	*create_string(char *str)
 	return (ret);
 }
 
-void	handle_export(char **av, int *b_flag)
+void	handle_export(char **av)
 {
 	int		index;
 	char	*str;
@@ -106,7 +106,6 @@ void	handle_export(char **av, int *b_flag)
 	index = 0;
 	while (av[index])
 		index++;
-	*b_flag = 1;
 	shell()->exit_flag = 0;
 	if (index == 1)
 		return (print_export());

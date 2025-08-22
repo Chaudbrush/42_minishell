@@ -1,9 +1,6 @@
 #include "execute.h"
 
 static int	check_dir(char *str);
-static int	pipe_recursive(t_cmd *cmd, char **envp);
-static int	exec_recursive(t_cmd *cmd, char **envp);
-static void	redir_recursive(t_cmd *cmd, char **envp);
 
 void	exec_tree(t_cmd *cmd, char **envp)
 {
@@ -26,7 +23,7 @@ void	exec_tree(t_cmd *cmd, char **envp)
 	exit(shell()->exit_flag);
 }
 
-static int	exec_recursive(t_cmd *cmd, char **envp)
+int	exec_recursive(t_cmd *cmd, char **envp)
 {
 	t_execcmd	*execcmd;
 	char		**expanded_argv;
@@ -37,19 +34,23 @@ static int	exec_recursive(t_cmd *cmd, char **envp)
 	expanded_argv = expansion(execcmd);
 	if (check_dir(expanded_argv[0]))
 		return (clear_av(expanded_argv), 126);
-	if (!check_builtins(expanded_argv))
+	if (is_builtin(expanded_argv))
+		builtin_call(expanded_argv);
+	else
+	{
 		execute_cmd(expanded_argv, envp);
-	clear_av(expanded_argv);
+		clear_av(expanded_argv);
+	}
 	return (EXEC_FAIL);
 }
 
-static void	redir_recursive(t_cmd *cmd, char **envp)
+void	redir_recursive(t_cmd *cmd, char **envp)
 {
 	t_redircmd	*redircmd;
 	char		*err_ptr;
 
 	redircmd = (t_redircmd *)cmd;
-	if (redircmd->link->type == REDIR)
+	if (redircmd->link && redircmd->link->type == REDIR)
 		redir_recursive(redircmd->link, envp);
 	if (redircmd->redir_type == '-')
 	{
@@ -72,7 +73,7 @@ static void	redir_recursive(t_cmd *cmd, char **envp)
 	}
 }
 
-static int	pipe_recursive(t_cmd *cmd, char **envp)
+int	pipe_recursive(t_cmd *cmd, char **envp)
 {
 	int	pipe_fd[2];
 	int	wait_val;
