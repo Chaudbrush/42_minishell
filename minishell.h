@@ -42,12 +42,13 @@ typedef struct s_shell
 	char			*expan_delim;
 	char			**envp_av;
 	int				envp_size;
-	unsigned char	exit_flag;
+	int				exit_flag;
 	int				level;
 	int				parent_pid;
 	int				child_pid;
 	char			pwd[1024];
 	char			oldpwd[1024];
+	int				has_child;
 }	t_shell;
 
 // Delete this later

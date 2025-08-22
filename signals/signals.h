@@ -13,6 +13,13 @@ void	_handler(int signal);
 // void	_handler2(int signal);
 // void	_handler(int signal);
 
+
+
+
+// NEW
+
+void	sig_handler_parent(void);
+void	sig_handler_doc(void);
 void	sig_handler_child(void);
 
 #endif

@@ -5,6 +5,7 @@ static void	read_line_heredoc(t_redircmd *redircmd)
 	char		*ptr;
 	int			hd_pipe[2];
 
+	sig_handler_doc();
 	if (pipe(hd_pipe) < 0)
 	{
 		perror("pipe error");

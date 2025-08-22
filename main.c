@@ -1,5 +1,7 @@
 #include "minishell.h"
 
+
+
 t_shell	*shell(void)
 {
 	static t_shell	prog;
@@ -16,7 +18,7 @@ int	main(int argc, char **argv, char **envp)
 	if (argc != 1)
 		return (1);
 	envp_and_shlvl(envp);
-	sig_handler();
+	sig_handler_parent();
 	shell()->parent_pid = getpid();
 	while (42)
 	{

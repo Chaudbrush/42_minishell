@@ -92,7 +92,11 @@ int	pipe_recursive(t_cmd *cmd, char **envp)
 	close(pipe_fd[1]);
 	waitpid(left_pid, NULL, 0);
 	waitpid(right_pid, &wait_val, 0);
-	return (WEXITSTATUS(wait_val));
+	if (WIFEXITED(wait_val))
+		return (WEXITSTATUS(wait_val));
+	else if (WIFSIGNALED(wait_val))
+		return (128 + WTERMSIG(wait_val));
+	return (wait_val);
 }
 
 static int	check_dir(char *str)

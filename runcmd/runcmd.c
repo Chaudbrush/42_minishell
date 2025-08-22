@@ -1,5 +1,7 @@
 #include "runcmd.h"
 
+static void	reset_child_flag(int value);
+
 int	run_cmd_builtin_check(t_cmd *cmd)
 {
 	t_execcmd	*execcmd;
@@ -49,6 +51,7 @@ void	run_cmd(char *str)
 	int		pid;
 	int		waitval;
 
+	shell()->has_child = 1;
 	cmd = parsecmd(str, str + ft_strlen(str));
 	shell()->cmd = cmd;
 	if (cmd->type != PIPE)
@@ -63,6 +66,34 @@ void	run_cmd(char *str)
 		exec_tree(cmd, shell()->envp_av);
 	}
 	waitpid(pid, &waitval, 0);
-	shell()->exit_flag = WEXITSTATUS(waitval);
+	reset_child_flag(waitval);
+//	shell()->exit_flag = WEXITSTATUS(waitval);
 	free_trees(cmd);
+}
+
+static void	reset_child_flag(int value)
+{
+	if (WIFEXITED(value))
+		value = WEXITSTATUS(value);
+	else if (WIFSIGNALED(value))
+		value = 128 + WTERMSIG(value);
+//	printf("value in: %d\n", value);
+//	printf("%d, %d\n", WEXITSTATUS(value), value);
+//	if (shell()->has_child == 1 && (value == 131 || WEXITSTATUS(value) == 131))
+	shell()->exit_flag = value;
+	if (shell()->has_child == 1 && value == 131)
+	{
+//		shell()->exit_flag = 131;
+		ft_putstr_fd("Quit (core dumped)", 2);
+		write(1, "\n", 1);
+	}
+//	else if (shell()->has_child == 1 && (value == 2 || WEXITSTATUS(value) == 130))
+	else if (shell()->has_child == 1 && value == 130)
+	{
+//		shell()->exit_flag = 130;
+		write(1, "\n", 1);
+	}
+	else if (shell()->has_child == 1 && value == 230)
+		shell()->exit_flag = 130;
+	shell()->has_child = 0;
 }
