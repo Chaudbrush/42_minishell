@@ -20,5 +20,8 @@ void	execute_cmd(char **expanded_argv, char **envp);
 
 // Execute
 void	exec_tree(t_cmd *cmd, char **envp);
+int		pipe_recursive(t_cmd *cmd, char **envp);
+void	redir_recursive(t_cmd *cmd, char **envp);
+int		exec_recursive(t_cmd *cmd, char **envp);
 
 #endif

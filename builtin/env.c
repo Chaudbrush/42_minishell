@@ -1,8 +1,7 @@
 #include "builtin.h"
 
-void	handle_env(int *b_flag)
+void	handle_env()
 {
-	*b_flag = 1;
 	print_env(shell()->envp_l);
 	shell()->exit_flag = 0;
 }

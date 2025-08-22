@@ -1,6 +1,6 @@
 #include "builtin.h"
 
-void	handle_cd(char **av, int *b_flag)
+void	handle_cd(char **av)
 {
 	int		i;
 	char	*tmp;
@@ -9,10 +9,9 @@ void	handle_cd(char **av, int *b_flag)
 	i = 0;
 	while (av[i])
 		i++;
-	*b_flag = 1;
 	tmp = getcwd(buff, 4096);
 	if (!tmp)
-		return handle_invalid(tmp, buff, i);
+		return handle_cd_errors(tmp, buff, i);
 	else if (!av[1])
 		handle_home(tmp, buff);
 	else if (chdir(av[1]) == -1)
@@ -22,12 +21,13 @@ void	handle_cd(char **av, int *b_flag)
 	}
 	else
 	{
+		printf("aaa.\n");
 		update_pwd(tmp, buff);
 		shell()->exit_flag = 0;
 	}
 }
 
-void	handle_invalid(char *tmp, char *buff, int i)
+void	handle_cd_errors(char *tmp, char *buff, int i)
 {
 	if (i > 2)
 	{
