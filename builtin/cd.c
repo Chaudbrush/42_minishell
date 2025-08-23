@@ -11,7 +11,7 @@ void	handle_cd(char **av)
 		i++;
 	tmp = getcwd(buff, 4096);
 	if (!tmp)
-		return handle_cd_errors(tmp, buff, i);
+		return (handle_cd_errors(tmp, buff, i));
 	else if (!av[1])
 		handle_home(tmp, buff);
 	else if (chdir(av[1]) == -1)
@@ -36,9 +36,9 @@ void	handle_cd_errors(char *tmp, char *buff, int i)
 		return ;
 	}
 
-
+	// WHATAFUCK IS THIS?
 	chdir("/home");
-	update_pwd(tmp, buff);	
+	update_pwd(tmp, buff);
 }
 
 void	handle_home(char *str, char *buff)

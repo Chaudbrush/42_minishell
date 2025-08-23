@@ -5,9 +5,9 @@ int	is_builtin(char **av)
 	if (!*av)
 		return (0);
 	return (!ft_strcmp(av[0], "cd") || !ft_strcmp(av[0], "exit")
-			|| !ft_strcmp(av[0], "pwd") || !ft_strcmp(av[0], "echo")
-			|| !ft_strcmp(av[0], "export") || !ft_strcmp(av[0], "unset")
-			|| !ft_strcmp(av[0], "env"));
+		|| !ft_strcmp(av[0], "pwd") || !ft_strcmp(av[0], "echo")
+		|| !ft_strcmp(av[0], "export") || !ft_strcmp(av[0], "unset")
+		|| !ft_strcmp(av[0], "env"));
 }
 
 int	builtin_call(char **av)

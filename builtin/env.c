@@ -1,12 +1,14 @@
 #include "builtin.h"
 
-void	handle_env()
+static void	print_env(t_envp *list);
+
+void	handle_env(void)
 {
 	print_env(shell()->envp_l);
 	shell()->exit_flag = 0;
 }
 
-void	print_env(t_envp *list)
+static void	print_env(t_envp *list)
 {
 	while (list)
 	{

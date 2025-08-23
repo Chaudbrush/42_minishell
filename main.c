@@ -1,7 +1,5 @@
 #include "minishell.h"
 
-
-
 t_shell	*shell(void)
 {
 	static t_shell	prog;

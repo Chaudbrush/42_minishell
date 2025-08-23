@@ -1,6 +1,6 @@
 #include "builtin.h"
 
-void	handle_pwd()
+void	handle_pwd(void)
 {
 	t_envp	*node;
 

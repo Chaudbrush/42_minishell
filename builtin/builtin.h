@@ -21,8 +21,8 @@ int		check_flag(char *str);
 void	handle_echo(char **av);
 
 // Env
-void	handle_env();
-void	print_env(t_envp *list);
+void	handle_env(void);
+//void	print_env(t_envp *list);
 
 // Export
 
@@ -45,7 +45,7 @@ void	print_exit(char *str);
 void	handle_prints(char *str);
 
 // Pwd
-void	handle_pwd();
+void	handle_pwd(void);
 
 // Unset
 void	handle_unset(char **av);
