@@ -13,7 +13,7 @@ int	main(int argc, char **argv, char **envp)
 {
 	// int	pid;
 	// int	wait_val;
-
+//TESTTTTTTTTTTTTTTTTTTT
 	(void)argv;
 	if (argc != 1)
 		return (1);
@@ -32,5 +32,6 @@ int	main(int argc, char **argv, char **envp)
 		shell()->line = NULL;
 	}
 	clear_envp(shell()->envp_l);
+	//TEST
 	return (0);
 }
