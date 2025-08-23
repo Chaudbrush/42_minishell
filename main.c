@@ -11,9 +11,6 @@ t_shell	*shell(void)
 
 int	main(int argc, char **argv, char **envp)
 {
-	// int	pid;
-	// int	wait_val;
-
 	(void)argv;
 	if (argc != 1)
 		return (1);
