@@ -7,7 +7,7 @@ typedef struct s_list	t_list;
 typedef struct s_envp	t_envp;
 
 // Builtin
-void	builtin_call(char **av);
+int		builtin_call(char **av);
 int		is_builtin(char **av);
 
 // Cd

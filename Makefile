@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: zali <zali@student.42.fr>                  +#+  +:+       +#+         #
+#    By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/11 09:44:49 by vloureir          #+#    #+#              #
-#    Updated: 2025/08/16 19:42:32 by zali             ###   ########.fr        #
+#    Updated: 2025/08/23 11:44:06 by vloureir         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ EXPAN_CMD := $(wildcard expansion/*.c)
 
 OBJ := $(SRC:.c=.o) $(ENVP:.c=.o) $(SIGNAL:.c=.o) $(RUN_CMD:.c=.o) $(BUILTIN:.c=.o) $(READLINE:.c=.o) $(EXPAN_CMD:.c=.o) $(EXECUTE:.c=.o) $(PARSE:.c=.o)
 
-VAL := --leak-check=full --show-leak-kinds=all --track-origins=yes --show-reachable=yes --suppressions=readline.supp
+VAL := --leak-check=full --show-leak-kinds=all --track-origins=yes --show-reachable=yes --track-fds=all --suppressions=readline.supp
 
 CFLAGS := -Wall -Werror -Wextra -g
 

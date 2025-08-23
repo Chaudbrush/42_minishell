@@ -10,11 +10,11 @@ int	is_builtin(char **av)
 			|| !ft_strcmp(av[0], "env"));
 }
 
-void	builtin_call(char **av)
+int	builtin_call(char **av)
 {
 	printf("%s - %s\n", av[0], av[1]);
 	if (shell()->line[0] == 0)
-		return ;
+		return (0);
 	if (!strcmp(av[0], "exit"))
 		handle_exit(av);
 	else if (!strcmp(av[0], "cd"))
@@ -30,4 +30,5 @@ void	builtin_call(char **av)
 	else if (!strcmp(av[0], "env"))
 		handle_env();
 	clear_av(av);
+	return (shell()->exit_flag);
 }
