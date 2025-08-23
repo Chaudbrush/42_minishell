@@ -30,7 +30,7 @@ void	handle_exit(char **av)
 	clear_av(av);
 	free_trees(shell()->cmd);
 	free(shell()->envp_av);
-	exit (0);
+	exit (shell()->exit_flag);
 }
 
 static void	handle_valid(char **av)

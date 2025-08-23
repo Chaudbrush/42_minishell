@@ -24,7 +24,7 @@ int	ft_isdigit(int c)
 int	check_illegal(char c)
 {
 	int			i;
-	const char	*illegal = "!@#\%^&*(){}[];,.:+-";
+	const char	*illegal = "!@#\%$^&*(){}[];,.:+-";
 
 	i = 0;
 	while (illegal[i])
@@ -41,8 +41,13 @@ int	check_invalid(char *str)
 	int	i;
 
 	i = 0;
-	if (ft_isdigit(str[i]))
+	if (ft_isdigit(str[i]) || *str == '=')
+	{
+		ft_putstr_fd("export: ", 2);
+		ft_putstr_fd(str, 2);
+		ft_putstr_fd(": not a valid identifier\n", 2);
 		return (1);
+	}
 	while (str[i])
 	{
 		if (str[i] == '=')

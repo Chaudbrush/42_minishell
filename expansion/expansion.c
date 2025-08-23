@@ -6,8 +6,14 @@ static int	is_expandable(char *str)
 	{
 		if (char_presence(*str, "\"")
 			|| char_presence(*str, "\'")
-			|| char_presence(*str, "$"))
-			return (1);
+			|| (char_presence(*str, "$")
+				&& !(char_presence(*(str + 1), " \t\r\n\v=")
+					|| *(str + 1) == '\0'
+					|| check_illegal(*(str + 1))
+					)
+				)
+			)
+				return (1);
 		str++;
 	}
 	return (0);
@@ -33,7 +39,10 @@ char	**expansion(t_execcmd *execcmd)
 	while (execcmd->argv[i])
 	{
 		if (is_expandable(execcmd->argv[i]))
+		{
+			printf("expandable.\n");
 			perform_expansion(execcmd->argv[i], &strs[i]);
+		}
 		else
 			strs[i] = ft_strdup(execcmd->argv[i]);
 		i++;

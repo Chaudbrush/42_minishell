@@ -88,9 +88,8 @@ static void	reset_child_flag(int value)
 		write(1, "\n", 1);
 	}
 //	else if (shell()->has_child == 1 && (value == 2 || WEXITSTATUS(value) == 130))
-	else if (shell()->has_child == 1 && value == 130)
+	else if (value == 130)
 	{
-//		shell()->exit_flag = 130;
 		write(1, "\n", 1);
 	}
 	else if (shell()->has_child == 1 && value == 230)
