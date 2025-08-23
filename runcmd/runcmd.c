@@ -94,6 +94,9 @@ static void	reset_child_flag(int value)
 		write(1, "\n", 1);
 	}
 	else if (shell()->has_child == 1 && value == 230)
+	{
+		write(1, "\n", 1);	
 		shell()->exit_flag = 130;
+	}
 	shell()->has_child = 0;
 }

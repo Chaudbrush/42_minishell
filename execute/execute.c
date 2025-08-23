@@ -1,7 +1,5 @@
 #include "execute.h"
 
-static int	check_dir(char *str);
-
 void	exec_tree(t_cmd *cmd, char **envp)
 {
 	if (!cmd)
@@ -25,23 +23,23 @@ void	exec_tree(t_cmd *cmd, char **envp)
 
 int	exec_recursive(t_cmd *cmd, char **envp)
 {
+	int			exit_flag;
 	t_execcmd	*execcmd;
 	char		**expanded_argv;
 
+	exit_flag = 0;
 	execcmd = (t_execcmd *)cmd;
 	if (!execcmd->argv[0])
 		return (0);
 	expanded_argv = expansion(execcmd);
-	if (check_dir(expanded_argv[0]))
-		return (clear_av(expanded_argv), 126);
 	if (is_builtin(expanded_argv))
-		builtin_call(expanded_argv);
+		exit_flag = builtin_call(expanded_argv);
 	else
 	{
-		execute_cmd(expanded_argv, envp);
+		exit_flag = execute_cmd(expanded_argv, envp);
 		clear_av(expanded_argv);
 	}
-	return (EXEC_FAIL);
+	return (exit_flag);
 }
 
 void	redir_recursive(t_cmd *cmd, char **envp)
@@ -97,17 +95,4 @@ int	pipe_recursive(t_cmd *cmd, char **envp)
 	else if (WIFSIGNALED(wait_val))
 		return (128 + WTERMSIG(wait_val));
 	return (wait_val);
-}
-
-static int	check_dir(char *str)
-{
-	if (!chdir(str))
-	{
-		ft_putstr_fd("error: ", 2);
-		ft_putstr_fd(str, 2);
-		ft_putstr_fd(": Is a directory\n", 2);
-		shell()->exit_flag = 126;
-		return (1);
-	}
-	return (0);
 }

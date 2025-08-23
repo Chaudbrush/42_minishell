@@ -83,7 +83,7 @@ static char	**populate_av(char **av, char *str, char c)
 	return (av);
 }
 
-char	**env_split(char *str, char c)
+char	**mod_split(char *str, char c)
 {
 	int		words;
 	char	**av;
