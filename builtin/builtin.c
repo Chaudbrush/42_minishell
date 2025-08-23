@@ -12,7 +12,6 @@ int	is_builtin(char **av)
 
 void	builtin_call(char **av)
 {
-	printf("%s - %s\n", av[0], av[1]);
 	if (shell()->line[0] == 0)
 		return ;
 	if (!strcmp(av[0], "exit"))

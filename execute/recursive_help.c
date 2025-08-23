@@ -45,7 +45,7 @@ static int	has_bin(void)
 	size_t	len;
 	t_envp	*node;
 
-	node = getenv_list("PATH=");
+	node = getenv_list("PATH");
 	if (!node)
 		return (0);
 	len = ft_strlen(node->data);

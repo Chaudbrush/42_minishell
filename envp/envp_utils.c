@@ -12,13 +12,13 @@ char	*extract_val(char *str)
 
 t_envp	*getenv_list(char *str)
 {
-	int		len;
 	t_envp	*ptr;
+	int		len;
 
-	len = ft_strlen(str);
 	ptr = shell()->envp_l;
 	while (ptr)
 	{
+		len = ft_strchr(ptr->data, '=') - ptr->data;
 		if (!ptr->data)
 			break ;
 		if (ft_strncmp(ptr->data, str, len) == 0)
