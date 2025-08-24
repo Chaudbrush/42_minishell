@@ -1,9 +1,9 @@
 #include "execute.h"
 
-static void	read_line_heredoc(t_redircmd *redircmd)
+static void	read_line_heredoc(t_redircmd *redircmd, char *ptr)
 {
-	char		*ptr;
 	int			hd_pipe[2];
+	//	char		*ptr;
 
 	sig_handler_doc();
 	if (pipe(hd_pipe) < 0)
@@ -11,7 +11,7 @@ static void	read_line_heredoc(t_redircmd *redircmd)
 		perror("pipe error");
 		exit(EXIT_FAILURE);
 	}
-	ptr = NULL;
+//	ptr = NULL;
 	perform_expansion(redircmd->file, &shell()->expan_delim);
 	while (1)
 	{
@@ -45,7 +45,7 @@ void	preprocess_heredoc(t_cmd *cmd)
 		if ((redircmd->link)->type != EXEC)
 			preprocess_heredoc(((t_redircmd *)cmd)->link);
 		if (redircmd->redir_type == '-')
-			read_line_heredoc(redircmd);
+			read_line_heredoc(redircmd, NULL);
 		return ;
 	}
 }

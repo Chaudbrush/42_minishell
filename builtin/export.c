@@ -1,91 +1,38 @@
 #include "builtin.h"
 
-int	check_tokens(char *str)
+static char	*create_string(char *str);
+static void	create_node(char **av, char *str, int *index);
+
+void	handle_export(char **av)
 {
-	int	i;
+	int		index;
+	char	*str;
 
-	i = 0;
-	while (str[i])
+	index = 0;
+	while (av[index])
+		index++;
+	shell()->exit_flag = 0;
+	if (index == 1)
+		return (print_export());
+	else
 	{
-		if (str[i] == '>' || str[i] == '<' || str[i] == '|')
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-int	ft_isdigit(int c)
-{
-	if (c >= '0' && c <= '9')
-		return (1);
-	return (0);
-}
-
-int	check_illegal(char c)
-{
-	int			i;
-	const char	*illegal = "!@#\%$^&*(){}[];,.:+-";
-
-	i = 0;
-	while (illegal[i])
-	{
-		if (illegal[i] == c)
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-int	check_invalid(char *str)
-{
-	int	i;
-
-	i = 0;
-	if (ft_isdigit(str[i]) || *str == '=')
-	{
-		ft_putstr_fd("export: ", 2);
-		ft_putstr_fd(str, 2);
-		ft_putstr_fd(": not a valid identifier\n", 2);
-		return (1);
-	}
-	while (str[i])
-	{
-		if (str[i] == '=')
-			break ;
-		if (check_illegal(str[i]))
+		index = 1;
+		while (av[index])
 		{
-			ft_putstr_fd("export: ", 2);
-			ft_putstr_fd(str, 2);
-			ft_putstr_fd(": not a valid identifier\n", 2);
-			shell()->exit_flag = 1;
-			return (1);
+			if (check_invalid(av[index]))
+			{
+				index++;
+				continue ;
+			}
+			str = create_string(av[index]);
+			if (!str)
+				break ;
+			create_node(av, str, &index);
 		}
-		i++;
 	}
-	return (0);
 }
 
-int	find_index(char **av, int i)
-{
-	int	j;
-
-	if (!av[i])
-		return (-1);
-	j = 0;
-	while (av[i])
-	{
-		while (av[i][j])
-		{
-			if (av[i][j] == '=')
-				return (i);
-			j++;
-		}
-		i++;
-	}
-	return (-1);
-}
-
-char	*create_string(char *str)
+static char	*create_string(char *str)
 {
 	int		len;
 	char	*ret;
@@ -102,62 +49,26 @@ char	*create_string(char *str)
 	return (ret);
 }
 
-void	handle_export(char **av)
+static void	create_node(char **av, char *str, int *index)
 {
-	int		index;
-	char	*str;
 	t_envp	*node;
 
-	index = 0;
-	while (av[index])
-		index++;
-	shell()->exit_flag = 0;
-	if (index == 1)
-		return (print_export());
+	node = getenv_list(str);
+	if (node)
+	{
+		if (!ft_strchr(av[*index], '='))
+		{
+			*index += 1;
+			return ;
+		}
+		free(node->data);
+		node->data = ft_strdup(av[*index]);
+	}
 	else
 	{
-		index = 1;
-		while (av[index])
-		{
-			if (check_tokens(av[index]) || check_invalid(av[index]))
-			{
-				index++;
-				continue ;
-			}
-			str = create_string(av[index]);
-			if (!str)
-				break ;
-			node = getenv_list(str);
-			free(str);
-			if (node)
-			{
-				if (!ft_strchr(av[index], '='))
-				{
-					index++;
-					continue ;
-				}
-				free(node->data);
-				node->data = ft_strdup(av[index]);
-			}
-			else
-			{
-				node = ft_dlist_new(ft_strdup(av[index]));
-				ft_dlist_addback(&shell()->envp_l, node);
-			}
-			index++;
-		}
+		node = ft_dlist_new(ft_strdup(av[*index]));
+		ft_dlist_addback(&shell()->envp_l, node);
 	}
-}
-
-void	print_export(void)
-{
-	t_envp	*ptr;
-
-	ptr = shell()->envp_l;
-	while(ptr)
-	{
-		printf("declare -x ");
-		printf("%s\n", ptr->data);
-		ptr = ptr->next;
-	}
+	free(str);
+	*index += 1;
 }

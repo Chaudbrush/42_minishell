@@ -1,5 +1,10 @@
 #include "builtin.h"
 
+static void	update_pwd(char *str, char *buff);
+static void	handle_home(char *str, char *buff);
+static void	handle_oldpwd(char *str, char *buff);
+static void	handle_cd_errors(char *tmp, char *buff, int i);
+
 void	handle_cd(char **av)
 {
 	int		i;
@@ -14,6 +19,8 @@ void	handle_cd(char **av)
 		return (handle_cd_errors(tmp, buff, i));
 	else if (!av[1])
 		handle_home(tmp, buff);
+	else if (ft_strcmp(av[1], "-") == 0)
+		handle_oldpwd(tmp, buff);
 	else if (chdir(av[1]) == -1)
 	{
 		perror(shell()->line);
@@ -21,13 +28,12 @@ void	handle_cd(char **av)
 	}
 	else
 	{
-		printf("aaa.\n");
 		update_pwd(tmp, buff);
 		shell()->exit_flag = 0;
 	}
 }
 
-void	handle_cd_errors(char *tmp, char *buff, int i)
+static void	handle_cd_errors(char *tmp, char *buff, int i)
 {
 	if (i > 2)
 	{
@@ -35,13 +41,11 @@ void	handle_cd_errors(char *tmp, char *buff, int i)
 		shell()->exit_flag = 1;
 		return ;
 	}
-
-	// WHATAFUCK IS THIS?
 	chdir("/home");
 	update_pwd(tmp, buff);
 }
 
-void	handle_home(char *str, char *buff)
+static void	handle_home(char *str, char *buff)
 {
 	char	*tmp;
 	t_envp	*node;
@@ -67,7 +71,33 @@ void	handle_home(char *str, char *buff)
 	update_pwd(str, buff);
 }
 
-void	update_pwd(char *str, char *buff)
+static void	handle_oldpwd(char *str, char *buff)
+{
+	char	*tmp;
+	t_envp	*node;
+
+	node = getenv_list("OLDPWD");
+	if (!node)
+	{
+		ft_putstr_fd("cd: OLDPWD not set\n", 2);
+		shell()->exit_flag = 1;
+		return ;
+	}
+	else
+	{
+		tmp = shell()->oldpwd;
+		if (chdir(tmp) == -1)
+		{
+			perror(shell()->line);
+			shell()->exit_flag = 1;
+			return ;
+		}
+		shell()->exit_flag = 0;
+	}
+	update_pwd(str, buff);
+}
+
+static void	update_pwd(char *str, char *buff)
 {
 	t_envp	*node;
 

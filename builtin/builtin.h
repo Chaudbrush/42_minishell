@@ -12,9 +12,6 @@ int		is_builtin(char **av);
 
 // Cd
 void	handle_cd(char **av);
-void	update_pwd(char *str, char *buff);
-void	handle_home(char *str, char *buff);
-void	handle_cd_errors(char *tmp, char *buff, int i);
 
 // Echo
 int		check_flag(char *str);
@@ -25,17 +22,12 @@ void	handle_env(void);
 //void	print_env(t_envp *list);
 
 // Export
-
-void	print_export(void);
-
-int		ft_isdigit(int c);
-void	clear_av(char **av);
-int		check_illegal(char c);
-int		check_tokens(char *str);
-int		check_invalid(char *str);
-char	*create_string(char *str);
-int		find_index(char **av, int i);
 void	handle_export(char **av);
+
+// Export Utils
+void	print_export(void);
+int		check_illegal(char c);
+int		check_invalid(char *str);
 
 // Exit
 void	handle_exit(char **av);
@@ -49,6 +41,7 @@ void	handle_pwd(void);
 
 // Unset
 void	handle_unset(char **av);
+
 // Quote Split
 t_list	*quote_split(char *str, char *sep);
 
