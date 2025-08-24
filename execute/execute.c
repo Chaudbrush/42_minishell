@@ -29,9 +29,12 @@ int	exec_recursive(t_cmd *cmd, char **envp)
 
 	exit_flag = 0;
 	execcmd = (t_execcmd *)cmd;
-	if (!execcmd->argv[0])
-		return (0);
 	expanded_argv = expansion(execcmd);
+	if (!expanded_argv[0])
+	{
+		clear_av(expanded_argv);
+		return (0);
+	}
 	if (is_builtin(expanded_argv))
 		exit_flag = builtin_call(expanded_argv);
 	else

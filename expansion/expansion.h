@@ -10,6 +10,6 @@ char	**expansion(t_execcmd *execcmd);
 char	*expand_dollar(char **src, int *i);
 int		get_expansion_len(char *src);
 void	copy_expansion(char *src, char **destination, int src_size);
-void	perform_expansion(char *src, char **dest);
+int		perform_expansion(char *src, char **dest);
 
 #endif
