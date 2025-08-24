@@ -2,22 +2,9 @@
 
 static void	reset_child_flag(int value);
 
-int	run_cmd_builtin_check(t_cmd *cmd)
+int	built_in_exec(t_cmd *cmd, char **expanded_argv
+	, t_execcmd *execcmd, t_cmd *temp)
 {
-	t_execcmd	*execcmd;
-	t_cmd		*temp;
-	char		**expanded_argv;
-
-	temp = cmd;
-	if (temp->type == REDIR)
-	{
-		while (((t_redircmd *)temp)->link->type == REDIR)
-			temp = ((t_redircmd *)temp)->link;
-		execcmd = (t_execcmd *)(((t_redircmd *)temp)->link);
-	}
-	else
-		execcmd = (t_execcmd *)temp;
-	expanded_argv = expansion(execcmd);
 	if (is_builtin(expanded_argv))
 	{
 		preprocess_heredoc(cmd);
@@ -41,6 +28,27 @@ int	run_cmd_builtin_check(t_cmd *cmd)
 			free_trees((t_cmd *)execcmd);
 		return (1);
 	}
+	return (0);
+}
+
+int	run_cmd_builtin_check(t_cmd *cmd)
+{
+	t_execcmd	*execcmd;
+	t_cmd		*temp;
+	char		**expanded_argv;
+
+	temp = cmd;
+	if (temp->type == REDIR)
+	{
+		while (((t_redircmd *)temp)->link->type == REDIR)
+			temp = ((t_redircmd *)temp)->link;
+		execcmd = (t_execcmd *)(((t_redircmd *)temp)->link);
+	}
+	else
+		execcmd = (t_execcmd *)temp;
+	expanded_argv = expansion(execcmd);
+	if (built_in_exec(cmd, expanded_argv, execcmd, temp))
+		return (1);
 	clear_av(expanded_argv);
 	return (0);
 }

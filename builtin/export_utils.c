@@ -5,7 +5,7 @@ static void	print_error(char *str);
 int	check_illegal(char c)
 {
 	int			i;
-	const char	*illegal = "!@#\%$^&*(){}[];,.:+-";
+	const char	*illegal = "!@#%$^&*(){}[];,.:+-";
 
 	i = 0;
 	while (illegal[i])
@@ -58,7 +58,6 @@ void	print_export(void)
 		write(STDOUT_FILENO, "=", 1);
 		if (ptr->data[i])
 			i++;
-		// // write(STDOUT_FILENO, &ptr->data[i++], 1);
 		write(STDOUT_FILENO, "\"", 1);
 		ft_putstr_fd(&ptr->data[i], STDOUT_FILENO);
 		write(STDOUT_FILENO, "\"\n", 2);
