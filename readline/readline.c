@@ -8,7 +8,7 @@ int	ft_getline(void)
 	add_history(shell()->line);
 	if (check_quotes(shell()->line))
 	{
-		ft_putstr_fd("syntax error, open quotes\n", 2);
+		ft_putstr_fd("syntax error, open quotes\n", STDERR_FILENO);
 		return (1);
 	}
 	if (check_invalid_tokens(shell()->line))

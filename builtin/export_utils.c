@@ -53,12 +53,20 @@ void	print_export(void)
 	{
 		i = -1;
 		ft_putstr_fd("declare -x ", STDOUT_FILENO);
-		while (ptr->data[++i] != '=')
-			write(STDOUT_FILENO, &ptr->data[i], 1);
-		write(STDOUT_FILENO, &ptr->data[i++], 1);
-		write(STDOUT_FILENO, "\"", 1);
-		ft_putstr_fd(&ptr->data[i], STDOUT_FILENO);
-		write(STDOUT_FILENO, "\"\n", 2);
+		if (ft_strchr(ptr->data, '='))
+		{
+			while (ptr->data[++i] != '=' && ptr->data[i])
+				write(STDOUT_FILENO, &ptr->data[i], 1);
+			write(STDOUT_FILENO, &ptr->data[i++], 1);
+			write(STDOUT_FILENO, "\"", 1);
+			ft_putstr_fd(&ptr->data[i], STDOUT_FILENO);
+			write(STDOUT_FILENO, "\"\n", 2);
+		}
+		else
+		{
+			ft_putstr_fd(ptr->data, STDOUT_FILENO);
+			write(STDOUT_FILENO, "\n", 1);
+		}
 		ptr = ptr->next;
 	}
 }

@@ -15,7 +15,7 @@ void	handle_cd(char **av)
 	while (av[i])
 		i++;
 	tmp = getcwd(buff, 4096);
-	if (!tmp)
+	if (!tmp || i > 2)
 		return (handle_cd_errors(tmp, buff, i));
 	else if (!av[1])
 		handle_home(tmp, buff);

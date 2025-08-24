@@ -10,12 +10,12 @@ void	handle_exit(char **av)
 	int	i;
 
 	i = 0;
-	while (av[i] && !peek_tokens(av[i], "<>"))
+	while (av[i])
 		i++;
 	if (i > 2)
 	{
 		ft_putstr_fd("exit: too many arguments\n", STDERR_FILENO);
-		shell()->exit_flag = 127;
+		shell()->exit_flag = 1;
 		return ;
 	}
 	if (i > 1)
@@ -35,10 +35,13 @@ void	handle_exit(char **av)
 
 static void	handle_valid(char **av)
 {
+	int	ex_flag;
+
+	ex_flag = ft_atoi(av[1]);
 	printf("exit\n");
 	clear_envp(shell()->envp_l);
 	clear_av(av);
-	exit (ft_atoi(av[1]));
+	exit ((unsigned char)ex_flag);
 }
 
 static void	handle_invalid(char **av)
@@ -56,6 +59,8 @@ static int	not_num(char *str)
 	int	i;
 
 	i = 0;
+	if (str[i] == '+' || str[i] == '-')
+		i++;
 	while (str[i])
 	{
 		if (!ft_isdigit(str[i]))
@@ -67,7 +72,7 @@ static int	not_num(char *str)
 
 static int	invalid_exit(char **av)
 {
-	if (ft_atoll_u(av[1]) > LONG_MAX || ft_strlen(av[1]) > 19
+	if (ft_atoll(av[1]) > LONG_MAX || ft_strlen(av[1]) > 19
 		|| not_num(av[1]))
 		return (1);
 	return (0);
