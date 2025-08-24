@@ -8,7 +8,8 @@ static int	is_expandable(char *str)
 			|| (char_presence(*str, "$")
 				&& !(char_presence(*(str + 1), " \t\r\n\v=")
 					|| *(str + 1) == '\0'
-					|| check_illegal(*(str + 1)))))
+					|| check_illegal(*(str + 1))
+				)))
 			return (1);
 		str++;
 	}
@@ -35,9 +36,7 @@ char	**expansion(t_execcmd *execcmd)
 	while (execcmd->argv[i])
 	{
 		if (is_expandable(execcmd->argv[i]))
-		{
 			perform_expansion(execcmd->argv[i], &strs[i]);
-		}
 		else
 			strs[i] = ft_strdup(execcmd->argv[i]);
 		i++;
