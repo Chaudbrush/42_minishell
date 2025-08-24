@@ -1,5 +1,7 @@
 #include "builtin.h"
 
+static void	print_error(char *str);
+
 int	check_illegal(char c)
 {
 	int			i;
@@ -22,9 +24,7 @@ int	check_invalid(char *str)
 	i = 0;
 	if (ft_isdigit(str[i]) || *str == '=')
 	{
-		ft_putstr_fd("export: ", STDERR_FILENO);
-		ft_putstr_fd(str, STDERR_FILENO);
-		ft_putstr_fd(": not a valid identifier\n", STDERR_FILENO);
+		print_error(str);
 		shell()->exit_flag = 1;
 		return (1);
 	}
@@ -34,9 +34,7 @@ int	check_invalid(char *str)
 			break ;
 		if (check_illegal(str[i]))
 		{
-			ft_putstr_fd("export: ", STDERR_FILENO);
-			ft_putstr_fd(str, STDERR_FILENO);
-			ft_putstr_fd(": not a valid identifier\n", STDERR_FILENO);
+			print_error(str);
 			shell()->exit_flag = 1;
 			return (1);
 		}
@@ -63,4 +61,11 @@ void	print_export(void)
 		write(STDOUT_FILENO, "\"\n", 2);
 		ptr = ptr->next;
 	}
+}
+
+static void	print_error(char *str)
+{
+	ft_putstr_fd("export: ", STDERR_FILENO);
+	ft_putstr_fd(str, STDERR_FILENO);
+	ft_putstr_fd(": not a valid identifier\n", STDERR_FILENO);
 }
