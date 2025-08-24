@@ -21,7 +21,8 @@ t_envp	*getenv_list(char *str)
 	{
 		if (!ptr->data)
 			break ;
-		if (ft_strncmp(ptr->data, str, len) == 0 && ptr->data[len] == '=')
+		if (ft_strncmp(ptr->data, str, len) == 0
+			&& (ptr->data[len] == '=' || ptr->data[len] == '\0'))
 			return (ptr);
 		ptr = ptr->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 14:04:03 by vloureir          #+#    #+#             */
-/*   Updated: 2025/08/21 09:28:00 by vloureir         ###   ########.fr       */
+/*   Updated: 2025/08/24 13:08:33 by vloureir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@
 # include <string.h>
 # include <unistd.h>
 
-typedef unsigned long long	t_u_llong;
-
 int			ft_isalpha(int c);
 int			ft_isdigit(int c);
 int			ft_isalnum(int c);
@@ -33,7 +31,6 @@ int			ft_isspace(char c);
 int			ft_atoi(const char *nptr);
 long		ft_atol(const char *nptr);
 long long	ft_atoll(const char *nptr);
-t_u_llong	ft_atoll_u(const char *nptr);
 int			ft_memcmp(const void *s1, const void *s2, size_t n);
 int			ft_strncmp(const char *s1, const char *s2, size_t n);
 int			ft_strcmp(char *s1, char *s2);

@@ -61,8 +61,8 @@ void	redir_recursive(t_cmd *cmd, char **envp)
 	{
 		err_ptr = ft_strjoin("err: no such file or directory: ",
 				redircmd->file);
-		ft_putstr_fd(err_ptr, 2);
-		ft_putstr_fd("\n", 2);
+		ft_putstr_fd(err_ptr, STDERR_FILENO);
+		ft_putstr_fd("\n", STDERR_FILENO);
 		free(err_ptr);
 		clear_envp(shell()->envp_l);
 		free(envp);

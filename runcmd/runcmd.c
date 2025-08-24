@@ -87,7 +87,7 @@ static void	reset_child_flag(int value)
 	shell()->exit_flag = value;
 	if (shell()->has_child == 1 && value == 131)
 	{
-		ft_putstr_fd("Quit (core dumped)", 2);
+		ft_putstr_fd("Quit (core dumped)", STDERR_FILENO);
 		write(1, "\n", 1);
 	}
 	else if (value == 130)
