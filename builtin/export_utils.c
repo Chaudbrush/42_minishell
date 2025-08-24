@@ -51,11 +51,14 @@ void	print_export(void)
 	ptr = shell()->envp_l;
 	while (ptr)
 	{
-		i = -1;
+		i = 0;
 		ft_putstr_fd("declare -x ", STDOUT_FILENO);
-		while (ptr->data[++i] != '=')
-			write(STDOUT_FILENO, &ptr->data[i], 1);
-		write(STDOUT_FILENO, &ptr->data[i++], 1);
+		while (ptr->data[i] != '=' && ptr->data[i] != 0)
+			write(STDOUT_FILENO, &ptr->data[i++], 1);
+		write(STDOUT_FILENO, "=", 1);
+		if (ptr->data[i])
+			i++;
+		// // write(STDOUT_FILENO, &ptr->data[i++], 1);
 		write(STDOUT_FILENO, "\"", 1);
 		ft_putstr_fd(&ptr->data[i], STDOUT_FILENO);
 		write(STDOUT_FILENO, "\"\n", 2);
