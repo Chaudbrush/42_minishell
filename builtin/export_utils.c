@@ -22,9 +22,10 @@ int	check_invalid(char *str)
 	i = 0;
 	if (ft_isdigit(str[i]) || *str == '=')
 	{
-		ft_putstr_fd("export: ", 2);
-		ft_putstr_fd(str, 2);
-		ft_putstr_fd(": not a valid identifier\n", 2);
+		ft_putstr_fd("export: ", STDERR_FILENO);
+		ft_putstr_fd(str, STDERR_FILENO);
+		ft_putstr_fd(": not a valid identifier\n", STDERR_FILENO);
+		shell()->exit_flag = 1;
 		return (1);
 	}
 	while (str[i])
@@ -33,9 +34,9 @@ int	check_invalid(char *str)
 			break ;
 		if (check_illegal(str[i]))
 		{
-			ft_putstr_fd("export: ", 2);
-			ft_putstr_fd(str, 2);
-			ft_putstr_fd(": not a valid identifier\n", 2);
+			ft_putstr_fd("export: ", STDERR_FILENO);
+			ft_putstr_fd(str, STDERR_FILENO);
+			ft_putstr_fd(": not a valid identifier\n", STDERR_FILENO);
 			shell()->exit_flag = 1;
 			return (1);
 		}
@@ -46,13 +47,20 @@ int	check_invalid(char *str)
 
 void	print_export(void)
 {
+	int		i;
 	t_envp	*ptr;
 
 	ptr = shell()->envp_l;
 	while (ptr)
 	{
-		printf("declare -x ");
-		printf("%s\n", ptr->data);
+		i = -1;
+		ft_putstr_fd("declare -x ", STDOUT_FILENO);
+		while (ptr->data[++i] != '=')
+			write(STDOUT_FILENO, &ptr->data[i], 1);
+		write(STDOUT_FILENO, &ptr->data[i++], 1);
+		write(STDOUT_FILENO, "\"", 1);
+		ft_putstr_fd(&ptr->data[i], STDOUT_FILENO);
+		write(STDOUT_FILENO, "\"\n", 2);
 		ptr = ptr->next;
 	}
 }

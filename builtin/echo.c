@@ -30,12 +30,12 @@ void	handle_echo(char **av)
 		ft_putnbr_fd(shell()->exit_flag, 1);
 	while (av[i])
 	{
-		ft_putstr_fd(av[i], 1);
+		ft_putstr_fd(av[i], STDOUT_FILENO);
 		if (av[i + 1])
-			ft_putstr_fd(" ", 1);
+			ft_putstr_fd(" ", STDOUT_FILENO);
 		i++;
 	}
 	if (!flag)
-		write(1, "\n", 1);
+		write(STDOUT_FILENO, "\n", 1);
 	shell()->exit_flag = 0;
 }

@@ -14,7 +14,7 @@ void	handle_exit(char **av)
 		i++;
 	if (i > 2)
 	{
-		ft_putstr_fd("exit: too many arguments\n", 2);
+		ft_putstr_fd("exit: too many arguments\n", STDERR_FILENO);
 		shell()->exit_flag = 127;
 		return ;
 	}
@@ -43,9 +43,9 @@ static void	handle_valid(char **av)
 
 static void	handle_invalid(char **av)
 {
-	ft_putstr_fd("exit: ", 2);
-	ft_putstr_fd(av[1], 2);
-	ft_putstr_fd(": numeric argument required\n", 2);
+	ft_putstr_fd("exit: ", STDERR_FILENO);
+	ft_putstr_fd(av[1], STDERR_FILENO);
+	ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
 	clear_envp(shell()->envp_l);
 	clear_av(av);
 	exit (2);

@@ -37,7 +37,7 @@ static void	handle_cd_errors(char *tmp, char *buff, int i)
 {
 	if (i > 2)
 	{
-		ft_putstr_fd("cd: too many arguments\n", 2);
+		ft_putstr_fd("cd: too many arguments\n", STDERR_FILENO);
 		shell()->exit_flag = 1;
 		return ;
 	}
@@ -53,7 +53,7 @@ static void	handle_home(char *str, char *buff)
 	node = getenv_list("HOME");
 	if (!node)
 	{
-		ft_putstr_fd("cd: HOME not set\n", 2);
+		ft_putstr_fd("cd: HOME not set\n", STDERR_FILENO);
 		shell()->exit_flag = 1;
 		return ;
 	}
@@ -79,7 +79,7 @@ static void	handle_oldpwd(char *str, char *buff)
 	node = getenv_list("OLDPWD");
 	if (!node)
 	{
-		ft_putstr_fd("cd: OLDPWD not set\n", 2);
+		ft_putstr_fd("cd: OLDPWD not set\n", STDERR_FILENO);
 		shell()->exit_flag = 1;
 		return ;
 	}
