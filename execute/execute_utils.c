@@ -3,7 +3,6 @@
 static void	read_line_heredoc(t_redircmd *redircmd, char *ptr)
 {
 	int			hd_pipe[2];
-	//	char		*ptr;
 
 	sig_handler_doc();
 	if (pipe(hd_pipe) < 0)
@@ -11,7 +10,6 @@ static void	read_line_heredoc(t_redircmd *redircmd, char *ptr)
 		perror("pipe error");
 		exit(EXIT_FAILURE);
 	}
-//	ptr = NULL;
 	perform_expansion(redircmd->file, &shell()->expan_delim);
 	while (1)
 	{
