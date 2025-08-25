@@ -59,6 +59,8 @@ void	run_cmd(char *str)
 	int		pid;
 	int		waitval;
 
+	if (!*str)
+		return ;
 	shell()->has_child = 1;
 	cmd = parsecmd(str, str + ft_strlen(str));
 	shell()->cmd = cmd;
@@ -66,7 +68,6 @@ void	run_cmd(char *str)
 		if (run_cmd_builtin_check(cmd))
 			return ;
 	pid = safe_fork();
-	shell()->child_pid = pid;
 	if (pid == 0)
 	{
 		shell()->envp_av = envp_to_av();
@@ -88,13 +89,13 @@ static void	reset_child_flag(int value)
 	if (shell()->has_child == 1 && value == 131)
 	{
 		ft_putstr_fd("Quit (core dumped)", STDERR_FILENO);
-		write(1, "\n", 1);
+		write(STDOUT_FILENO, "\n", 1);
 	}
 	else if (value == 130)
-		write(1, "\n", 1);
+		write(STDOUT_FILENO, "\n", 1);
 	else if (shell()->has_child == 1 && value == 230)
 	{
-		write(1, "\n", 1);
+		write(STDOUT_FILENO, "\n", 1);
 		shell()->exit_flag = 130;
 	}
 	shell()->has_child = 0;

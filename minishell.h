@@ -46,8 +46,6 @@ typedef struct s_shell
 	int				envp_size;
 	int				exit_flag;
 	int				level;
-	int				parent_pid;
-	int				child_pid;
 	char			pwd[1024];
 	char			oldpwd[1024];
 	int				has_child;

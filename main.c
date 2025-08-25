@@ -14,7 +14,6 @@ int	main(int argc, char **argv, char **envp)
 		return (1);
 	envp_and_shlvl(envp);
 	sig_handler_parent();
-	shell()->parent_pid = getpid();
 	while (42)
 	{
 		if (ft_getline() == 1)
@@ -22,7 +21,6 @@ int	main(int argc, char **argv, char **envp)
 		if (!shell()->line)
 			break ;
 		run_cmd(shell()->line);
-		shell()->child_pid = 0;
 		free(shell()->line);
 		shell()->line = NULL;
 	}
