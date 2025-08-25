@@ -15,10 +15,9 @@ static t_cmd	*parseredirects(t_cmd *cmd, char **str,
 		token = get_token(str, end_str, 0, 0);
 		if (get_token(str, end_str, &ptr, &ptr_end) != 'w')
 		{
-			clear_envp(shell()->envp_l);
 			free_list(cmd_list, 1);
 			ft_putstr_fd("Syntax error: Missing filename or delimiter.\n", 2);
-			exit(EXIT_FAILURE);
+			return (NULL);
 		}
 		cmd = create_token_redir(token, cmd, ptr, ptr_end);
 		((t_redircmd *)cmd)->redir_type = token;
@@ -41,12 +40,16 @@ static t_cmd	*parsestr(char **str, char *end_str, t_list **cmd_list)
 		ft_lstadd_front(cmd_list, ft_lstnew(exec_cmd));
 	ret = (t_cmd *)exec_cmd;
 	ret = parseredirects(ret, str, end_str, cmd_list);
+	if (!ret)
+		return (NULL);
 	while (!ft_exists_wskip(str, end_str, "<>|()") && *str < end_str)
 	{
 		if (!update_exec_argv(str, end_str, exec_cmd, argc))
 			break ;
 		argc++;
 		ret = parseredirects(ret, str, end_str, cmd_list);
+		if (!ret)
+			return (NULL);
 	}
 	exec_cmd->argv[argc] = 0;
 	exec_cmd->eargv[argc] = 0;
@@ -59,10 +62,14 @@ static t_cmd	*parsepipe(char **str, char *end_str, t_list **cmd_list)
 	t_cmd	*left_cmd;
 
 	cmd = parsestr(str, end_str, cmd_list);
+	if (!cmd)
+		return (NULL);
 	if (ft_exists_wskip(str, end_str, "|"))
 	{
 		get_token(str, end_str, 0, 0);
 		left_cmd = parsepipe(str, end_str, cmd_list);
+		if (!left_cmd)
+			return (NULL);
 		cmd = init_t_pipecmd(cmd, left_cmd, cmd_list);
 	}
 	return (cmd);
@@ -75,6 +82,8 @@ t_cmd	*parsecmd(char *str, char *end_str)
 
 	cmd_list = NULL;
 	cmd = parsepipe(&str, end_str, &cmd_list);
+	if (!cmd)
+		return (NULL);
 	free_list(&cmd_list, 0);
 	nullify(cmd);
 	return (cmd);
