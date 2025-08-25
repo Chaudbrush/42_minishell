@@ -5,7 +5,7 @@ static void	print_error(char *str);
 int	check_illegal(char c)
 {
 	int			i;
-	const char	*illegal = "!@#%$^&*(){}[];,.:+-";
+	const char	*illegal = "!@#%$^&*(){}[];,.:+-/~";
 
 	i = 0;
 	while (illegal[i])
@@ -32,7 +32,7 @@ int	check_invalid(char *str)
 	{
 		if (str[i] == '=')
 			break ;
-		if (check_illegal(str[i]))
+		if (check_illegal(str[i]) || str[i] == '?')
 		{
 			print_error(str);
 			shell()->exit_flag = 1;
@@ -51,7 +51,7 @@ void	print_export(void)
 	ptr = shell()->envp_l;
 	while (ptr)
 	{
-		i = 0;
+		i = -1;
 		ft_putstr_fd("declare -x ", STDOUT_FILENO);
 		if (ft_strchr(ptr->data, '='))
 		{

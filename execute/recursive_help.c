@@ -1,6 +1,6 @@
 #include "execute.h"
 
-static int	handle_flags(char *str);
+static int	handle_flags(char *str, char *str_ptr);
 static char	*create_exec(char *str);
 
 void	pipe_left(int pipe_in, int pipe_out, t_cmd *cmd, char **envp)
@@ -33,22 +33,22 @@ int	execute_cmd(char **expanded_argv, char **envp)
 		str_ptr = create_exec(expanded_argv[0]);
 	execve(str_ptr, expanded_argv, envp);
 	free(str_ptr);
-	exit_flag = handle_flags(expanded_argv[0]);
+	exit_flag = handle_flags(expanded_argv[0], NULL);
 	return (exit_flag);
 }
 
-static int	handle_flags(char *str)
+static int	handle_flags(char *str, char *str_ptr)
 {
-	char		*str_ptr;
 	struct stat	flag;
 
+	ft_memset(&flag, 0, sizeof(flag));
 	stat(str, &flag);
-	if (S_ISREG(flag.st_mode) && errno == EACCES)
+	if (S_ISREG(flag.st_mode) && errno == EACCES && ft_strchr(str, '/'))
 	{
 		perror(str);
 		return (126);
 	}
-	if (S_ISDIR(flag.st_mode))
+	else if (S_ISDIR(flag.st_mode) && errno == EACCES && ft_strchr(str, '/'))
 	{
 		ft_putstr_fd("error: ", STDERR_FILENO);
 		ft_putstr_fd(str, STDERR_FILENO);

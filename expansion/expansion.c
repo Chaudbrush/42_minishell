@@ -23,7 +23,7 @@ int	perform_expansion(char *src, char **dest)
 	if (!src)
 		return (0);
 	i = get_expansion_len(src);
-	printf("%i\n", i);
+//	printf("%i\n", i);
 	if (i == 0)
 		return (0);
 	copy_expansion(src, dest, i);
@@ -42,9 +42,9 @@ char	**expansion(t_execcmd *execcmd)
 	ft_memset(strs, 0, sizeof(strs));
 	while (execcmd->argv[i])
 	{
-		printf("A: %s\n", execcmd->argv[0]);
-		printf("B: %s\n", execcmd->argv[1]);
-		printf("runs a second time.\n");
+//		printf("A: %s\n", execcmd->argv[0]);
+//		printf("B: %s\n", execcmd->argv[1]);
+//		printf("runs a second time.\n");
 		if (is_expandable(execcmd->argv[i]))
 		{
 			if (!perform_expansion(execcmd->argv[i], &strs[j]))
