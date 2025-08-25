@@ -66,7 +66,7 @@ void	run_cmd(char *str)
 	cmd = parsecmd(str, str + ft_strlen(str));
 	if (!cmd)
 	{
-		shell()->exit_flag = 1;
+		shell()->exit_flag = 2;
 		return ;
 	}
 	shell()->cmd = cmd;
