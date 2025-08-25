@@ -5,7 +5,8 @@ static void	reset_child_flag(int value);
 int	built_in_exec(t_cmd *cmd, char **expanded_argv
 	, t_execcmd *execcmd, t_cmd *temp)
 {
-	if (is_builtin(expanded_argv))
+	if (*expanded_argv && (!ft_strcmp(*expanded_argv, "cd")
+			|| !ft_strcmp(*expanded_argv, "exit")))
 	{
 		preprocess_heredoc(cmd);
 		if (temp->type == REDIR)
@@ -61,6 +62,11 @@ void	run_cmd(char *str)
 
 	shell()->has_child = 1;
 	cmd = parsecmd(str, str + ft_strlen(str));
+	if (!cmd)
+	{
+		shell()->exit_flag = 1;
+		return ;
+	}
 	shell()->cmd = cmd;
 	if (cmd->type != PIPE)
 		if (run_cmd_builtin_check(cmd))
