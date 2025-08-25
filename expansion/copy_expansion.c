@@ -41,7 +41,7 @@ static void	handle_quotes(char **src, char *dest, int *dest_index)
 		(*src)++;
 }
 
-void	copy_expansion(char *src, char **destination, int src_size)
+void	copy_expansion(char *src, char **destination, int src_size, int *ret)
 {
 	int		i;
 	char	*dest;
@@ -59,6 +59,7 @@ void	copy_expansion(char *src, char **destination, int src_size)
 		}
 		if (*src == '\'' || *src == '\"')
 		{
+			*ret = 1;
 			handle_quotes(&src, dest, &i);
 			continue ;
 		}

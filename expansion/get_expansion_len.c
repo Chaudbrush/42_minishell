@@ -13,7 +13,7 @@ static void	handle_quotes(char **src, int *dest_index)
 		if (**src == '$' && quotes == '\"')
 		{
 			(*src)++;
-			expand_dollar(src, dest_index);
+			free(expand_dollar(src, dest_index));
 			continue ;
 		}
 		(*src)++;

@@ -30,14 +30,14 @@ char	*expand_dollar(char **src, int *i)
 	int		j;
 
 	str = NULL;
-	j = 0;
+	j = 1;
 	if (**src == '?')
-	{
-		j++;
 		str = ft_itoa(shell()->exit_flag);
-	}
+	else if (ft_isdigit(**src))
+		str = NULL;
 	else
 	{
+		j--;
 		while (!char_presence((*src)[j], " \t\r\n\v\"$/\'=")
 				&& !check_illegal((*src)[j]) && (*src)[j])
 			j++;
