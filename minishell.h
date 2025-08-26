@@ -35,7 +35,6 @@ typedef struct s_envp
 
 typedef struct s_shell
 {
-	int				status;
 	char			*line;
 	char			*token;
 	char			**cmds;

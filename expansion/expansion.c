@@ -61,7 +61,7 @@ char	**expansion(t_execcmd *execcmd)
 }
 
 // Added this function here !!!
-char	*heredoc_expansion(char *str)
+char	*heredoc_expansion(char *str, int should_expand)
 {
 	char	*tmp;
 	int		i;
@@ -70,7 +70,12 @@ char	*heredoc_expansion(char *str)
 	tmp = NULL;
 	while (str[i])
 	{
-		if (is_expandable(str))
+		if (!should_expand)
+		{
+			tmp = ft_strdup(str);
+			break ;
+		}
+		if (is_expandable(str) || should_expand)
 		{
 			if (!perform_expansion(str, &tmp))
 			{

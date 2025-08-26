@@ -1,10 +1,12 @@
 #include "execute.h"
 
-static void	check_and_expand(char *ptr, int fd);
+static int	char_presence_2(char c, char *str); // Del this later // Maybe merge with the first one
+static void	check_and_expand(char *ptr, int fd, int should_expand);
 
 static void	read_line_heredoc(t_redircmd *redircmd, char *ptr)
 {
 	int			hd_pipe[2];
+	int			should_expand;
 
 	sig_handler_doc();
 	if (pipe(hd_pipe) < 0)
@@ -12,6 +14,9 @@ static void	read_line_heredoc(t_redircmd *redircmd, char *ptr)
 		perror("pipe error");
 		exit(EXIT_FAILURE);
 	}
+	should_expand = 1;
+	if (redircmd->file[0] == '\"' || redircmd->file[0] == '\'')
+		should_expand = 0;
 	perform_expansion(redircmd->file, &shell()->expan_delim);
 	while (1)
 	{
@@ -21,39 +26,41 @@ static void	read_line_heredoc(t_redircmd *redircmd, char *ptr)
 			free(ptr);
 			break ;
 		}
-		check_and_expand(ptr, hd_pipe[1]);
+		check_and_expand(ptr, hd_pipe[1], should_expand);
 	}
 	close(hd_pipe[1]);
 	redircmd->heredoc_fdin = hd_pipe[0];
 	free(shell()->expan_delim);
 }
 
-static void	check_and_expand(char *ptr, int fd)
+static void	check_and_expand(char *ptr, int fd, int should_expand)
 {
-	char *c;
+	char c;
 
-	c = ft_strchr(shell()->expan_delim, '\"');
+	c = char_presence_2('\"', ptr);
 	if (!c)
-		c = ft_strchr(shell()->expan_delim, '\'');
-	if (c) // DO NOT Expand
-	{
-		write(fd, ptr, ft_strlen(ptr));
-		write(fd, "\n", 1);
-		free(ptr);
-	}
-	else
-	{
-		c = ft_strchr(ptr, '\"');
-		if (!c)
-			c = ft_strchr(ptr, '\'');
-		write(fd, c, 1);
-		ptr = heredoc_expansion(ptr); // Added this line to heredoc // Not working as intended right now, leaks
-		write(fd, ptr, ft_strlen(ptr));
-		write(fd, c, 1);
-		write(fd, "\n", 1);
-		free(ptr);
-	}
+		c = char_presence_2('\'', ptr);
+	if (should_expand && c)
+		write(fd, &c, 1);
+	ptr = heredoc_expansion(ptr, should_expand); // Added this line to heredoc // Not working as intended right now, leaks
+	write(fd, ptr, ft_strlen(ptr));
+	if (should_expand && c)
+		write(fd, &c, 1);
+	write(fd, "\n", 1);
+	free(ptr);
 }
+
+static int	char_presence_2(char c, char *str) // Del this later // Just returning c
+{
+	while (*str)
+	{
+		if (*str == c)
+			return (c);
+		str++;
+	}
+	return (0);
+}	
+
 
 void	preprocess_heredoc(t_cmd *cmd)
 {
