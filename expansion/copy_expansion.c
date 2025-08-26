@@ -47,6 +47,7 @@ void	copy_expansion(char *src, char **destination, int src_size, int *ret)
 	char	*dest;
 
 	i = 0;
+//	printf("%s\n", src);
 	*destination = safe_malloc(sizeof(char) * (src_size + 1));
 	dest = *destination;
 	while (*src)

@@ -19,6 +19,7 @@ static void	read_line_heredoc(t_redircmd *redircmd, char *ptr)
 			free(ptr);
 			break ;
 		}
+		ptr = heredoc_expansion(ptr); // Added this line to heredoc // Not working as intended right now, leaks
 		write(hd_pipe[1], ptr, ft_strlen(ptr));
 		write(hd_pipe[1], "\n", 1);
 		free(ptr);

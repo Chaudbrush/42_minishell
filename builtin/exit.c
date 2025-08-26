@@ -12,25 +12,25 @@ void	handle_exit(char **av)
 	i = 0;
 	while (av[i])
 		i++;
-	if (i > 2)
-	{
-		ft_putstr_fd("exit: too many arguments\n", STDERR_FILENO);
-		shell()->exit_flag = 1;
-		return ;
-	}
+	ft_putstr_fd("exit\n", STDOUT_FILENO);
 	if (i > 1)
 	{
 		if (invalid_exit(av))
 			handle_invalid(av);
+		else if (i > 2)
+		{
+			ft_putstr_fd("exit: too many arguments\n", STDERR_FILENO);
+			if (!shell()->exit_flag)
+				shell()->exit_flag = 1;
+			return ;
+		}
 		else
 			handle_valid(av);
 	}
-	printf("exit\n");
 	clear_envp(shell()->envp_l);
-	clear_av(av);
 	free_trees(shell()->cmd);
-	free(shell()->envp_av);
-	exit (shell()->exit_flag);
+	clear_av(av);
+	exit (0);
 }
 
 static void	handle_valid(char **av)
@@ -38,8 +38,8 @@ static void	handle_valid(char **av)
 	int	ex_flag;
 
 	ex_flag = ft_atoi(av[1]);
-	printf("exit\n");
 	clear_envp(shell()->envp_l);
+	free_trees(shell()->cmd);
 	clear_av(av);
 	exit ((unsigned char)ex_flag);
 }
@@ -50,6 +50,7 @@ static void	handle_invalid(char **av)
 	ft_putstr_fd(av[1], STDERR_FILENO);
 	ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
 	clear_envp(shell()->envp_l);
+	free_trees(shell()->cmd);
 	clear_av(av);
 	exit (2);
 }

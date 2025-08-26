@@ -60,20 +60,51 @@ char	**expansion(t_execcmd *execcmd)
 	return (strs);
 }
 
-void	expansion_av(char **av)
+// Added this function here !!!
+char	*heredoc_expansion(char *str)
 {
 	char	*tmp;
 	int		i;
 
 	i = 0;
-	while (av[i])
+	tmp = NULL;
+	while (str[i])
 	{
-		if (is_expandable(av[i]))
+		if (is_expandable(str))
 		{
-			tmp = av[i];
-			perform_expansion(tmp, &av[i]);
+			if (!perform_expansion(str, &tmp))
+			{
+				free(tmp);
+				i++;
+				continue ;
+			}
+		}
+		else
+		{
 			free(tmp);
+			tmp = ft_strdup(str);
 		}
 		i++;
 	}
+//	free(str);
+	return (tmp);
 }
+
+// I think it's safe to del
+// void	expansion_av(char **av)
+// {
+// 	char	*tmp;
+// 	int		i;
+
+// 	i = 0;
+// 	while (av[i])
+// 	{
+// 		if (is_expandable(av[i]))
+// 		{
+// 			tmp = av[i];
+// 			perform_expansion(tmp, &av[i]);
+// 			free(tmp);
+// 		}
+// 		i++;
+// 	}
+// }

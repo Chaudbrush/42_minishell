@@ -8,14 +8,14 @@ int	ft_getline(void)
 	add_history(shell()->line);
 	if (check_quotes(shell()->line))
 	{
-		ft_putstr_fd("syntax error, open quotes\n", STDERR_FILENO);
-		shell()->exit_flag = 1;
+		ft_putstr_fd("syntax error: open quotes\n", STDERR_FILENO);
+		shell()->exit_flag = 2;
 		return (1);
 	}
 	if (check_invalid_tokens(shell()->line))
 	{
-		ft_putstr_fd("syntax error, token '()\\' are not supported \n", 2);
-		shell()->exit_flag = 1;
+		ft_putstr_fd("syntax error: token '()\\' are not supported \n", 2);
+		shell()->exit_flag = 2;
 		return (1);
 	}
 	return (0);
