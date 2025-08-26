@@ -38,8 +38,7 @@ static t_cmd	*parsestr(char **str, char *end_str, t_list **cmd_list)
 		*cmd_list = ft_lstnew(exec_cmd);
 	else
 		ft_lstadd_front(cmd_list, ft_lstnew(exec_cmd));
-	ret = (t_cmd *)exec_cmd;
-	ret = parseredirects(ret, str, end_str, cmd_list);
+	ret = parseredirects((t_cmd *)exec_cmd, str, end_str, cmd_list);
 	if (!ret)
 		return (NULL);
 	while (!ft_exists_wskip(str, end_str, "<>|()") && *str < end_str)
@@ -54,6 +53,20 @@ static t_cmd	*parsestr(char **str, char *end_str, t_list **cmd_list)
 	exec_cmd->argv[argc] = 0;
 	exec_cmd->eargv[argc] = 0;
 	return (ret);
+}
+
+static int	pipe_syntax_err(t_pipecmd *pipecmd)
+{
+	t_execcmd	*right_exec;
+	t_execcmd	*left_exec;
+
+	right_exec = (t_execcmd *)(pipecmd->right);
+	left_exec = (t_execcmd *)(pipecmd->left);
+	if ((pipecmd->left->type == EXEC && !left_exec->argv[0])
+		|| (pipecmd->right->type == EXEC && !right_exec->argv[0]))
+		return (ft_putstr_fd("syntax error near unexpected token `|'\n", 2)
+			, 1);
+	return (0);
 }
 
 static t_cmd	*parsepipe(char **str, char *end_str, t_list **cmd_list)
@@ -71,6 +84,8 @@ static t_cmd	*parsepipe(char **str, char *end_str, t_list **cmd_list)
 		if (!left_cmd)
 			return (NULL);
 		cmd = init_t_pipecmd(cmd, left_cmd, cmd_list);
+		if (pipe_syntax_err((t_pipecmd *)cmd))
+			return (free_list(cmd_list, 1), (NULL));
 	}
 	return (cmd);
 }
