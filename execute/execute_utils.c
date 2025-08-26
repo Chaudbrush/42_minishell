@@ -1,5 +1,7 @@
 #include "execute.h"
 
+static void	check_and_expand(char *ptr, int fd);
+
 static void	read_line_heredoc(t_redircmd *redircmd, char *ptr)
 {
 	int			hd_pipe[2];
@@ -19,14 +21,38 @@ static void	read_line_heredoc(t_redircmd *redircmd, char *ptr)
 			free(ptr);
 			break ;
 		}
-		ptr = heredoc_expansion(ptr); // Added this line to heredoc // Not working as intended right now, leaks
-		write(hd_pipe[1], ptr, ft_strlen(ptr));
-		write(hd_pipe[1], "\n", 1);
-		free(ptr);
+		check_and_expand(ptr, hd_pipe[1]);
 	}
 	close(hd_pipe[1]);
 	redircmd->heredoc_fdin = hd_pipe[0];
 	free(shell()->expan_delim);
+}
+
+static void	check_and_expand(char *ptr, int fd)
+{
+	char *c;
+
+	c = ft_strchr(shell()->expan_delim, '\"');
+	if (!c)
+		c = ft_strchr(shell()->expan_delim, '\'');
+	if (c) // DO NOT Expand
+	{
+		write(fd, ptr, ft_strlen(ptr));
+		write(fd, "\n", 1);
+		free(ptr);
+	}
+	else
+	{
+		c = ft_strchr(ptr, '\"');
+		if (!c)
+			c = ft_strchr(ptr, '\'');
+		write(fd, c, 1);
+		ptr = heredoc_expansion(ptr); // Added this line to heredoc // Not working as intended right now, leaks
+		write(fd, ptr, ft_strlen(ptr));
+		write(fd, c, 1);
+		write(fd, "\n", 1);
+		free(ptr);
+	}
 }
 
 void	preprocess_heredoc(t_cmd *cmd)
