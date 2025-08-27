@@ -1,7 +1,7 @@
 #include "execute.h"
 
 static int	new_len(char *file);
-static int	char_presence_2(char c, char *str); // Del this later // Maybe merge with the first one
+static void put_nonprint(char *str);
 static void	check_and_expand(char *ptr, int fd);
 static int	remove_quotes(char *file, char **result);
 
@@ -37,30 +37,32 @@ static void	read_line_heredoc(t_redircmd *redircmd, char *ptr)
 
 static void	check_and_expand(char *ptr, int fd)
 {
-	char c;
 
-	c = char_presence_2('\"', ptr);
-	if (!c)
-		c = char_presence_2('\'', ptr);
-	if (shell()->doc_exp && c)
-		write(fd, &c, 1);
-	ptr = heredoc_expansion(ptr); // Added this line to heredoc // Not working as intended right now, leaks
-	write(fd, ptr, ft_strlen(ptr));
-	if (shell()->doc_exp && c)
-		write(fd, &c, 1);
+	if (shell()->doc_exp)
+	{
+		put_nonprint(ptr);
+		ptr = heredoc_expansion(ptr);
+		write(fd, ptr, ft_strlen(ptr));
+	}
+	else
+		write(fd, ptr, ft_strlen(ptr));
 	write(fd, "\n", 1);
 	free(ptr);
 }
 
-static int	char_presence_2(char c, char *str) // Del this later // Just returning c
+static void put_nonprint(char *str)
 {
-	while (*str)
+	int	i;
+
+	i = 0;
+	while (str[i])
 	{
-		if (*str == c)
-			return (c);
-		str++;
+		if (str[i] == '\'')
+			str[i] = '\2';
+		else if (str[i] == '\"')
+			str[i] = '\3';
+		i++;
 	}
-	return (0);
 }
 
 void	preprocess_heredoc(t_cmd *cmd)
@@ -83,6 +85,8 @@ void	preprocess_heredoc(t_cmd *cmd)
 	}
 }
 
+
+// Two functions to remove the quotes from heredoc delimiter
 static int	remove_quotes(char *file, char **result)
 {
 	int	i;

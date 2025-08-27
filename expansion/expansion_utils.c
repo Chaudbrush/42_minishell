@@ -38,7 +38,7 @@ char	*expand_dollar(char **src, int *i)
 	else
 	{
 		j--;
-		while (!char_presence((*src)[j], " \t\r\n\v\"$/\'=")
+		while (!char_presence((*src)[j], " \t\r\n\v\"$/\'\2\3=")
 				&& !check_illegal((*src)[j]) && (*src)[j])
 			j++;
 		str = search_envp(*src, *src + j);

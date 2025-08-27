@@ -5,7 +5,7 @@ int	char_presence(char c, char *str)
 	while (*str)
 	{
 		if (*str == c)
-			return (1);
+			return (c);
 		str++;
 	}
 	return (0);

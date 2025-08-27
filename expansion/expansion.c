@@ -76,13 +76,23 @@ char	*heredoc_expansion(char *str)
 	}
 	else
 	{
-		printf("alo\n"); // Del
 		if (!perform_expansion(str, &tmp))
 		{
 			free(tmp);
 			return (NULL);
 		}
 	}
+//	printf("%d\n", (int)ft_strlen(tmp));
+//	printf("tmp 1: %s\n", tmp);
+	while (tmp[i])
+	{
+		if (tmp[i] == '\2')
+			tmp[i] = '\'';
+		else if (tmp[i] == '\3')
+			tmp[i] = '\"';
+		i++;
+	}
+//	printf("tmp 2: %s\n", tmp);
 //	free(str);
 	return (tmp);
 }
