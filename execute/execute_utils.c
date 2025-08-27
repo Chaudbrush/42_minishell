@@ -3,7 +3,6 @@
 static int	new_len(char *file);
 static void put_nonprint(char *str);
 static void	check_and_expand(char *ptr, int fd);
-static int	remove_quotes(char *file, char **result);
 
 static void	read_line_heredoc(t_redircmd *redircmd, char *ptr)
 {
@@ -87,7 +86,7 @@ void	preprocess_heredoc(t_cmd *cmd)
 
 
 // Two functions to remove the quotes from heredoc delimiter
-static int	remove_quotes(char *file, char **result)
+int	remove_quotes(char *file, char **result)
 {
 	int	i;
 	int	j;

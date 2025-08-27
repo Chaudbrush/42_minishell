@@ -27,4 +27,7 @@ int		exec_recursive(t_cmd *cmd, char **envp);
 // Mod Split
 char	**mod_split(char *str, char c);
 
+int	remove_quotes(char *file, char **result);
+
+
 #endif
