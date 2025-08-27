@@ -12,6 +12,6 @@ int		get_expansion_len(char *src);
 void	copy_expansion(char *src, char **destination, int src_size, int *ret);
 int		perform_expansion(char *src, char **dest);
 
-char	*heredoc_expansion(char *str, int should_expand);
+char	*heredoc_expansion(char *str);
 
 #endif

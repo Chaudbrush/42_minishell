@@ -41,9 +41,42 @@ static void	handle_cd_errors(char *tmp, char *buff, int i)
 		shell()->exit_flag = 1;
 		return ;
 	}
+	ft_putstr_fd("cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory\n", 2);
+	ft_putstr_fd("cd: moved to /home\n", 2);
 	chdir("/home");
 	update_pwd(tmp, buff);
 }
+
+// static void	handle_cd_errors(char **av, char *tmp, char *buff, int i)
+// {
+// 	int		j;
+// 	char	*new;
+// 	char	*new_2;
+
+// 	new_2 = ft_strjoin(shell()->pwd, "/");
+// 	new = ft_strjoin(new_2, av[1]);
+// 	free(new_2);
+// 	errno = 0;
+// 	if (i > 2)
+// 	{
+// 		ft_putstr_fd("cd: too many arguments\n", STDERR_FILENO);
+// 		shell()->exit_flag = 1;
+// 		free(new);
+// 		return ;
+// 	}
+// 	printf("new: %s\n", new);
+// 	j = chdir(new);
+// 	printf("%d %d\n", j, errno);
+// 	if (j == -1)
+// 	{
+// 		printf("here\n");
+// 		perror(av[1]);
+// 		free(new);
+// 		return;
+// 	}
+// 	free(new);
+// 	update_pwd(tmp, buff);
+// }
 
 static void	handle_home(char *str, char *buff)
 {
@@ -94,6 +127,8 @@ static void	handle_oldpwd(char *str, char *buff)
 		}
 		shell()->exit_flag = 0;
 	}
+	ft_putstr_fd(tmp, STDOUT_FILENO);
+	write(STDOUT_FILENO, "\n", 1);
 	update_pwd(str, buff);
 }
 

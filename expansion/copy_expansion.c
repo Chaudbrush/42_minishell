@@ -26,7 +26,7 @@ static void	handle_quotes(char **src, char *dest, int *dest_index)
 	(*src)++;
 	while (**src != quotes && **src)
 	{
-		if (**src == '$' && quotes == '\"')
+		if (**src == '$' && (quotes == '\"' || shell()->doc_exp))
 		{
 			(*src)++;
 			*dest_index += append_var(expand_dollar(src, NULL),

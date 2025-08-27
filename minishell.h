@@ -48,6 +48,7 @@ typedef struct s_shell
 	char			pwd[1024];
 	char			oldpwd[1024];
 	int				has_child;
+	int				doc_exp;
 }	t_shell;
 
 // Delete this later

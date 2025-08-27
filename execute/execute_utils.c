@@ -1,12 +1,13 @@
 #include "execute.h"
 
+static int	new_len(char *file);
 static int	char_presence_2(char c, char *str); // Del this later // Maybe merge with the first one
-static void	check_and_expand(char *ptr, int fd, int should_expand);
+static void	check_and_expand(char *ptr, int fd);
+static int	remove_quotes(char *file, char **result);
 
 static void	read_line_heredoc(t_redircmd *redircmd, char *ptr)
 {
 	int			hd_pipe[2];
-	int			should_expand;
 
 	sig_handler_doc();
 	if (pipe(hd_pipe) < 0)
@@ -14,10 +15,10 @@ static void	read_line_heredoc(t_redircmd *redircmd, char *ptr)
 		perror("pipe error");
 		exit(EXIT_FAILURE);
 	}
-	should_expand = 1;
-	if (redircmd->file[0] == '\"' || redircmd->file[0] == '\'')
-		should_expand = 0;
-	perform_expansion(redircmd->file, &shell()->expan_delim);
+	shell()->doc_exp = 0;
+	if (!ft_strchr(redircmd->file, '\"') && !ft_strchr(redircmd->file, '\''))
+		shell()->doc_exp = 1;
+	remove_quotes(redircmd->file, &shell()->expan_delim);
 	while (1)
 	{
 		ptr = readline(">");
@@ -26,25 +27,26 @@ static void	read_line_heredoc(t_redircmd *redircmd, char *ptr)
 			free(ptr);
 			break ;
 		}
-		check_and_expand(ptr, hd_pipe[1], should_expand);
+		check_and_expand(ptr, hd_pipe[1]);
 	}
+	shell()->doc_exp = 0;
 	close(hd_pipe[1]);
 	redircmd->heredoc_fdin = hd_pipe[0];
 	free(shell()->expan_delim);
 }
 
-static void	check_and_expand(char *ptr, int fd, int should_expand)
+static void	check_and_expand(char *ptr, int fd)
 {
 	char c;
 
 	c = char_presence_2('\"', ptr);
 	if (!c)
 		c = char_presence_2('\'', ptr);
-	if (should_expand && c)
+	if (shell()->doc_exp && c)
 		write(fd, &c, 1);
-	ptr = heredoc_expansion(ptr, should_expand); // Added this line to heredoc // Not working as intended right now, leaks
+	ptr = heredoc_expansion(ptr); // Added this line to heredoc // Not working as intended right now, leaks
 	write(fd, ptr, ft_strlen(ptr));
-	if (should_expand && c)
+	if (shell()->doc_exp && c)
 		write(fd, &c, 1);
 	write(fd, "\n", 1);
 	free(ptr);
@@ -59,8 +61,7 @@ static int	char_presence_2(char c, char *str) // Del this later // Just returnin
 		str++;
 	}
 	return (0);
-}	
-
+}
 
 void	preprocess_heredoc(t_cmd *cmd)
 {
@@ -80,4 +81,43 @@ void	preprocess_heredoc(t_cmd *cmd)
 			read_line_heredoc(redircmd, NULL);
 		return ;
 	}
+}
+
+static int	remove_quotes(char *file, char **result)
+{
+	int	i;
+	int	j;
+	int	len;
+
+	i = -1;
+	j = 0;
+	len = new_len(file);
+	*result = malloc(sizeof(char) * (len + 1));
+	if (!*result)
+		return (-1);
+	while (file[++i])
+	{
+		if (file[i] == '\'' || file[i] == '\"')
+			continue ;
+		(*result)[j] = file[i];
+		j++;
+	}
+	(*result)[j] = 0;
+	return (0);
+}
+
+static int	new_len(char *file)
+{
+	int	i;
+	int	len;
+
+	i = -1;
+	len = 0;
+	while (file[++i])
+	{
+		if (file[i] == '\'' || file[i] == '\"')
+			continue ;
+		len++;
+	}
+	return (len);
 }

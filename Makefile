@@ -6,7 +6,7 @@
 #    By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/11 09:44:49 by vloureir          #+#    #+#              #
-#    Updated: 2025/08/26 17:01:05 by vloureir         ###   ########.fr        #
+#    Updated: 2025/08/27 10:02:22 by vloureir         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ OBJ := $(SRC:.c=.o) $(ENVP:.c=.o) $(SIGNAL:.c=.o) $(RUN_CMD:.c=.o) $(BUILTIN:.c=
 
 #VAL := --leak-check=full --show-leak-kinds=all --track-origins=yes --show-reachable=yes --trace-children=yes --track-fds=all --suppressions=readline.supp
 VAL := --leak-check=full --show-leak-kinds=all --track-origins=yes --show-reachable=yes --track-fds=all --suppressions=readline.supp
-CFLAGS := -Wall -Werror -Wextra -g
+#CFLAGS := -Wall -Werror -Wextra -g
 
 LFLAG := -lreadline -Llibft -lft
 

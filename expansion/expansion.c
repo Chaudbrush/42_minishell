@@ -25,6 +25,7 @@ int	perform_expansion(char *src, char **dest)
 	if (!src)
 		return (0);
 	i = get_expansion_len(src);
+//	printf("%s %d\n", src, i); // Del
 	copy_expansion(src, dest, i, &ret);
 	if (i)
 		ret = 1;
@@ -44,6 +45,7 @@ char	**expansion(t_execcmd *execcmd)
 	{
 		if (is_expandable(execcmd->argv[i]))
 		{
+			
 			if (!perform_expansion(execcmd->argv[i], &strs[j]))
 			{
 				free(strs[j]);
@@ -60,40 +62,66 @@ char	**expansion(t_execcmd *execcmd)
 	return (strs);
 }
 
-// Added this function here !!!
-char	*heredoc_expansion(char *str, int should_expand)
+char	*heredoc_expansion(char *str)
 {
 	char	*tmp;
 	int		i;
 
 	i = 0;
 	tmp = NULL;
-	while (str[i])
+	if (!shell()->doc_exp || !is_expandable(str))
 	{
-		if (!should_expand)
-		{
-			tmp = ft_strdup(str);
-			break ;
-		}
-		if (is_expandable(str) || should_expand)
-		{
-			if (!perform_expansion(str, &tmp))
-			{
-				free(tmp);
-				i++;
-				continue ;
-			}
-		}
-		else
+		tmp = ft_strdup(str);
+		return (tmp);
+	}
+	else
+	{
+		printf("alo\n"); // Del
+		if (!perform_expansion(str, &tmp))
 		{
 			free(tmp);
-			tmp = ft_strdup(str);
+			return (NULL);
 		}
-		i++;
 	}
 //	free(str);
 	return (tmp);
 }
+
+// Added this function here !!!
+// char	*heredoc_expansion(char *str)
+// {
+// 	char	*tmp;
+// 	int		i;
+
+// 	i = 0;
+// 	tmp = NULL;
+// 	while (str[i])
+// 	{
+// 		if (!shell()->doc_exp)
+// 		{
+// 			tmp = ft_strdup(str);
+// 			break ;
+// 		}
+// 		if (is_expandable(str))
+// 		{
+// 			printf("alo\n"); // Del
+// 			if (!perform_expansion(str, &tmp))
+// 			{
+// 				free(tmp);
+// 				i++;
+// 				continue ;
+// 			}
+// 		}
+// 		else
+// 		{
+// 			free(tmp);
+// 			tmp = ft_strdup(str);
+// 		}
+// 		i++;
+// 	}
+// 	free(str);
+// 	return (tmp);
+// }
 
 // I think it's safe to del
 // void	expansion_av(char **av)
