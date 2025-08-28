@@ -57,7 +57,6 @@ int	run_cmd_builtin_check(t_cmd *cmd)
 void	run_cmd(char *str)
 {
 	t_cmd	*cmd;	
-	int		pid;
 	int		waitval;
 
 	if (!*str)
@@ -73,14 +72,13 @@ void	run_cmd(char *str)
 	if (cmd->type != PIPE)
 		if (run_cmd_builtin_check(cmd))
 			return ;
-	pid = safe_fork();
-	if (pid == 0)
+	if (safe_fork() == 0)
 	{
 		shell()->envp_av = envp_to_av();
 		preprocess_heredoc(cmd);
 		exec_tree(cmd, shell()->envp_av);
 	}
-	waitpid(pid, &waitval, 0);
+	waitpid(-1, &waitval, 0);
 	reset_child_flag(waitval);
 	free_trees(cmd);
 }
