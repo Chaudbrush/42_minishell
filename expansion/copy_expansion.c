@@ -4,6 +4,7 @@ static int	append_var(char *str, char *dest)
 {
 	int	i;
 
+//	printf("app: %s\n", str);
 	i = 0;
 	if (!str)
 		return (0);

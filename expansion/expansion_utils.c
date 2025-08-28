@@ -31,6 +31,9 @@ char	*expand_dollar(char **src, int *i)
 
 	str = NULL;
 	j = 1;
+//	printf("src: %s\n", *src);
+	// if (illegal_expansion(*src))
+	//  	return ft_strjoin("$", *src);
 	if (**src == '?')
 		str = ft_itoa(shell()->exit_flag);
 	else if (ft_isdigit(**src))
@@ -45,6 +48,7 @@ char	*expand_dollar(char **src, int *i)
 		if (str)
 			str = ft_strdup(str);
 	}
+//	printf("%c\n", *str);
 	if (str && i)
 		*i += ft_strlen(str);
 	*src = *src + j;

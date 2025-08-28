@@ -36,12 +36,12 @@ static void	read_line_heredoc(t_redircmd *redircmd, char *ptr)
 
 static void	check_and_expand(char *ptr, int fd)
 {
-
 	if (shell()->doc_exp)
 	{
 		put_nonprint(ptr);
 		ptr = heredoc_expansion(ptr);
-		write(fd, ptr, ft_strlen(ptr));
+		if (ptr)
+			write(fd, ptr, ft_strlen(ptr));
 	}
 	else
 		write(fd, ptr, ft_strlen(ptr));
@@ -83,7 +83,6 @@ void	preprocess_heredoc(t_cmd *cmd)
 		return ;
 	}
 }
-
 
 // Two functions to remove the quotes from heredoc delimiter
 int	remove_quotes(char *file, char **result)

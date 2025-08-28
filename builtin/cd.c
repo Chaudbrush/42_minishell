@@ -3,7 +3,7 @@
 static void	update_pwd(char *str, char *buff);
 static void	handle_home(char *str, char *buff);
 static void	handle_oldpwd(char *str, char *buff);
-static void	handle_cd_errors(char *tmp, char *buff, int i);
+static void	handle_cd_errors(char **av, char *tmp, char *buff, int i);
 
 void	handle_cd(char **av)
 {
@@ -16,7 +16,7 @@ void	handle_cd(char **av)
 		i++;
 	tmp = getcwd(buff, 4096);
 	if (!tmp || i > 2)
-		return (handle_cd_errors(tmp, buff, i));
+		return (handle_cd_errors(av, tmp, buff, i));
 	else if (!av[1])
 		handle_home(tmp, buff);
 	else if (ft_strcmp(av[1], "-") == 0)
@@ -33,50 +33,34 @@ void	handle_cd(char **av)
 	}
 }
 
-static void	handle_cd_errors(char *tmp, char *buff, int i)
+static void	handle_cd_errors(char **av, char *tmp, char *buff, int i)
 {
+	char buffer[4096];
+
 	if (i > 2)
 	{
 		ft_putstr_fd("cd: too many arguments\n", STDERR_FILENO);
 		shell()->exit_flag = 1;
 		return ;
 	}
-	ft_putstr_fd("cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory\n", 2);
-	ft_putstr_fd("cd: moved to /home\n", 2);
-	chdir("/home");
+	if (!chdir(av[1]))
+	{
+		shell()->exit_flag = 0;
+		if (!getcwd(buffer, 4096))
+			ft_putstr_fd("cd: error retrieving current directory: getcwd: \
+cannot access parent directories: No such file or directory\n", 2);
+		else
+			update_pwd(tmp, buff);
+		return;
+	}
+	else
+	{
+		perror(shell()->line);
+		shell()->exit_flag = 1;
+		return ;
+	}
 	update_pwd(tmp, buff);
 }
-
-// static void	handle_cd_errors(char **av, char *tmp, char *buff, int i)
-// {
-// 	int		j;
-// 	char	*new;
-// 	char	*new_2;
-
-// 	new_2 = ft_strjoin(shell()->pwd, "/");
-// 	new = ft_strjoin(new_2, av[1]);
-// 	free(new_2);
-// 	errno = 0;
-// 	if (i > 2)
-// 	{
-// 		ft_putstr_fd("cd: too many arguments\n", STDERR_FILENO);
-// 		shell()->exit_flag = 1;
-// 		free(new);
-// 		return ;
-// 	}
-// 	printf("new: %s\n", new);
-// 	j = chdir(new);
-// 	printf("%d %d\n", j, errno);
-// 	if (j == -1)
-// 	{
-// 		printf("here\n");
-// 		perror(av[1]);
-// 		free(new);
-// 		return;
-// 	}
-// 	free(new);
-// 	update_pwd(tmp, buff);
-// }
 
 static void	handle_home(char *str, char *buff)
 {
