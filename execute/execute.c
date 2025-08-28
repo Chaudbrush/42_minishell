@@ -1,5 +1,30 @@
 #include "execute.h"
 
+static void	close_all_fds(t_cmd *cmd)
+{
+	t_pipecmd	*pipecmd;
+	t_redircmd	*redircmd;
+
+	if (cmd->type == PIPE)
+	{
+		pipecmd = (t_pipecmd *)cmd;
+		close_all_fds(pipecmd->left);
+		close_all_fds(pipecmd->right);
+		return ;
+	}
+	if (cmd->type == REDIR)
+	{
+		redircmd = (t_redircmd *)cmd;
+		while (cmd->type != EXEC)
+		{
+			redircmd = (t_redircmd *)cmd;
+			if (redircmd->redir_type == '-' && redircmd->heredoc_fdin != -1)
+				close(redircmd->heredoc_fdin);
+			cmd = redircmd->link;
+		}
+	}
+}
+
 void	exec_tree(t_cmd *cmd, char **envp)
 {
 	if (!cmd)
@@ -17,6 +42,7 @@ void	exec_tree(t_cmd *cmd, char **envp)
 	}
 	clear_envp(shell()->envp_l);
 	free(envp);
+	close_all_fds(shell()->cmd);
 	free_trees(shell()->cmd);
 	exit(shell()->exit_flag);
 }
