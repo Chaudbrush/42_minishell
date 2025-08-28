@@ -17,7 +17,7 @@ void	handle_cd(char **av)
 	tmp = getcwd(buff, 4096);
 	if (!tmp || i > 2)
 		return (handle_cd_errors(av, tmp, buff, i));
-	else if (!av[1])
+	else if (!av[1] || !ft_strcmp(av[1], "~"))
 		handle_home(tmp, buff);
 	else if (ft_strcmp(av[1], "-") == 0)
 		handle_oldpwd(tmp, buff);
@@ -35,7 +35,7 @@ void	handle_cd(char **av)
 
 static void	handle_cd_errors(char **av, char *tmp, char *buff, int i)
 {
-	char buffer[4096];
+	char	buffer[4096];
 
 	if (i > 2)
 	{
@@ -51,7 +51,7 @@ static void	handle_cd_errors(char **av, char *tmp, char *buff, int i)
 cannot access parent directories: No such file or directory\n", 2);
 		else
 			update_pwd(tmp, buff);
-		return;
+		return ;
 	}
 	else
 	{

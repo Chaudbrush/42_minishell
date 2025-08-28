@@ -6,8 +6,6 @@ static void	reset_child_flag(int value);
 int	built_in_exec(t_cmd *cmd, char **expanded_argv
 	, t_execcmd *execcmd, t_cmd *temp)
 {
-	// if (*expanded_argv && (!ft_strcmp(*expanded_argv, "cd")
-	// 		|| !ft_strcmp(*expanded_argv, "exit")))
 	if (*expanded_argv && builtin_parent(*expanded_argv))
 	{
 		preprocess_heredoc(cmd);
@@ -90,7 +88,7 @@ void	run_cmd(char *str)
 static int	builtin_parent(char *str)
 {
 	if (!ft_strcmp(str, "cd") || !ft_strcmp(str, "exit")
-			|| !ft_strcmp(str, "unset") || !ft_strcmp(str, "export"))
+		|| !ft_strcmp(str, "unset") || !ft_strcmp(str, "export"))
 		return (1);
 	return (0);
 }

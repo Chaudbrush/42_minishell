@@ -24,6 +24,37 @@ static char	*search_envp(char *start, char *end)
 	return (extract_val(env->data));
 }
 
+// char	*expand_dollar(char **src, int *i)
+// {
+// 	char	*str;
+// 	int		j;
+
+// 	str = NULL;
+// 	j = 1;
+// 	printf("src: %s\n", *src);
+// 	if (illegal_expansion(*src))
+// 	 	str = ft_strjoin("$", *src);
+// 	else if (**src == '?')
+// 		str = ft_itoa(shell()->exit_flag);
+// 	else if (ft_isdigit(**src))
+// 		str = NULL;
+// 	else
+// 	{
+// 		j--;
+// 		while (!char_presence((*src)[j], " \t\r\n\v\"\'\2\3$/=")
+// 				&& !check_illegal((*src)[j]) && (*src)[j])
+// 			j++;
+// 		str = search_envp(*src, *src + j);
+// 		if (str)
+// 			str = ft_strdup(str);
+// 	}
+// //	printf("%c\n", *str);
+// 	if (str && i)
+// 		*i += ft_strlen(str);
+// 	*src = *src + j;
+// 	return (str);
+// }
+
 char	*expand_dollar(char **src, int *i)
 {
 	char	*str;
@@ -33,7 +64,7 @@ char	*expand_dollar(char **src, int *i)
 	j = 1;
 //	printf("src: %s\n", *src);
 	// if (illegal_expansion(*src))
-	//  	return ft_strjoin("$", *src);
+	//  	str = ft_strjoin("$", *src);
 	if (**src == '?')
 		str = ft_itoa(shell()->exit_flag);
 	else if (ft_isdigit(**src))
@@ -41,7 +72,7 @@ char	*expand_dollar(char **src, int *i)
 	else
 	{
 		j--;
-		while (!char_presence((*src)[j], " \t\r\n\v\"$/\'\2\3=")
+		while (!char_presence((*src)[j], " \t\r\n\v\"\'\2\3$/=")
 				&& !check_illegal((*src)[j]) && (*src)[j])
 			j++;
 		str = search_envp(*src, *src + j);
@@ -54,3 +85,11 @@ char	*expand_dollar(char **src, int *i)
 	*src = *src + j;
 	return (str);
 }
+
+// static void	static_dolar(char **str, char *src, int *i)
+// {
+
+
+
+
+// }

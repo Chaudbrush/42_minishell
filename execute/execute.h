@@ -5,10 +5,10 @@
 
 # define EXEC_FAIL 127
 
-typedef struct cmd		t_cmd;
-typedef struct execcmd	t_execcmd;
-typedef struct pipecmd	t_pipecmd;
-typedef struct redircmd	t_redircmd;
+typedef struct s_cmd		t_cmd;
+typedef struct s_execcmd	t_execcmd;
+typedef struct s_pipecmd	t_pipecmd;
+typedef struct s_redircmd	t_redircmd;
 
 // Execute Utils
 void	preprocess_heredoc(t_cmd *cmd);
@@ -27,7 +27,6 @@ int		exec_recursive(t_cmd *cmd, char **envp);
 // Mod Split
 char	**mod_split(char *str, char c);
 
-int	remove_quotes(char *file, char **result);
-
+int		remove_quotes(char *file, char **result);
 
 #endif

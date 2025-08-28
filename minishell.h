@@ -24,7 +24,7 @@
 # include "./runcmd/runcmd.h"
 # include "./signals/signals.h"
 
-typedef struct cmd	t_cmd;
+typedef struct s_cmd	t_cmd;
 
 typedef struct s_envp
 {

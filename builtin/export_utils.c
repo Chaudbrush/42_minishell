@@ -5,7 +5,7 @@ static void	print_error(char *str);
 int	check_illegal(char c)
 {
 	int			i;
-	const char	*illegal = "!@#%$^&*(){}[];,.:+-/~";
+	const char	*illegal = "!@#%$^&*(){}[];,.:+-/~\\";
 
 	i = 0;
 	while (illegal[i])

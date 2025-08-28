@@ -89,7 +89,7 @@ char	**expansion(t_execcmd *execcmd)
 	{
 		if (is_expandable(execcmd->argv[i]))
 		{
-			
+//			printf("expandable\n"); // del
 			if (!perform_expansion(execcmd->argv[i], &strs[j]))
 			{
 				free(strs[j]);

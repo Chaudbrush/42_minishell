@@ -6,7 +6,7 @@
 #    By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/11 09:44:49 by vloureir          #+#    #+#              #
-#    Updated: 2025/08/28 10:28:25 by vloureir         ###   ########.fr        #
+#    Updated: 2025/08/28 14:57:11 by vloureir         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,3 +52,9 @@ fclean: clean
 	$(MAKE) -C ./libft fclean
 
 re: fclean all
+
+# debug: $(CFLAGS)
+# 	CFLAGS += -D DEBUG=true
+# 	$(MAKE) re
+
+# .PHONY NAO ESQUECER

@@ -25,7 +25,7 @@ static void	read_line_heredoc(t_redircmd *redircmd, char *ptr)
 		{
 			free(ptr);
 			break ;
-		}
+		} // I can gain lines here, make another function, that prints the heredoc error and send back a flag to exit the loop
 		check_and_expand(ptr, hd_pipe[1]);
 	}
 	shell()->doc_exp = 0;
@@ -49,7 +49,7 @@ static void	check_and_expand(char *ptr, int fd)
 	free(ptr);
 }
 
-static void put_nonprint(char *str)
+static void	put_nonprint(char *str)
 {
 	int	i;
 

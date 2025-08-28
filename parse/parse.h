@@ -3,10 +3,10 @@
 
 # include "../runcmd/cmd_struct.h"
 
-typedef struct execcmd	t_execcmd;
-typedef struct cmd		t_cmd;
-typedef struct pipecmd	t_pipecmd;
-typedef struct redircmd	t_redircmd;
+typedef struct s_execcmd	t_execcmd;
+typedef struct s_cmd		t_cmd;
+typedef struct s_pipecmd	t_pipecmd;
+typedef struct s_redircmd	t_redircmd;
 
 // Parse Utils
 void	nullify(t_cmd *cmd);

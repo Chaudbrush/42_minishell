@@ -10,7 +10,7 @@ enum
 	REDIR
 };
 
-typedef struct execcmd
+typedef struct s_execcmd
 {
 	int		type;
 	char	**argv;
@@ -19,19 +19,19 @@ typedef struct execcmd
 	int		size;
 }	t_execcmd;
 
-typedef struct cmd
+typedef struct s_cmd
 {
 	int	type;
 }	t_cmd;
 
-typedef struct pipecmd
+typedef struct s_pipecmd
 {
 	int		type;
 	t_cmd	*right;
 	t_cmd	*left;
 }	t_pipecmd;
 
-typedef struct redircmd
+typedef struct s_redircmd
 {
 	int		type;
 	t_cmd	*link;
