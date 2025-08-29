@@ -29,6 +29,9 @@ void	print_export(void);
 int		check_illegal(char c);
 int		check_invalid(char *str);
 
+// Export Sort
+void	sort_argv(char **argv);
+
 // Exit
 void	handle_exit(char **av);
 

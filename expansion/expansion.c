@@ -20,17 +20,8 @@ int	illegal_expansion(char *str)
 {
 	if (check_illegal(*str) || char_presence(*str, " \t\r\n\v=\'\"<|>"))
 		return (1);
-	return(0);
+	return (0);
 }
-
-// static int	illegal_expansion(char *str)
-// {
-// 	if (*str == '\'' || *str == '\"' || *str == '\2' || *str == '\3')
-// 		str++;
-// 	if (*str == '$' && (*(str + 1) == '\'' || *(str + 1) == '\"' || *(str + 1) == '<' || *(str + 1) == '|' || *(str + 1) == '>' || check_illegal(*(str + 1)) || char_presence(*(str + 1), " \t\r\n\v=")))
-// 		return (1);
-// 	return(0);
-// }
 
 int	perform_expansion(char *src, char **dest)
 {
@@ -41,41 +32,11 @@ int	perform_expansion(char *src, char **dest)
 	if (!src)
 		return (0);
 	i = get_expansion_len(src);
-//	printf("%d\n", i);
 	copy_expansion(src, dest, i, &ret);
 	if (i)
 		ret = 1;
 	return (ret);
 }
-
-// char	**expansion(t_execcmd *execcmd)
-// {
-// 	char	**strs;
-// 	int		i;
-// 	int		j;
-
-// 	i = 0;
-// 	j = 0;
-// 	strs = safe_malloc(sizeof(char *) * (execcmd->size + 1));
-// 	while (execcmd->argv[i])
-// 	{
-// //		printf("%d\n", is_expandable(execcmd->argv[i]));
-// 		if (is_expandable(execcmd->argv[i]))
-// 		{
-// 			remove_quotes(execcmd->argv[i], &strs[j]);
-// 		}
-// 		else if (!perform_expansion(execcmd->argv[i], &strs[j]))
-// 		{
-// 			free(strs[j]);
-// 			i++;
-// 			continue ;
-// 		}
-// 		i++;
-// 		j++;
-// 	}
-// 	strs[j] = 0;
-// 	return (strs);
-// }
 
 char	**expansion(t_execcmd *execcmd)
 {
@@ -90,7 +51,6 @@ char	**expansion(t_execcmd *execcmd)
 	{
 		if (is_expandable(execcmd->argv[i]))
 		{
-//			printf("expandable\n"); // del
 			if (!perform_expansion(execcmd->argv[i], &strs[j]))
 			{
 				free(strs[j]);
@@ -127,13 +87,6 @@ char	*heredoc_expansion(char *str)
 			return (NULL);
 		}
 	}
-	while (tmp[i])
-	{
-		if (tmp[i] == '\2')
-			tmp[i] = '\'';
-		else if (tmp[i] == '\3')
-			tmp[i] = '\"';
-		i++;
-	}
+	putback_quotes(tmp);
 	return (tmp);
 }

@@ -1,6 +1,7 @@
 #include "builtin.h"
 
 static void	print_error(char *str);
+static void	print_args(char **argv, int j);
 
 int	check_illegal(char c)
 {
@@ -45,35 +46,30 @@ int	check_invalid(char *str)
 
 void	print_export(void)
 {
-	int		i;
-	t_envp	*ptr;
+	int		j;
+	char	**argv;
 
-	ptr = shell()->envp_l;
-	while (ptr)
+	j = 0;
+	argv = envp_to_av();
+	sort_argv(argv);
+	while (argv[j])
 	{
-		i = -1;
-		if (ptr->data[0] == '_' && ptr->data[1] == '=')
+		if (argv[j][0] == '_' && argv[j][1] == '=')
 		{
-			ptr = ptr->next;
-			continue;
+			j++;
+			continue ;
 		}
 		ft_putstr_fd("declare -x ", STDOUT_FILENO);
-		if (ft_strchr(ptr->data, '='))
-		{
-			while (ptr->data[++i] != '=' && ptr->data[i])
-				write(STDOUT_FILENO, &ptr->data[i], 1);
-			write(STDOUT_FILENO, &ptr->data[i++], 1);
-			write(STDOUT_FILENO, "\"", 1);
-			ft_putstr_fd(&ptr->data[i], STDOUT_FILENO);
-			write(STDOUT_FILENO, "\"\n", 2);
-		}
+		if (ft_strchr(argv[j], '='))
+			print_args(argv, j);
 		else
 		{
-			ft_putstr_fd(ptr->data, STDOUT_FILENO);
+			ft_putstr_fd(argv[j], STDOUT_FILENO);
 			write(STDOUT_FILENO, "\n", 1);
 		}
-		ptr = ptr->next;
+		j++;
 	}
+	free(argv);
 }
 
 static void	print_error(char *str)
@@ -81,4 +77,17 @@ static void	print_error(char *str)
 	ft_putstr_fd("export: ", STDERR_FILENO);
 	ft_putstr_fd(str, STDERR_FILENO);
 	ft_putstr_fd(": not a valid identifier\n", STDERR_FILENO);
+}
+
+static void	print_args(char **argv, int j)
+{
+	int	i;
+
+	i = -1;
+	while (argv[j][++i] != '=' && argv[j][i])
+		write(STDOUT_FILENO, &argv[j][i], 1);
+	write(STDOUT_FILENO, &argv[j][i++], 1);
+	write(STDOUT_FILENO, "\"", 1);
+	ft_putstr_fd(&argv[j][i], STDOUT_FILENO);
+	write(STDOUT_FILENO, "\"\n", 2);
 }
