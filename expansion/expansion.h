@@ -9,7 +9,7 @@ char	**expansion(t_execcmd *execcmd);
 
 int		get_expansion_len(char *src);
 void	copy_expansion(char *src, char **destination, int src_size, int *ret);
-int		perform_expansion(char *src, char **dest);
+int		perform_expansion(char *src, char **dest, char ***split_strings);
 
 char	*heredoc_expansion(char *str);
 int		illegal_expansion(char *str);
