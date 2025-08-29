@@ -41,6 +41,7 @@ int	perform_expansion(char *src, char **dest)
 	if (!src)
 		return (0);
 	i = get_expansion_len(src);
+//	printf("%d\n", i);
 	copy_expansion(src, dest, i, &ret);
 	if (i)
 		ret = 1;

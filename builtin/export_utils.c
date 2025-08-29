@@ -52,6 +52,11 @@ void	print_export(void)
 	while (ptr)
 	{
 		i = -1;
+		if (ptr->data[0] == '_' && ptr->data[1] == '=')
+		{
+			ptr = ptr->next;
+			continue;
+		}
 		ft_putstr_fd("declare -x ", STDOUT_FILENO);
 		if (ft_strchr(ptr->data, '='))
 		{
