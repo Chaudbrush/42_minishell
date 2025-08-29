@@ -41,7 +41,7 @@ int	perform_expansion(char *src, char **dest)
 	return (ret);
 }
 
-char	**expansion_2(t_execcmd *execcmd)
+char	**expansion_2(t_execcmd *execcmd, int flag)
 {
 	char	**strs;
 	int		i;
@@ -67,38 +67,39 @@ char	**expansion_2(t_execcmd *execcmd)
 		j++;
 	}
 	strs[j] = 0;
-	strs = argv_correction(strs);
+	if (flag)
+		strs = argv_correction(strs);
 	return (strs);
 }
 
-char	**expansion(t_execcmd *execcmd)
-{
-	char	**strs;
-	int		i;
-	int		j;
+// char	**expansion(t_execcmd *execcmd)
+// {
+// 	char	**strs;
+// 	int		i;
+// 	int		j;
 
-	i = 0;
-	j = 0;
-	strs = safe_malloc(sizeof(char *) * (execcmd->size + 1));
-	while (execcmd->argv[i])
-	{
-		if (is_expandable(execcmd->argv[i]))
-		{
-			if (!perform_expansion(execcmd->argv[i], &strs[j]))
-			{
-				free(strs[j]);
-				i++;
-				continue ;
-			}
-		}
-		else
-			strs[j] = ft_strdup(execcmd->argv[i]);
-		i++;
-		j++;
-	}
-	strs[j] = 0;
-	return (strs);
-}
+// 	i = 0;
+// 	j = 0;
+// 	strs = safe_malloc(sizeof(char *) * (execcmd->size + 1));
+// 	while (execcmd->argv[i])
+// 	{
+// 		if (is_expandable(execcmd->argv[i]))
+// 		{
+// 			if (!perform_expansion(execcmd->argv[i], &strs[j]))
+// 			{
+// 				free(strs[j]);
+// 				i++;
+// 				continue ;
+// 			}
+// 		}
+// 		else
+// 			strs[j] = ft_strdup(execcmd->argv[i]);
+// 		i++;
+// 		j++;
+// 	}
+// 	strs[j] = 0;
+// 	return (strs);
+// }
 
 static char	**argv_correction(char **strs)
 {

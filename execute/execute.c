@@ -55,7 +55,7 @@ int	exec_recursive(t_cmd *cmd, char **envp)
 
 	exit_flag = 0;
 	execcmd = (t_execcmd *)cmd;
-	expanded_argv = expansion_2(execcmd);
+	expanded_argv = expansion_2(execcmd, 1); // Expansion here
 	if (!expanded_argv[0])
 	{
 		clear_av(expanded_argv);

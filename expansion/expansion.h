@@ -18,6 +18,6 @@ int		illegal_expansion(char *str);
 void	putback_quotes(char *str);
 char	*expand_dollar(char **src, int *i);
 
-char	**expansion_2(t_execcmd *execcmd);
+char	**expansion_2(t_execcmd *execcmd, int flag);
 
 #endif
