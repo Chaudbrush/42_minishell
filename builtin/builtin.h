@@ -49,7 +49,7 @@ void	handle_unset(char **av);
 t_list	*quote_split(char *str, char *sep);
 
 // Split Utils
-char	**create_av(void);
+char	**create_av(char *str);
 void	clear_av(char **av);
 void	clear_q_list(t_list *list);
 char	**lst_to_argv(t_list *list);

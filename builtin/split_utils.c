@@ -34,12 +34,12 @@ void	clear_q_list(t_list *list)
 	}
 }
 
-char	**create_av(void)
+char	**create_av(char *str)
 {
 	char	**result;
 	t_list	*list;
 
-	list = quote_split(shell()->line, " \t\n\v\f\r");
+	list = quote_split(str, " \t\n\v\f\r");
 	result = lst_to_argv(list);
 	clear_q_list(list);
 	return (result);

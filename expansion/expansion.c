@@ -1,6 +1,6 @@
 #include "expansion.h"
 
-static char	**fuck_this(char **strs);
+static char	**argv_correction(char **strs);
 static char	**ft_argvjoin(char **dst, char **src);
 
 static int	is_expandable(char *str)
@@ -67,10 +67,7 @@ char	**expansion_2(t_execcmd *execcmd)
 		j++;
 	}
 	strs[j] = 0;
-	// int	k = -1;
-	// while (strs[++k])
-	// 	printf("out: %s\n", strs[k]);
-	strs = fuck_this(strs);
+	strs = argv_correction(strs);
 	return (strs);
 }
 
@@ -103,7 +100,7 @@ char	**expansion(t_execcmd *execcmd)
 	return (strs);
 }
 
-static char	**fuck_this(char **strs)
+static char	**argv_correction(char **strs)
 {
 	char	**tmp;
 	char	**new_av;
@@ -113,9 +110,6 @@ static char	**fuck_this(char **strs)
 	while (strs[k])
 	{
 		tmp = ft_split(strs[k], ' ');
-		// int m = -1;
-		// while (tmp[++m])
-		// 	printf("tmp: %s\n", tmp[m]);
 		new_av = ft_argvjoin(new_av, tmp);
 		free(tmp);
 		free(strs[k]);
@@ -123,6 +117,18 @@ static char	**fuck_this(char **strs)
 	}
 	free(strs);
 	return (new_av);
+}
+
+static int	argv_len(char **argv)
+{
+	int	i;
+
+	i = 0;
+	if (!argv)
+		return (0);
+	while (argv[i])
+		i++;
+	return (i);
 }
 
 static char	**ft_argvjoin(char **dst, char **src)
@@ -133,39 +139,18 @@ static char	**ft_argvjoin(char **dst, char **src)
 	char	**new;
 
 	i = 0;
-	len = 0;
-	while(dst && dst[i])
-	{
-//		printf("dst: %s\n", dst[i]);
-		i++;
-	}
-	len += i;
-	i = 0;
-	while (src && src[i])
-	{
-//		printf("src: %s\n", src[i]);
-		i++;
-	}
-	len += i;
-	printf("%d\n", len);
+	len = argv_len(dst) + argv_len(src);
 	new = malloc(sizeof(char *) * (len + 1));
-	// PROTECT
+	if (!new)
+		return (NULL);
 	new[len] = 0;
 	i = 0;
 	j = 0;
 	while (dst && dst[i])
-	{
-		new[j] = dst[i];
-		i++;
-		j++;
-	}
+		new[j++] = dst[i++];
 	i = 0;
 	while (src && src[i])
-	{
-		new[j] = src[i];
-		i++;
-		j++;
-	}
+		new[j++] = src[i++];
 	free(dst);
 	return (new);
 }
