@@ -76,6 +76,7 @@ static char	**fuck_this(char **strs, char *str)
 	char	**tmp;
 
 	tmp = ft_split(str, ' ');
+	free(str);
 	free(strs);
 	return (tmp);
 }
