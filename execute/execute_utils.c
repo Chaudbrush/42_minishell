@@ -1,6 +1,7 @@
 #include "execute.h"
 
 static int	new_len(char *file);
+static int	heredoc_exit(char *ptr);
 static void put_nonprint(char *str);
 static void	check_and_expand(char *ptr, int fd);
 
@@ -21,11 +22,8 @@ static void	read_line_heredoc(t_redircmd *redircmd, char *ptr)
 	while (1)
 	{
 		ptr = readline(">");
-		if (!ptr || ft_strcmp(ptr, shell()->expan_delim) == 0)
-		{
-			free(ptr);
+		if (heredoc_exit(ptr))
 			break ;
-		} // I can gain lines here, make another function, that prints the heredoc error and send back a flag to exit the loop
 		check_and_expand(ptr, hd_pipe[1]);
 	}
 	shell()->doc_exp = 0;
@@ -34,34 +32,21 @@ static void	read_line_heredoc(t_redircmd *redircmd, char *ptr)
 	free(shell()->expan_delim);
 }
 
-static void	check_and_expand(char *ptr, int fd)
+static int	heredoc_exit(char *ptr)
 {
-	if (shell()->doc_exp)
+	if (!ptr)
 	{
-		put_nonprint(ptr);
-		ptr = heredoc_expansion(ptr);
-		if (ptr)
-			write(fd, ptr, ft_strlen(ptr));
+		ft_putstr_fd("-minishell: warning: here-document delimited \
+by end-of-file (wanted `", 1);
+		ft_putstr_fd(shell()->expan_delim, 1);
+		ft_putstr_fd("')\n", 1);
+		shell()->exit_flag = 0;
+		free(ptr);
+		return (1);
 	}
-	else
-		write(fd, ptr, ft_strlen(ptr));
-	write(fd, "\n", 1);
-	free(ptr);
-}
-
-static void	put_nonprint(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '\'')
-			str[i] = '\2';
-		else if (str[i] == '\"')
-			str[i] = '\3';
-		i++;
-	}
+	else if (ft_strcmp(ptr, shell()->expan_delim) == 0)
+		return (1);
+	return (0);
 }
 
 void	preprocess_heredoc(t_cmd *cmd)
@@ -84,6 +69,7 @@ void	preprocess_heredoc(t_cmd *cmd)
 	}
 }
 
+// Heredoc expander
 // Two functions to remove the quotes from heredoc delimiter
 int	remove_quotes(char *file, char **result)
 {
@@ -122,4 +108,34 @@ static int	new_len(char *file)
 		len++;
 	}
 	return (len);
+}
+
+static void	check_and_expand(char *ptr, int fd)
+{
+	if (shell()->doc_exp)
+	{
+		put_nonprint(ptr);
+		ptr = heredoc_expansion(ptr);
+		if (ptr)
+			write(fd, ptr, ft_strlen(ptr));
+	}
+	else
+		write(fd, ptr, ft_strlen(ptr));
+	write(fd, "\n", 1);
+	free(ptr);
+}
+
+static void	put_nonprint(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '\'')
+			str[i] = '\2';
+		else if (str[i] == '\"')
+			str[i] = '\3';
+		i++;
+	}
 }

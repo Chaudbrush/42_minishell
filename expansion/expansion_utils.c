@@ -10,10 +10,10 @@ char	*expand_dollar(char **src, int *i)
 
 	str = NULL;
 	j = 1;
-	if (!ft_isalnum(**src))
-		str = invalid_dolar(&(**src), &j);
-	else if (**src == '?')
+	if (**src == '?')
 		str = ft_itoa(shell()->exit_flag);
+	else if (!ft_isalnum(**src))
+		str = invalid_dolar(&(**src), &j);
 	else if (ft_isdigit(**src))
 		str = NULL;
 	else

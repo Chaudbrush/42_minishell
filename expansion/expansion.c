@@ -41,7 +41,7 @@ int	perform_expansion(char *src, char **dest)
 	return (ret);
 }
 
-char	**expansion_2(t_execcmd *execcmd, int flag)
+char	**expansion(t_execcmd *execcmd, int flag)
 {
 	char	**strs;
 	int		i;
@@ -72,35 +72,29 @@ char	**expansion_2(t_execcmd *execcmd, int flag)
 	return (strs);
 }
 
-// char	**expansion(t_execcmd *execcmd)
-// {
-// 	char	**strs;
-// 	int		i;
-// 	int		j;
+char	*heredoc_expansion(char *str)
+{
+	char	*tmp;
 
-// 	i = 0;
-// 	j = 0;
-// 	strs = safe_malloc(sizeof(char *) * (execcmd->size + 1));
-// 	while (execcmd->argv[i])
-// 	{
-// 		if (is_expandable(execcmd->argv[i]))
-// 		{
-// 			if (!perform_expansion(execcmd->argv[i], &strs[j]))
-// 			{
-// 				free(strs[j]);
-// 				i++;
-// 				continue ;
-// 			}
-// 		}
-// 		else
-// 			strs[j] = ft_strdup(execcmd->argv[i]);
-// 		i++;
-// 		j++;
-// 	}
-// 	strs[j] = 0;
-// 	return (strs);
-// }
+	tmp = NULL;
+	if (!shell()->doc_exp || !is_expandable(str))
+	{
+		tmp = ft_strdup(str);
+		return (tmp);
+	}
+	else
+	{
+		if (!perform_expansion(str, &tmp))
+		{
+			free(tmp);
+			return (NULL);
+		}
+	}
+	putback_quotes(tmp);
+	return (tmp);
+}
 
+// Break here in a new file
 static char	**argv_correction(char **strs)
 {
 	char	**tmp;
@@ -154,26 +148,4 @@ static char	**ft_argvjoin(char **dst, char **src)
 		new[j++] = src[i++];
 	free(dst);
 	return (new);
-}
-
-char	*heredoc_expansion(char *str)
-{
-	char	*tmp;
-
-	tmp = NULL;
-	if (!shell()->doc_exp || !is_expandable(str))
-	{
-		tmp = ft_strdup(str);
-		return (tmp);
-	}
-	else
-	{
-		if (!perform_expansion(str, &tmp))
-		{
-			free(tmp);
-			return (NULL);
-		}
-	}
-	putback_quotes(tmp);
-	return (tmp);
 }
