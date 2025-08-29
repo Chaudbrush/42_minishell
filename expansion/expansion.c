@@ -1,5 +1,7 @@
 #include "expansion.h"
 
+static char	**fuck_this(char **strs, char *str);
+
 static int	is_expandable(char *str)
 {
 	while (*str)
@@ -64,15 +66,24 @@ char	**expansion(t_execcmd *execcmd)
 		j++;
 	}
 	strs[j] = 0;
+	if (!strs[1])
+		strs = fuck_this(strs, strs[0]);
 	return (strs);
+}
+
+static char	**fuck_this(char **strs, char *str)
+{
+	char	**tmp;
+
+	tmp = ft_split(str, ' ');
+	free(strs);
+	return (tmp);
 }
 
 char	*heredoc_expansion(char *str)
 {
 	char	*tmp;
-	int		i;
 
-	i = 0;
 	tmp = NULL;
 	if (!shell()->doc_exp || !is_expandable(str))
 	{
