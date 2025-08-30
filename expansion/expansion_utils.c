@@ -37,7 +37,7 @@ char	*expand_dollar(char **src, int *i)
 	*src = *src + j;
 	return (str);
 }
-
+// 30 lines
 static char	*mod_strdup(char *str)
 {
 	int		i;

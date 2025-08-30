@@ -47,7 +47,7 @@ int	run_cmd_builtin_check(t_cmd *cmd)
 	}
 	else
 		execcmd = (t_execcmd *)temp;
-	expanded_argv = expansion(execcmd, 0); // Expansion here
+	expanded_argv = expansion(execcmd);
 	if (built_in_exec(cmd, expanded_argv, execcmd, temp))
 		return (1);
 	clear_av(expanded_argv);

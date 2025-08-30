@@ -55,7 +55,7 @@ int	exec_recursive(t_cmd *cmd, char **envp)
 
 	exit_flag = 0;
 	execcmd = (t_execcmd *)cmd;
-	expanded_argv = expansion(execcmd, 1); // Expansion here
+	expanded_argv = expansion(execcmd);
 	if (!expanded_argv[0])
 	{
 		clear_av(expanded_argv);
@@ -102,7 +102,7 @@ void	redir_recursive(t_cmd *cmd, char **envp)
 	}
 	free(redircmd->end_file);
 }
-
+// 30 lines
 int	pipe_recursive(t_cmd *cmd, char **envp)
 {
 	int	pipe_fd[2];

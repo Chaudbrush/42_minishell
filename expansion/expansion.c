@@ -1,8 +1,5 @@
 #include "expansion.h"
 
-static char	**argv_correction(char **strs);
-static char	**ft_argvjoin(char **dst, char **src);
-
 static int	is_expandable(char *str)
 {
 	while (*str)
@@ -41,7 +38,7 @@ int	perform_expansion(char *src, char **dest)
 	return (ret);
 }
 
-char	**expansion(t_execcmd *execcmd, int flag)
+char	**expansion(t_execcmd *execcmd)
 {
 	char	**strs;
 	int		i;
@@ -67,11 +64,10 @@ char	**expansion(t_execcmd *execcmd, int flag)
 		j++;
 	}
 	strs[j] = 0;
-	if (flag)
-		strs = argv_correction(strs);
+	strs = argv_correction(strs);
 	return (strs);
 }
-
+// 26 lines
 char	*heredoc_expansion(char *str)
 {
 	char	*tmp;
@@ -92,61 +88,4 @@ char	*heredoc_expansion(char *str)
 	}
 	putback_quotes(tmp);
 	return (tmp);
-}
-
-// Break here in a new file
-static char	**argv_correction(char **strs)
-{
-	int		k;
-	char	**tmp;
-	char	**new_av;
-
-	k = 0;
-	new_av = NULL;
-	while (strs[k])
-	{
-		tmp = ft_split(strs[k], '\4');
-		new_av = ft_argvjoin(new_av, tmp);
-		free(tmp);
-		free(strs[k]);
-		k++;
-	}
-	free(strs);
-	return (new_av);
-}
-
-static int	argv_len(char **argv)
-{
-	int	i;
-
-	i = 0;
-	if (!argv)
-		return (0);
-	while (argv[i])
-		i++;
-	return (i);
-}
-
-static char	**ft_argvjoin(char **dst, char **src)
-{
-	int		i;
-	int		j;
-	int		len;
-	char	**new;
-
-	i = 0;
-	len = argv_len(dst) + argv_len(src);
-	new = malloc(sizeof(char *) * (len + 1));
-	if (!new)
-		return (NULL);
-	new[len] = 0;
-	i = 0;
-	j = 0;
-	while (dst && dst[i])
-		new[j++] = dst[i++];
-	i = 0;
-	while (src && src[i])
-		new[j++] = src[i++];
-	free(dst);
-	return (new);
 }
