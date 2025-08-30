@@ -9,6 +9,8 @@ char	**argv_correction(char **strs)
 	char	**tmp;
 	char	**new_av;
 
+	if (!*strs)
+		return (NULL);
 	k = 0;
 	new_av = NULL;
 	while (strs[k])
