@@ -1,6 +1,6 @@
 #include "expansion.h"
 
-static char	*mod_strdup(char *str);
+//static char	*mod_strdup(char *str);
 static char	*invalid_dolar(char *src, int *j);
 static char	*search_envp(char *start, char *end);
 
@@ -26,9 +26,9 @@ char	*expand_dollar(char **src, int *i)
 		str = search_envp(*src, *src + j);
 		if (str)
 		{
-			if (!shell()->doc_exp)
-				str = mod_strdup(str);
-			else
+			// if (!shell()->doc_exp)
+			// 	str = mod_strdup(str);
+			// else
 				str = ft_strdup(str);
 		}
 	}
@@ -38,28 +38,28 @@ char	*expand_dollar(char **src, int *i)
 	return (str);
 }
 // 30 lines
-static char	*mod_strdup(char *str)
-{
-	int		i;
-	char	*dst;
+// static char	*mod_strdup(char *str)
+// {
+// 	int		i;
+// 	char	*dst;
 
-	if (!str)
-		return (NULL);
-	i = 0;
-	dst = malloc(sizeof(char) * (ft_strlen(str) + 1));
-	if (!dst)
-		return (NULL);
-	while (str[i])
-	{
-		if (ft_isspace(str[i]))
-			dst[i] = '\4';
-		else
-			dst[i] = str[i];
-		i++;
-	}
-	dst[i] = 0;
-	return (dst);
-}
+// 	if (!str)
+// 		return (NULL);
+// 	i = 0;
+// 	dst = malloc(sizeof(char) * (ft_strlen(str) + 1));
+// 	if (!dst)
+// 		return (NULL);
+// 	while (str[i])
+// 	{
+// 		if (ft_isspace(str[i]))
+// 			dst[i] = '\4';
+// 		else
+// 			dst[i] = str[i];
+// 		i++;
+// 	}
+// 	dst[i] = 0;
+// 	return (dst);
+// }
 
 static char	*search_envp(char *start, char *end)
 {

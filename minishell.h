@@ -5,19 +5,14 @@
 # include <fcntl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include <stdbool.h>
-# include <stdio.h>
-# include <stdlib.h>
 # include <signal.h>
-# include <string.h>
 # include <sys/stat.h>
 # include <sys/wait.h>
-# include <unistd.h>
 # include "./builtin/builtin.h"
 # include "./envp/envp.h"
 # include "./libft/includes/libft.h"
 # include "./expansion/expansion.h"
-# include "readline/readline.h"
+# include "./readline/readline.h"
 # include "./runcmd/cmd_struct.h"
 # include "./parse/parse.h"
 # include "./execute/execute.h"
@@ -50,14 +45,11 @@ typedef struct s_shell
 	int				doc_exp;
 }	t_shell;
 
-// Delete this later
-void	print_list(t_envp *list);
-
 // Main
 t_shell	*shell(void);
 int		ft_getline(void);
 
-//safe_utils.c
+// Safe Utils
 int		safe_fork(void);
 void	*safe_malloc(int size);
 

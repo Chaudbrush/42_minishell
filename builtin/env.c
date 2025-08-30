@@ -2,6 +2,8 @@
 
 static void	print_env(t_envp *list);
 
+// ENV SHOULD NOT ACCEPT ARGUMENTS !!!!!
+// CHANGE DECLARATION AND IMPLEMENT THAT !!!
 void	handle_env(void)
 {
 	print_env(shell()->envp_l);

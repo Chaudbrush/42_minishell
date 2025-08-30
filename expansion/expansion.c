@@ -64,7 +64,8 @@ char	**expansion(t_execcmd *execcmd)
 		j++;
 	}
 	strs[j] = 0;
-	strs = argv_correction(strs);
+	if (*strs)
+		strs = argv_correction(strs);
 	return (strs);
 }
 // 26 lines

@@ -2,12 +2,12 @@
 
 void	handle_pwd(void)
 {
-	t_envp	*node;
+	// t_envp	*node;
 
-	node = getenv_list("PWD");
-	if (node)
-		printf("%s\n", extract_val(node->data));
-	else
-		printf("%s\n", shell()->pwd);
+	// node = getenv_list("PWD");
+	// if (node)
+	// 	printf("%s\n", extract_val(node->data));
+	// else
+	printf("%s\n", shell()->pwd);
 	shell()->exit_flag = 0;
 }

@@ -1,19 +1,5 @@
 #include "builtin.h"
 
-int	check_flag(char *str)
-{
-	int	i;
-
-	i = 1;
-	while (str[i])
-	{
-		if (str[i] != 'n')
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
 void	handle_echo(char **av)
 {
 	int	i;
@@ -40,4 +26,18 @@ void	handle_echo(char **av)
 	if (!flag)
 		write(STDOUT_FILENO, "\n", 1);
 	shell()->exit_flag = 0;
+}
+
+int	check_flag(char *str)
+{
+	int	i;
+
+	i = 1;
+	while (str[i])
+	{
+		if (str[i] != 'n')
+			return (0);
+		i++;
+	}
+	return (1);
 }
