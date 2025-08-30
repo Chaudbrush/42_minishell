@@ -20,5 +20,6 @@ char	*expand_dollar(char **src, int *i);
 
 // Argv Merge
 char	**argv_correction(char **strs);
+int		argv_redir_update(char *src, char **dest);
 
 #endif

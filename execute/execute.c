@@ -74,8 +74,9 @@ int	exec_recursive(t_cmd *cmd, char **envp)
 void	redir_recursive(t_cmd *cmd, char **envp)
 {
 	t_redircmd	*redircmd;
-	char		*err_ptr;
+	int			err;
 
+	err = 0;
 	redircmd = (t_redircmd *)cmd;
 	if (redircmd->link && redircmd->link->type == REDIR)
 		redir_recursive(redircmd->link, envp);
@@ -86,15 +87,18 @@ void	redir_recursive(t_cmd *cmd, char **envp)
 		return ;
 	}
 	close(redircmd->fd);
-	perform_expansion(redircmd->file, &redircmd->end_file);
-	if (open(redircmd->end_file, redircmd->mode, 0644) < 0)
+	if (!argv_redir_update(redircmd->file, &redircmd->end_file))
+		err = 1;
+	if (!err && open(redircmd->end_file, redircmd->mode, 0644) < 0)
 	{
-		free(redircmd->end_file);
-		err_ptr = ft_strjoin("err: no such file or directory: ",
-				redircmd->file);
-		ft_putstr_fd(err_ptr, STDERR_FILENO);
+		ft_putstr_fd("err: no such file or directory: ", STDERR_FILENO);
+		ft_putstr_fd(redircmd->end_file, STDERR_FILENO);
 		ft_putstr_fd("\n", STDERR_FILENO);
-		free(err_ptr);
+		free(redircmd->end_file);
+		err = 1;
+	}
+	if (err)
+	{
 		clear_envp(shell()->envp_l);
 		free(envp);
 		free_trees(shell()->cmd);

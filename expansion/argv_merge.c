@@ -3,6 +3,30 @@
 static int	argv_len(char **argv);
 static char	**ft_argvjoin(char **dst, char **src);
 
+int	argv_redir_update(char *src, char **dest)
+{
+	char	**strs;
+
+	perform_expansion(src, dest);
+	if (!*dest)
+		return (0);
+	strs = ft_split(*dest, '\4');
+	if (!strs)
+		return (free(*dest), 0);
+	if (!strs[0] || (strs[0] && strs[1]))
+	{
+		ft_putstr_fd(src, 2);
+		ft_putstr_fd(": ambiguous redirect\n", 2);
+		free(*dest);
+		clear_av(strs);
+		return (0);
+	}
+	free(*dest);
+	*dest = strs[0];
+	free(strs);
+	return (1);
+}
+
 char	**argv_correction(char **strs)
 {
 	int		k;
@@ -10,7 +34,7 @@ char	**argv_correction(char **strs)
 	char	**new_av;
 
 	if (!*strs)
-		return (NULL);
+		return (strs);
 	k = 0;
 	new_av = NULL;
 	while (strs[k])
