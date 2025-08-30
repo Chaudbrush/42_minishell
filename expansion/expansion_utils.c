@@ -25,7 +25,12 @@ char	*expand_dollar(char **src, int *i)
 			j++;
 		str = search_envp(*src, *src + j);
 		if (str)
-			str = mod_strdup(str);
+		{
+			if (!shell()->doc_exp)
+				str = mod_strdup(str);
+			else
+				str = ft_strdup(str);
+		}
 	}
 	if (str && i)
 		*i += ft_strlen(str);
