@@ -1,6 +1,6 @@
 #include "expansion.h"
 
-static int	append_var(char *str, char *dest)
+static int	append_var(char *str, char *dest, int in_quotes)
 {
 	int	i;
 
@@ -9,7 +9,10 @@ static int	append_var(char *str, char *dest)
 		return (0);
 	while (str[i])
 	{
-		dest[i] = str[i];
+		if (!in_quotes && ft_isspace(str[i]))
+			dest[i] = '\4';
+		else
+			dest[i] = str[i];
 		i++;
 	}
 	free(str);
@@ -30,7 +33,7 @@ static void	handle_quotes(char **src, char *dest, int *dest_index)
 		{
 			(*src)++;
 			*dest_index += append_var(expand_dollar(src, NULL),
-					dest + *dest_index);
+					dest + *dest_index, 1);
 			continue ;
 		}
 		dest[*dest_index] = **src;
@@ -54,7 +57,7 @@ void	copy_expansion(char *src, char **destination, int src_size, int *ret)
 		if (*src == '$')
 		{
 			src++;
-			i += append_var(expand_dollar(&src, NULL), dest + i);
+			i += append_var(expand_dollar(&src, NULL), dest + i, 0);
 			continue ;
 		}
 		if (*src == '\'' || *src == '\"')

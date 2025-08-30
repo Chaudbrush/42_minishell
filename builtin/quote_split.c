@@ -10,7 +10,7 @@ t_list	*quote_split(char *str, char *sep)
 	t_list	*list;
 	t_list	*node;
 
-	if (!str)
+	if (!str || !sep)
 		return (NULL);
 	i = 0;
 	list = NULL;

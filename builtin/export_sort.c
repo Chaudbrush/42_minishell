@@ -8,6 +8,8 @@ void	sort_argv(char **argv)
 {
 	int	i;
 
+	if (!*argv)
+		return ;
 	i = 0;
 	while (argv[i])
 		i++;

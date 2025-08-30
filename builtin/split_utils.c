@@ -1,6 +1,20 @@
 #include "builtin.h"
 
-char	**lst_to_argv(t_list *list)
+static void	clear_q_list(t_list *list);
+static char	**lst_to_argv(t_list *list);
+
+char	**create_av(char *str)
+{
+	char	**result;
+	t_list	*list;
+
+	list = quote_split(str, " \t\n\v\f\r");
+	result = lst_to_argv(list);
+	clear_q_list(list);
+	return (result);
+}
+
+static char	**lst_to_argv(t_list *list)
 {
 	int		i;
 	int		size;
@@ -21,7 +35,7 @@ char	**lst_to_argv(t_list *list)
 	return (argv);
 }
 
-void	clear_q_list(t_list *list)
+static void	clear_q_list(t_list *list)
 {
 	t_list	*ptr;
 
@@ -32,17 +46,6 @@ void	clear_q_list(t_list *list)
 		free(ptr);
 		ptr = list;
 	}
-}
-
-char	**create_av(void)
-{
-	char	**result;
-	t_list	*list;
-
-	list = quote_split(shell()->line, " \t\n\v\f\r");
-	result = lst_to_argv(list);
-	clear_q_list(list);
-	return (result);
 }
 
 void	clear_av(char **av)

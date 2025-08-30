@@ -77,10 +77,10 @@ static void	small_envp(void)
 	ft_dlist_addback(&shell()->envp_l, node);
 	node = ft_dlist_new(ft_strjoin("SHLVL=", ft_itoa(1)));
 	ft_dlist_addback(&shell()->envp_l, node);
-	node = ft_dlist_new(ft_strdup("_=/usr/bin/env"));
+	node = ft_dlist_new(ft_strdup("PATH=/usr/local/bin:/usr/bin:/sbin:/bin"));
 	ft_dlist_addback(&shell()->envp_l, node);
 	node = ft_dlist_new(ft_strdup("TERM=xterm-256color"));
 	ft_dlist_addback(&shell()->envp_l, node);
-	node = ft_dlist_new(ft_strdup("PATH=/usr/local/bin:/usr/bin:/sbin:/bin"));
+	node = ft_dlist_new(ft_strdup("_=/usr/bin/env"));
 	ft_dlist_addback(&shell()->envp_l, node);
 }

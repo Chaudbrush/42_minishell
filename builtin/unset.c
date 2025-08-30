@@ -5,6 +5,8 @@ void	handle_unset(char **av)
 	int		i;
 	t_envp	*to_del;
 
+	if (!*av)
+		return ;
 	i = 1;
 	while (av[i])
 	{

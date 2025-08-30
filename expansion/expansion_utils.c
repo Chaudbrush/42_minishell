@@ -10,16 +10,16 @@ char	*expand_dollar(char **src, int *i)
 
 	str = NULL;
 	j = 1;
-	if (!ft_isalnum(**src))
-		str = invalid_dolar(&(**src), &j);
-	else if (**src == '?')
+	if (**src == '?')
 		str = ft_itoa(shell()->exit_flag);
+	else if (!ft_isalnum(**src))
+		str = invalid_dolar(&(**src), &j);
 	else if (ft_isdigit(**src))
 		str = NULL;
 	else
 	{
 		j--;
-		while (!char_presence((*src)[j], " \t\r\n\v\"\'\2\3$/=")
+		while (!char_presence((*src)[j], " \t\r\n\v\"\'\2\3\4$/=")
 				&& !check_illegal((*src)[j]) && (*src)[j])
 			j++;
 		str = search_envp(*src, *src + j);

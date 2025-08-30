@@ -27,6 +27,8 @@ int		exec_recursive(t_cmd *cmd, char **envp);
 // Mod Split
 char	**mod_split(char *str, char c);
 
+// Heredoc Expansion
+void	check_and_expand(char *ptr, int fd);
 int		remove_quotes(char *file, char **result);
 
 #endif
