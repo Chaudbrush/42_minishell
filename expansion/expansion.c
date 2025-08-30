@@ -97,14 +97,15 @@ char	*heredoc_expansion(char *str)
 // Break here in a new file
 static char	**argv_correction(char **strs)
 {
+	int		k;
 	char	**tmp;
 	char	**new_av;
 
-	int	k = 0;
+	k = 0;
 	new_av = NULL;
 	while (strs[k])
 	{
-		tmp = ft_split(strs[k], ' ');
+		tmp = ft_split(strs[k], '\4');
 		new_av = ft_argvjoin(new_av, tmp);
 		free(tmp);
 		free(strs[k]);

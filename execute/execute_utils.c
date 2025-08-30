@@ -2,7 +2,7 @@
 
 static int	new_len(char *file);
 static int	heredoc_exit(char *ptr);
-static void put_nonprint(char *str);
+static void	put_nonprint(char *str);
 static void	check_and_expand(char *ptr, int fd);
 
 static void	read_line_heredoc(t_redircmd *redircmd, char *ptr)

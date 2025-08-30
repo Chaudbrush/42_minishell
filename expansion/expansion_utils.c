@@ -1,5 +1,6 @@
 #include "expansion.h"
 
+static char	*mod_strdup(char *str);
 static char	*invalid_dolar(char *src, int *j);
 static char	*search_envp(char *start, char *end);
 
@@ -19,17 +20,40 @@ char	*expand_dollar(char **src, int *i)
 	else
 	{
 		j--;
-		while (!char_presence((*src)[j], " \t\r\n\v\"\'\2\3$/=")
+		while (!char_presence((*src)[j], " \t\r\n\v\"\'\2\3\4$/=")
 				&& !check_illegal((*src)[j]) && (*src)[j])
 			j++;
 		str = search_envp(*src, *src + j);
 		if (str)
-			str = ft_strdup(str);
+			str = mod_strdup(str);
 	}
 	if (str && i)
 		*i += ft_strlen(str);
 	*src = *src + j;
 	return (str);
+}
+
+static char	*mod_strdup(char *str)
+{
+	int		i;
+	char	*dst;
+
+	if (!str)
+		return (NULL);
+	i = 0;
+	dst = malloc(sizeof(char) * (ft_strlen(str) + 1));
+	if (!dst)
+		return (NULL);
+	while (str[i])
+	{
+		if (ft_isspace(str[i]))
+			dst[i] = '\4';
+		else
+			dst[i] = str[i];
+		i++;
+	}
+	dst[i] = 0;
+	return (dst);
 }
 
 static char	*search_envp(char *start, char *end)
