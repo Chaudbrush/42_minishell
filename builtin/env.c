@@ -2,10 +2,16 @@
 
 static void	print_env(t_envp *list);
 
-// ENV SHOULD NOT ACCEPT ARGUMENTS !!!!!
-// CHANGE DECLARATION AND IMPLEMENT THAT !!!
-void	handle_env(void)
+void	handle_env(char **av)
 {
+	if (!*av)
+		return ;
+	if (av[1])
+	{
+		ft_putstr_fd("error: arguments are not accepted\n", STDERR_FILENO);
+		shell()->exit_flag = 1; // Is exit 1 fine?
+		return ;
+	}
 	print_env(shell()->envp_l);
 	shell()->exit_flag = 0;
 }

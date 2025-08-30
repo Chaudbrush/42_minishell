@@ -11,9 +11,9 @@ void	handle_cd(char **av)
 	char	*tmp;
 	char	buff[4096];
 
-	i = 0;
-	while (av[i])
-		i++;
+	if (!*av)
+		return ;
+	i = av_size(av);
 	tmp = getcwd(buff, 4096);
 	if (!tmp || i > 2)
 		return (handle_cd_errors(av, tmp, buff, i));

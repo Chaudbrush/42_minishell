@@ -7,6 +7,7 @@ typedef struct s_list	t_list;
 typedef struct s_envp	t_envp;
 
 // Builtin
+int		av_size(char **av);
 int		is_builtin(char **av);
 int		builtin_call(char **av);
 
@@ -18,7 +19,7 @@ int		check_flag(char *str);
 void	handle_echo(char **av);
 
 // Env
-void	handle_env(void);
+void	handle_env(char **av);
 
 // Exit
 void	handle_exit(char **av);

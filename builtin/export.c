@@ -5,29 +5,29 @@ static void	create_node(char **av, char *str, int *index);
 
 void	handle_export(char **av)
 {
-	int		index;
+	int		i;
 	char	*str;
 
-	index = 0;
-	while (av[index])
-		index++;
+	if (!*av)
+		return ;
+	i = av_size(av);
 	shell()->exit_flag = 0;
-	if (index == 1)
+	if (i == 1)
 		return (print_export());
 	else
 	{
-		index = 1;
-		while (av[index])
+		i = 1;
+		while (av[i])
 		{
-			if (check_invalid(av[index]))
+			if (check_invalid(av[i]))
 			{
-				index++;
+				i++;
 				continue ;
 			}
-			str = create_string(av[index]);
+			str = create_string(av[i]);
 			if (!str)
 				break ;
-			create_node(av, str, &index);
+			create_node(av, str, &i);
 		}
 	}
 }

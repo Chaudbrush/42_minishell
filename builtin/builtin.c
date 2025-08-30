@@ -27,7 +27,19 @@ int	builtin_call(char **av)
 	else if (!strcmp(av[0], "unset"))
 		handle_unset(av);
 	else if (!strcmp(av[0], "env"))
-		handle_env();
+		handle_env(av);
 	clear_av(av);
 	return (shell()->exit_flag);
+}
+
+int	av_size(char **av)
+{
+	int	i;
+
+	i = 0;
+	if (!av || !*av)
+		return (0);
+	while (av[i])
+		i++;
+	return (i);
 }

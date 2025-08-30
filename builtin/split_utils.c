@@ -48,8 +48,6 @@ static void	clear_q_list(t_list *list)
 	}
 }
 
-
-
 void	clear_av(char **av)
 {
 	int	i;

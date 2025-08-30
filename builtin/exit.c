@@ -9,9 +9,9 @@ void	handle_exit(char **av)
 {
 	int	i;
 
-	i = 0;
-	while (av[i])
-		i++;
+	if (!*av)
+		return ;
+	i = av_size(av);
 	ft_putstr_fd("exit\n", STDOUT_FILENO);
 	if (i > 1)
 	{
