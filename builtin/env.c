@@ -9,7 +9,7 @@ void	handle_env(char **av)
 	if (av[1])
 	{
 		ft_putstr_fd("error: arguments are not accepted\n", STDERR_FILENO);
-		shell()->exit_flag = 1; // Is exit 1 fine?
+		shell()->exit_flag = 1;
 		return ;
 	}
 	print_env(shell()->envp_l);

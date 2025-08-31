@@ -52,11 +52,7 @@ char	**expansion(t_execcmd *execcmd)
 		if (is_expandable(execcmd->argv[i]))
 		{
 			if (!perform_expansion(execcmd->argv[i], &strs[j]))
-			{
-				free(strs[j]);
-				i++;
-				continue ;
-			}
+				free(strs[j--]);
 		}
 		else
 			strs[j] = ft_strdup(execcmd->argv[i]);
@@ -67,6 +63,7 @@ char	**expansion(t_execcmd *execcmd)
 	strs = argv_correction(strs);
 	return (strs);
 }
+
 // 26 lines
 char	*heredoc_expansion(char *str)
 {
