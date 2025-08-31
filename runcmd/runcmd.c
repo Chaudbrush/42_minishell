@@ -15,11 +15,9 @@ int	built_in_exec(t_cmd *cmd, char **expanded_argv
 			if (safe_fork() == 0)
 			{
 				redir_recursive(cmd, NULL);
-				free_trees(cmd);
-				free_trees((t_cmd *)execcmd);
-				clear_envp(shell()->envp_l);
 				clear_av(expanded_argv);
-				exit(EXIT_SUCCESS);
+				free_trees((t_cmd *)execcmd);
+				exit_frees(cmd, shell()->envp_l, NULL, EXIT_SUCCESS);
 			}
 			wait(NULL);
 		}

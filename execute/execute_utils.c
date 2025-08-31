@@ -3,6 +3,36 @@
 static int	heredoc_exit(char *ptr);
 static void	read_line_heredoc(t_redircmd *redircmd, char *ptr);
 
+int	safe_open(t_redircmd *redircmd)
+{
+	int	err;
+
+	err = 0;
+	if (!argv_redir_update(redircmd->file, &redircmd->end_file))
+		err = 1;
+	if (!err && open(redircmd->end_file, redircmd->mode, 0644) < 0)
+	{
+		ft_putstr_fd("err: no such file or directory: ", STDERR_FILENO);
+		ft_putstr_fd(redircmd->end_file, STDERR_FILENO);
+		ft_putstr_fd("\n", STDERR_FILENO);
+		free(redircmd->end_file);
+		err = 1;
+	}
+	return (err);
+}
+
+void	exit_frees(t_cmd *cmd_tree, t_envp *envp_list,
+					char **envp_av, int exit_flag)
+{
+	if (envp_list)
+		clear_envp(shell()->envp_l);
+	if (envp_av)
+		free(envp_av);
+	if (cmd_tree)
+		free_trees(cmd_tree);
+	exit(exit_flag);
+}
+
 void	preprocess_heredoc(t_cmd *cmd)
 {
 	t_redircmd	*redircmd;

@@ -15,8 +15,8 @@ int	argv_redir_update(char *src, char **dest)
 		return (free(*dest), 0);
 	if (!strs[0] || (strs[0] && strs[1]))
 	{
-		ft_putstr_fd(src, 2);
-		ft_putstr_fd(": ambiguous redirect\n", 2);
+		ft_putstr_fd(src, STDERR_FILENO);
+		ft_putstr_fd(": ambiguous redirect\n", STDERR_FILENO);
 		free(*dest);
 		clear_av(strs);
 		return (0);

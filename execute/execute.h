@@ -12,6 +12,9 @@ typedef struct s_redircmd	t_redircmd;
 
 // Execute Utils
 void	preprocess_heredoc(t_cmd *cmd);
+int		safe_open(t_redircmd *redircmd);
+void	exit_frees(t_cmd *cmd_tree, t_envp *envp_list,
+			char **envp_av, int exit_flag);
 
 // Recursive Help
 void	pipe_right(int pipe_in, int pipe_out, t_cmd *cmd, char **envp);
