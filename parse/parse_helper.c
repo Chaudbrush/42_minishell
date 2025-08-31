@@ -13,7 +13,8 @@ t_cmd	*create_token_redir(char token, t_cmd *cmd, char *ptr, char *ptr_end)
 		redircmd = init_t_redircmd(ptr, ptr_end,
 				O_WRONLY | O_TRUNC | O_CREAT, 1);
 	else if (token == '+')
-		redircmd = init_t_redircmd(ptr, ptr_end, O_WRONLY | O_CREAT, 1);
+		redircmd = init_t_redircmd(ptr, ptr_end,
+				O_WRONLY | O_CREAT | O_APPEND, 1);
 	((t_redircmd *)redircmd)->link = cmd;
 	return (redircmd);
 }
