@@ -9,8 +9,8 @@ void	free_trees(t_cmd *cmd)
 		if (((t_exec *)cmd)->builtin_heredoc)
 			clear_av(((t_exec *)cmd)->argv);
 		else
-			free(((t_execcmd *)cmd)->argv);
-		free(((t_execcmd *)cmd)->eargv);
+			free(((t_exec *)cmd)->argv);
+		free(((t_exec *)cmd)->eargv);
 		free(cmd);
 		cmd = NULL;
 		return ;
