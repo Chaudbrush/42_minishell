@@ -50,22 +50,22 @@ static int	built_in_exec(t_cmd *cmd, char **expanded_argv,
 				exec->builtin_heredoc = 1;
 				exec->argv = expanded_argv;
 				preprocess_heredoc(cmd);
-				((t_redir *)temp)->link = NULL;
 				redir_recursive(cmd, NULL);
 				free_trees(cmd);
-				free_trees((t_cmd *)exec);
 				clear_envp(shell()->envp_l);
 				exit(EXIT_SUCCESS);
 			}
 			waitpid(-1, &exit_val, 0);
-			if (exit_val == 230)
+			reset_child_flag(exit_val);
+			if (exit_val != 0)
+			{
+				clear_av(expanded_argv);
+				free_trees(cmd);
 				return (1);
+			}
 		}
 		builtin_call(expanded_argv);
-		((t_redir *)temp)->link = NULL;
 		free_trees(cmd);
-		if (cmd != (t_cmd *)exec)
-			free_trees((t_cmd *)exec);
 		return (1);
 	}
 	return (0);
