@@ -38,14 +38,14 @@ void	handle_export(char **av);
 // Pwd
 void	handle_pwd(void);
 
-// Unset
-void	handle_unset(char **av);
-
 // Quote Split
 t_list	*quote_split(char *str, char *sep);
 
 // Split Utils
 void	clear_av(char **av);
 char	**create_av(char *str);
+
+// Unset
+void	handle_unset(char **av);
 
 #endif

@@ -64,7 +64,6 @@ char	**expansion(t_exec *exec)
 	return (strs);
 }
 
-// 26 lines
 char	*heredoc_expansion(char *str)
 {
 	char	*tmp;

@@ -26,16 +26,16 @@ int	ft_exists_wskip(char **str, char *end_str, char *set)
 void	nullify(t_cmd *cmd)
 {
 	int		i;
-	t_exec	*exec;
+	t_exec	*exec_node;
 
 	i = 0;
 	if (cmd == NULL)
 		return ;
 	if (cmd->type == EXEC)
 	{
-		exec = (t_exec *)cmd;
-		while (exec->eargv[i])
-			*(exec->eargv[i++]) = 0;
+		exec_node = (t_exec *)cmd;
+		while (exec_node->eargv[i])
+			*(exec_node->eargv[i++]) = 0;
 	}
 	else if (cmd->type == PIPE)
 	{

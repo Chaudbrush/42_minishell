@@ -29,29 +29,29 @@ static t_cmd	*parseredirects(t_cmd *cmd, char **str,
 static t_cmd	*parsestr(char **str, char *end_str, t_list **cmd_list)
 {
 	int		argc;
-	t_exec	*exec_cmd;
+	t_exec	*exec_node;
 	t_cmd	*ret;
 
 	argc = 0;
-	exec_cmd = (t_exec *)init_t_exec();
+	exec_node = (t_exec *)init_t_exec();
 	if (!cmd_list)
-		*cmd_list = ft_lstnew(exec_cmd);
+		*cmd_list = ft_lstnew(exec_node);
 	else
-		ft_lstadd_front(cmd_list, ft_lstnew(exec_cmd));
-	ret = parseredirects((t_cmd *)exec_cmd, str, end_str, cmd_list);
+		ft_lstadd_front(cmd_list, ft_lstnew(exec_node));
+	ret = parseredirects((t_cmd *)exec_node, str, end_str, cmd_list);
 	if (!ret)
 		return (NULL);
 	while (!ft_exists_wskip(str, end_str, "<>|()") && *str < end_str)
 	{
-		if (!update_exec_argv(str, end_str, exec_cmd, argc))
+		if (!update_exec_argv(str, end_str, exec_node, argc))
 			break ;
 		argc++;
 		ret = parseredirects(ret, str, end_str, cmd_list);
 		if (!ret)
 			return (NULL);
 	}
-	exec_cmd->argv[argc] = 0;
-	exec_cmd->eargv[argc] = 0;
+	exec_node->argv[argc] = 0;
+	exec_node->eargv[argc] = 0;
 	return (ret);
 }
 

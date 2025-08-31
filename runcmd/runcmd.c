@@ -2,9 +2,41 @@
 
 static int	builtin_parent(char *str);
 static void	reset_child_flag(int value);
+static int	run_cmd_builtin_check(t_cmd *cmd);
+static int	built_in_exec(t_cmd *cmd, char **expanded_argv,
+				t_exec *exec, t_cmd *temp);
 
-int	built_in_exec(t_cmd *cmd, char **expanded_argv
-	, t_exec *exec, t_cmd *temp)
+void	run_cmd(char *str)
+{
+	t_cmd	*cmd;	
+	int		waitval;
+
+	if (!*str)
+		return ;
+	shell()->has_child = 1;
+	cmd = parsecmd(str, str + ft_strlen(str));
+	if (!cmd)
+	{
+		shell()->exit_flag = 2;
+		return ;
+	}
+	shell()->cmd = cmd;
+	if (cmd->type != PIPE)
+		if (run_cmd_builtin_check(cmd))
+			return ;
+	if (safe_fork() == 0)
+	{
+		shell()->envp_av = envp_to_av();
+		preprocess_heredoc(cmd);
+		exec_tree(cmd, shell()->envp_av);
+	}
+	waitpid(-1, &waitval, 0);
+	reset_child_flag(waitval);
+	free_trees(cmd);
+}
+
+static int	built_in_exec(t_cmd *cmd, char **expanded_argv,
+				t_exec *exec, t_cmd *temp)
 {
 	int	exit_val;
 
@@ -39,7 +71,7 @@ int	built_in_exec(t_cmd *cmd, char **expanded_argv
 	return (0);
 }
 
-int	run_cmd_builtin_check(t_cmd *cmd)
+static int	run_cmd_builtin_check(t_cmd *cmd)
 {
 	t_exec	*exec;
 	t_cmd	*temp;
@@ -59,35 +91,6 @@ int	run_cmd_builtin_check(t_cmd *cmd)
 		return (1);
 	clear_av(expanded_argv);
 	return (0);
-}
-
-void	run_cmd(char *str)
-{
-	t_cmd	*cmd;	
-	int		waitval;
-
-	if (!*str)
-		return ;
-	shell()->has_child = 1;
-	cmd = parsecmd(str, str + ft_strlen(str));
-	if (!cmd)
-	{
-		shell()->exit_flag = 2;
-		return ;
-	}
-	shell()->cmd = cmd;
-	if (cmd->type != PIPE)
-		if (run_cmd_builtin_check(cmd))
-			return ;
-	if (safe_fork() == 0)
-	{
-		shell()->envp_av = envp_to_av();
-		preprocess_heredoc(cmd);
-		exec_tree(cmd, shell()->envp_av);
-	}
-	waitpid(-1, &waitval, 0);
-	reset_child_flag(waitval);
-	free_trees(cmd);
 }
 
 static int	builtin_parent(char *str)

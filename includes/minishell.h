@@ -46,10 +46,10 @@ typedef struct s_shell
 }	t_shell;
 
 // Main
-t_shell	*shell(void);
 int		ft_getline(void);
 
 // Safe Utils
+t_shell	*shell(void);
 int		safe_fork(void);
 void	*safe_malloc(int size);
 

@@ -1,7 +1,5 @@
 #include "../includes/execute.h"
 
-// Heredoc expander
-// Two functions to remove the quotes from heredoc delimiter
 static int	new_len(char *file);
 static void	put_nonprintable(char *str);
 

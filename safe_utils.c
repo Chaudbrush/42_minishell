@@ -25,3 +25,10 @@ void	*safe_malloc(int size)
 	}
 	return ((void *)ptr);
 }
+
+t_shell	*shell(void)
+{
+	static t_shell	prog;
+
+	return (&prog);
+}
