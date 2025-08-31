@@ -7,6 +7,7 @@ t_cmd	*init_t_execcmd(void)
 	execcmd = malloc(sizeof(t_execcmd));
 	execcmd->type = EXEC;
 	execcmd->size = 0;
+	execcmd->builtin_heredoc = 0;
 	execcmd->max_size = MAX_SIZE;
 	execcmd->argv = safe_malloc(sizeof(char *) * MAX_SIZE);
 	execcmd->eargv = safe_malloc(sizeof(char *) * MAX_SIZE);

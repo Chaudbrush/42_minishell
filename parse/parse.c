@@ -72,7 +72,7 @@ static int	pipe_syntax_err(t_pipecmd *pipecmd)
 static t_cmd	*parsepipe(char **str, char *end_str, t_list **cmd_list)
 {
 	t_cmd	*cmd;
-	t_cmd	*left_cmd;
+	t_cmd	*right_cmd;
 
 	cmd = parsestr(str, end_str, cmd_list);
 	if (!cmd)
@@ -80,10 +80,10 @@ static t_cmd	*parsepipe(char **str, char *end_str, t_list **cmd_list)
 	if (ft_exists_wskip(str, end_str, "|"))
 	{
 		get_token(str, end_str, 0, 0);
-		left_cmd = parsepipe(str, end_str, cmd_list);
-		if (!left_cmd)
+		right_cmd = parsepipe(str, end_str, cmd_list);
+		if (!right_cmd)
 			return (NULL);
-		cmd = init_t_pipecmd(cmd, left_cmd, cmd_list);
+		cmd = init_t_pipecmd(cmd, right_cmd, cmd_list);
 		if (pipe_syntax_err((t_pipecmd *)cmd))
 			return (free_list(cmd_list, 1), (NULL));
 	}

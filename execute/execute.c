@@ -1,6 +1,6 @@
 #include "execute.h"
 
-static void	close_all_fds(t_cmd *cmd)
+void	close_all_fds(t_cmd *cmd)
 {
 	t_pipecmd	*pipecmd;
 	t_redircmd	*redircmd;
@@ -15,7 +15,7 @@ static void	close_all_fds(t_cmd *cmd)
 	if (cmd->type == REDIR)
 	{
 		redircmd = (t_redircmd *)cmd;
-		while (cmd->type != EXEC)
+		while (cmd && cmd->type != EXEC)
 		{
 			redircmd = (t_redircmd *)cmd;
 			if (redircmd->redir_type == '-' && redircmd->heredoc_fdin != -1)
@@ -36,7 +36,7 @@ void	exec_tree(t_cmd *cmd, char **envp)
 	else if (cmd->type == REDIR)
 	{
 		redir_recursive(cmd, envp);
-		while (cmd->type == REDIR)
+		while (cmd && cmd->type == REDIR)
 			cmd = ((t_redircmd *)cmd)->link;
 		exec_tree(cmd, envp);
 	}

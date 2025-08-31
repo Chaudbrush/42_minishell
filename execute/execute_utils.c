@@ -45,7 +45,7 @@ void	preprocess_heredoc(t_cmd *cmd)
 	if (cmd->type == REDIR)
 	{
 		redircmd = (t_redircmd *)cmd;
-		if ((redircmd->link)->type != EXEC)
+		if (redircmd->link && (redircmd->link)->type != EXEC)
 			preprocess_heredoc(((t_redircmd *)cmd)->link);
 		if (redircmd->redir_type == '-')
 			read_line_heredoc(redircmd, NULL);

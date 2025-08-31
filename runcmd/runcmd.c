@@ -6,22 +6,30 @@ static void	reset_child_flag(int value);
 int	built_in_exec(t_cmd *cmd, char **expanded_argv
 	, t_execcmd *execcmd, t_cmd *temp)
 {
+	int	exit_val;
 	if (*expanded_argv && builtin_parent(*expanded_argv))
 	{
-		preprocess_heredoc(cmd);
 		if (temp->type == REDIR)
 		{
-			((t_redircmd *)temp)->link = NULL;
 			if (safe_fork() == 0)
 			{
+				free(execcmd->argv);
+				execcmd->builtin_heredoc = 1;
+				execcmd->argv = expanded_argv;
+				preprocess_heredoc(cmd);
+				((t_redircmd *)temp)->link = NULL;
 				redir_recursive(cmd, NULL);
-				clear_av(expanded_argv);
+				free_trees(cmd);
 				free_trees((t_cmd *)execcmd);
-				exit_frees(cmd, shell()->envp_l, NULL, EXIT_SUCCESS);
+				clear_envp(shell()->envp_l);
+				exit(EXIT_SUCCESS);
 			}
-			wait(NULL);
+			waitpid(-1, &exit_val, 0);
+			if (exit_val == 230)
+				return (1);
 		}
 		builtin_call(expanded_argv);
+		((t_redircmd *)temp)->link = NULL;
 		free_trees(cmd);
 		if (cmd != (t_cmd *)execcmd)
 			free_trees((t_cmd *)execcmd);

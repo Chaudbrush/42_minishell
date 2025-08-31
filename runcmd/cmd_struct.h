@@ -1,6 +1,6 @@
 #ifndef CMD_STRUCT_H
 # define CMD_STRUCT_H
-# define MAX_SIZE 15
+# define MAX_SIZE 1
 # include "../minishell.h"
 
 enum
@@ -13,6 +13,7 @@ enum
 typedef struct s_execcmd
 {
 	int		type;
+	int		builtin_heredoc;
 	char	**argv;
 	char	**eargv;
 	int		max_size;

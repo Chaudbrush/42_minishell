@@ -44,6 +44,7 @@ static void	doc_handler(int signal)
 	(void)signal;
 	shell()->exit_flag = 230;
 	clear_envp(shell()->envp_l);
+	close_all_fds(shell()->cmd);
 	free_trees(shell()->cmd);
 	free(shell()->envp_av);
 	free(shell()->expan_delim);

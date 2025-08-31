@@ -6,7 +6,11 @@ void	free_trees(t_cmd *cmd)
 		return ;
 	if (cmd->type == EXEC)
 	{
-		free(((t_execcmd *)cmd)->argv);
+		if (((t_execcmd *)cmd)->builtin_heredoc)
+			clear_av(((t_execcmd *)cmd)->argv);
+		else
+			if (((t_execcmd *)cmd)->argv)
+				free(((t_execcmd *)cmd)->argv);
 		free(((t_execcmd *)cmd)->eargv);
 		free(cmd);
 		cmd = NULL;
