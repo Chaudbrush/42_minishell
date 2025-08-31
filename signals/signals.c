@@ -1,4 +1,4 @@
-#include "signals.h"
+#include "../includes/signals.h"
 
 static void	doc_handler(int signal);
 static void	parent_handler(int signal);

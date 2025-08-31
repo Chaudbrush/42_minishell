@@ -1,4 +1,4 @@
-#include "parse.h"
+#include "../includes/parse.h"
 
 static t_cmd	*parseredirects(t_cmd *cmd, char **str,
 				char *end_str, t_list **cmd_list)
@@ -20,7 +20,7 @@ static t_cmd	*parseredirects(t_cmd *cmd, char **str,
 			return (NULL);
 		}
 		cmd = create_token_redir(token, cmd, ptr, ptr_end);
-		((t_redircmd *)cmd)->redir_type = token;
+		((t_redir *)cmd)->redir_type = token;
 		ft_lstadd_front(cmd_list, ft_lstnew(cmd));
 	}
 	return (cmd);
@@ -28,12 +28,12 @@ static t_cmd	*parseredirects(t_cmd *cmd, char **str,
 
 static t_cmd	*parsestr(char **str, char *end_str, t_list **cmd_list)
 {
-	int			argc;
-	t_execcmd	*exec_cmd;
-	t_cmd		*ret;
+	int		argc;
+	t_exec	*exec_cmd;
+	t_cmd	*ret;
 
 	argc = 0;
-	exec_cmd = (t_execcmd *)init_t_execcmd();
+	exec_cmd = (t_exec *)init_t_exec();
 	if (!cmd_list)
 		*cmd_list = ft_lstnew(exec_cmd);
 	else
@@ -55,15 +55,15 @@ static t_cmd	*parsestr(char **str, char *end_str, t_list **cmd_list)
 	return (ret);
 }
 
-static int	pipe_syntax_err(t_pipecmd *pipecmd)
+static int	pipe_syntax_err(t_pipe *pipe)
 {
-	t_execcmd	*right_exec;
-	t_execcmd	*left_exec;
+	t_exec	*right_exec;
+	t_exec	*left_exec;
 
-	right_exec = (t_execcmd *)(pipecmd->right);
-	left_exec = (t_execcmd *)(pipecmd->left);
-	if ((pipecmd->left->type == EXEC && !left_exec->argv[0])
-		|| (pipecmd->right->type == EXEC && !right_exec->argv[0]))
+	right_exec = (t_exec *)(pipe->right);
+	left_exec = (t_exec *)(pipe->left);
+	if ((pipe->left->type == EXEC && !left_exec->argv[0])
+		|| (pipe->right->type == EXEC && !right_exec->argv[0]))
 		return (ft_putstr_fd("syntax error near unexpected token `|'\n", 2)
 			, 1);
 	return (0);
@@ -83,8 +83,8 @@ static t_cmd	*parsepipe(char **str, char *end_str, t_list **cmd_list)
 		right_cmd = parsepipe(str, end_str, cmd_list);
 		if (!right_cmd)
 			return (NULL);
-		cmd = init_t_pipecmd(cmd, right_cmd, cmd_list);
-		if (pipe_syntax_err((t_pipecmd *)cmd))
+		cmd = init_t_pipe(cmd, right_cmd, cmd_list);
+		if (pipe_syntax_err((t_pipe *)cmd))
 			return (free_list(cmd_list, 1), (NULL));
 	}
 	return (cmd);

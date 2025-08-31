@@ -1,7 +1,7 @@
 #ifndef BUILTIN_H
 # define BUILTIN_H
 
-# include "../minishell.h"
+# include "minishell.h"
 
 typedef struct s_list	t_list;
 typedef struct s_envp	t_envp;

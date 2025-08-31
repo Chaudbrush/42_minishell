@@ -1,7 +1,7 @@
 #ifndef READLINE_H
 # define READLINE_H
 
-# include "../minishell.h"
+# include "minishell.h"
 
 // Readline
 int		ft_getline(void);

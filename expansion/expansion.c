@@ -1,4 +1,4 @@
-#include "expansion.h"
+#include "../includes/expansion.h"
 
 static int	is_expandable(char *str)
 {
@@ -38,7 +38,7 @@ int	perform_expansion(char *src, char **dest)
 	return (ret);
 }
 
-char	**expansion(t_execcmd *execcmd)
+char	**expansion(t_exec *exec)
 {
 	char	**strs;
 	int		i;
@@ -46,16 +46,16 @@ char	**expansion(t_execcmd *execcmd)
 
 	i = 0;
 	j = 0;
-	strs = safe_malloc(sizeof(char *) * (execcmd->size + 1));
-	while (execcmd->argv[i])
+	strs = safe_malloc(sizeof(char *) * (exec->size + 1));
+	while (exec->argv[i])
 	{
-		if (is_expandable(execcmd->argv[i]))
+		if (is_expandable(exec->argv[i]))
 		{
-			if (!perform_expansion(execcmd->argv[i], &strs[j]))
+			if (!perform_expansion(exec->argv[i], &strs[j]))
 				free(strs[j--]);
 		}
 		else
-			strs[j] = ft_strdup(execcmd->argv[i]);
+			strs[j] = ft_strdup(exec->argv[i]);
 		i++;
 		j++;
 	}
