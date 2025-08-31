@@ -1,30 +1,30 @@
-#include "runcmd.h"
+#include "../includes/runcmd.h"
 
 static int	builtin_parent(char *str);
 static void	reset_child_flag(int value);
 
 int	built_in_exec(t_cmd *cmd, char **expanded_argv
-	, t_execcmd *execcmd, t_cmd *temp)
+	, t_exec *exec, t_cmd *temp)
 {
 	if (*expanded_argv && builtin_parent(*expanded_argv))
 	{
 		preprocess_heredoc(cmd);
 		if (temp->type == REDIR)
 		{
-			((t_redircmd *)temp)->link = NULL;
+			((t_redir *)temp)->link = NULL;
 			if (safe_fork() == 0)
 			{
 				redir_recursive(cmd, NULL);
 				clear_av(expanded_argv);
-				free_trees((t_cmd *)execcmd);
+				free_trees((t_cmd *)exec);
 				exit_frees(cmd, shell()->envp_l, NULL, EXIT_SUCCESS);
 			}
 			wait(NULL);
 		}
 		builtin_call(expanded_argv);
 		free_trees(cmd);
-		if (cmd != (t_cmd *)execcmd)
-			free_trees((t_cmd *)execcmd);
+		if (cmd != (t_cmd *)exec)
+			free_trees((t_cmd *)exec);
 		return (1);
 	}
 	return (0);
@@ -32,21 +32,21 @@ int	built_in_exec(t_cmd *cmd, char **expanded_argv
 
 int	run_cmd_builtin_check(t_cmd *cmd)
 {
-	t_execcmd	*execcmd;
+	t_exec	*exec;
 	t_cmd		*temp;
 	char		**expanded_argv;
 
 	temp = cmd;
 	if (temp->type == REDIR)
 	{
-		while (((t_redircmd *)temp)->link->type == REDIR)
-			temp = ((t_redircmd *)temp)->link;
-		execcmd = (t_execcmd *)(((t_redircmd *)temp)->link);
+		while (((t_redir *)temp)->link->type == REDIR)
+			temp = ((t_redir *)temp)->link;
+		exec = (t_exec *)(((t_redir *)temp)->link);
 	}
 	else
-		execcmd = (t_execcmd *)temp;
-	expanded_argv = expansion(execcmd);
-	if (built_in_exec(cmd, expanded_argv, execcmd, temp))
+		exec = (t_exec *)temp;
+	expanded_argv = expansion(exec);
+	if (built_in_exec(cmd, expanded_argv, exec, temp))
 		return (1);
 	clear_av(expanded_argv);
 	return (0);

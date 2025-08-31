@@ -1,7 +1,7 @@
 #ifndef ENVP_H
 # define ENVP_H
 
-# include "../minishell.h"
+# include "minishell.h"
 
 typedef struct s_envp	t_envp;
 

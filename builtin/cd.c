@@ -1,4 +1,4 @@
-#include "builtin.h"
+#include "../includes/builtin.h"
 
 static void	update_pwd(char *str, char *buff);
 static void	handle_home(char *str, char *buff);

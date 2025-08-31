@@ -1,4 +1,4 @@
-#include "expansion.h"
+#include "../includes/expansion.h"
 
 static char	*invalid_dolar(char *src, int *j);
 static char	*search_envp(char *start, char *end);

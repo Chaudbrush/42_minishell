@@ -1,18 +1,18 @@
 #ifndef EXECUTE_H
 # define EXECUTE_H
 
-# include "../minishell.h"
+# include "minishell.h"
 
 # define EXEC_FAIL 127
 
-typedef struct s_cmd		t_cmd;
-typedef struct s_execcmd	t_execcmd;
-typedef struct s_pipecmd	t_pipecmd;
-typedef struct s_redircmd	t_redircmd;
+typedef struct s_cmd	t_cmd;
+typedef struct s_exec	t_exec;
+typedef struct s_pipe	t_pipe;
+typedef struct s_redir	t_redir;
 
 // Execute Utils
 void	preprocess_heredoc(t_cmd *cmd);
-int		safe_open(t_redircmd *redircmd);
+int		safe_open(t_redir *redir_node);
 void	exit_frees(t_cmd *cmd_tree, t_envp *envp_list,
 			char **envp_av, int exit_flag);
 

@@ -1,4 +1,4 @@
-#include "execute.h"
+#include "../includes/execute.h"
 
 static char	*mod_strncpy(char *dest, char *src, size_t n)
 {

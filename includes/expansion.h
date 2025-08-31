@@ -1,11 +1,11 @@
 #ifndef EXPANSION_H
 # define EXPANSION_H
 
-# include "../minishell.h"
+# include "minishell.h"
 
-typedef struct s_execcmd	t_execcmd;
+typedef struct s_exec	t_exec;
 
-char	**expansion(t_execcmd *execcmd);
+char	**expansion(t_exec *exec);
 
 int		get_expansion_len(char *src);
 void	copy_expansion(char *src, char **destination, int src_size, int *ret);

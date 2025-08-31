@@ -1,4 +1,4 @@
-#include "envp.h"
+#include "../includes/envp.h"
 
 char	*extract_val(char *str)
 {

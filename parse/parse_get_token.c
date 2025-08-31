@@ -1,4 +1,4 @@
-#include "parse.h"
+#include "../includes/parse.h"
 
 void	skip_word(char **str, char *end_str)
 {

@@ -1,4 +1,4 @@
-#include "parse.h"
+#include "../includes/parse.h"
 
 void	free_trees(t_cmd *cmd)
 {
@@ -6,23 +6,23 @@ void	free_trees(t_cmd *cmd)
 		return ;
 	if (cmd->type == EXEC)
 	{
-		free(((t_execcmd *)cmd)->argv);
-		free(((t_execcmd *)cmd)->eargv);
+		free(((t_exec *)cmd)->argv);
+		free(((t_exec *)cmd)->eargv);
 		free(cmd);
 		cmd = NULL;
 		return ;
 	}
 	if (cmd->type == REDIR)
 	{
-		free_trees(((t_redircmd *)cmd)->link);
+		free_trees(((t_redir *)cmd)->link);
 		free(cmd);
 		cmd = NULL;
 		return ;
 	}
 	if (cmd->type == PIPE)
 	{
-		free_trees(((t_pipecmd *)cmd)->left);
-		free_trees(((t_pipecmd *)cmd)->right);
+		free_trees(((t_pipe *)cmd)->left);
+		free_trees(((t_pipe *)cmd)->right);
 		free(cmd);
 		cmd = NULL;
 		return ;
@@ -41,8 +41,8 @@ void	free_list(t_list **cmd_list, int free_cmd)
 		{
 			if (cmd->type == EXEC)
 			{
-				free(((t_execcmd *)cmd)->argv);
-				free(((t_execcmd *)cmd)->eargv);
+				free(((t_exec *)cmd)->argv);
+				free(((t_exec *)cmd)->eargv);
 				free(cmd);
 			}
 			else if (cmd->type == REDIR || cmd->type == PIPE)
