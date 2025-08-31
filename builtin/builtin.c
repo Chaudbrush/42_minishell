@@ -14,19 +14,19 @@ int	builtin_call(char **av)
 {
 	if (shell()->line[0] == 0)
 		return (0);
-	if (!strcmp(av[0], "exit"))
+	if (!ft_strcmp(av[0], "exit"))
 		handle_exit(av);
-	else if (!strcmp(av[0], "cd"))
+	else if (!ft_strcmp(av[0], "cd"))
 		handle_cd(av);
-	else if (!strcmp(av[0], "pwd"))
+	else if (!ft_strcmp(av[0], "pwd"))
 		handle_pwd();
-	else if (!strcmp(av[0], "echo"))
+	else if (!ft_strcmp(av[0], "echo"))
 		handle_echo(av);
-	else if (!strcmp(av[0], "export"))
+	else if (!ft_strcmp(av[0], "export"))
 		handle_export(av);
-	else if (!strcmp(av[0], "unset"))
+	else if (!ft_strcmp(av[0], "unset"))
 		handle_unset(av);
-	else if (!strcmp(av[0], "env"))
+	else if (!ft_strcmp(av[0], "env"))
 		handle_env(av);
 	clear_av(av);
 	return (shell()->exit_flag);
