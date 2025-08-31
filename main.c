@@ -1,11 +1,4 @@
-#include "minishell.h"
-
-t_shell	*shell(void)
-{
-	static t_shell	prog;
-
-	return (&prog);
-}
+#include "./includes/minishell.h"
 
 int	main(int argc, char **argv, char **envp)
 {

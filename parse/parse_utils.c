@@ -1,4 +1,4 @@
-#include "parse.h"
+#include "../includes/parse.h"
 
 int	char_presence(char c, char *str)
 {
@@ -25,31 +25,31 @@ int	ft_exists_wskip(char **str, char *end_str, char *set)
 
 void	nullify(t_cmd *cmd)
 {
-	int			i;
-	t_execcmd	*execcmd;
+	int		i;
+	t_exec	*exec_node;
 
 	i = 0;
 	if (cmd == NULL)
 		return ;
 	if (cmd->type == EXEC)
 	{
-		execcmd = (t_execcmd *)cmd;
-		while (execcmd->eargv[i])
-			*(execcmd->eargv[i++]) = 0;
+		exec_node = (t_exec *)cmd;
+		while (exec_node->eargv[i])
+			*(exec_node->eargv[i++]) = 0;
 	}
 	else if (cmd->type == PIPE)
 	{
-		nullify(((t_pipecmd *) cmd)->left);
-		nullify(((t_pipecmd *) cmd)->right);
+		nullify(((t_pipe *) cmd)->left);
+		nullify(((t_pipe *) cmd)->right);
 	}
 	else if (cmd->type == REDIR)
 	{
-		nullify(((t_redircmd *)cmd)->link);
-		*((t_redircmd *) cmd)->end_file = '\0';
+		nullify(((t_redir *)cmd)->link);
+		*((t_redir *) cmd)->end_file = '\0';
 	}
 }
 
-void	double_argv_size(t_execcmd *cmd)
+void	double_argv_size(t_exec *cmd)
 {
 	char	**new_argv;
 	char	**new_eargv;

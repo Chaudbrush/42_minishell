@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "./includes/minishell.h"
 
 int	safe_fork(void)
 {
@@ -24,4 +24,11 @@ void	*safe_malloc(int size)
 		exit(EXIT_FAILURE);
 	}
 	return ((void *)ptr);
+}
+
+t_shell	*shell(void)
+{
+	static t_shell	prog;
+
+	return (&prog);
 }

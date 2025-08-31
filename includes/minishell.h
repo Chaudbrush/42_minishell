@@ -8,16 +8,16 @@
 # include <signal.h>
 # include <sys/stat.h>
 # include <sys/wait.h>
-# include "./builtin/builtin.h"
-# include "./envp/envp.h"
-# include "./libft/includes/libft.h"
-# include "./expansion/expansion.h"
-# include "./readline/readline.h"
-# include "./runcmd/cmd_struct.h"
-# include "./parse/parse.h"
-# include "./execute/execute.h"
-# include "./runcmd/runcmd.h"
-# include "./signals/signals.h"
+# include "builtin.h"
+# include "envp.h"
+# include "../libft/includes/libft.h"
+# include "expansion.h"
+# include "readline.h"
+# include "cmd_struct.h"
+# include "parse.h"
+# include "execute.h"
+# include "runcmd.h"
+# include "signals.h"
 
 typedef struct s_cmd	t_cmd;
 
@@ -46,10 +46,10 @@ typedef struct s_shell
 }	t_shell;
 
 // Main
-t_shell	*shell(void);
 int		ft_getline(void);
 
 // Safe Utils
+t_shell	*shell(void);
 int		safe_fork(void);
 void	*safe_malloc(int size);
 

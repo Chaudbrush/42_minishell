@@ -1,26 +1,26 @@
-#include "execute.h"
+#include "../includes/execute.h"
 
 void	close_all_fds(t_cmd *cmd)
 {
-	t_pipecmd	*pipecmd;
-	t_redircmd	*redircmd;
+	t_pipe	*pipe_node;
+	t_redir	*redir_node;
 
 	if (cmd->type == PIPE)
 	{
-		pipecmd = (t_pipecmd *)cmd;
-		close_all_fds(pipecmd->left);
-		close_all_fds(pipecmd->right);
+		pipe_node = (t_pipe *)cmd;
+		close_all_fds(pipe_node->left);
+		close_all_fds(pipe_node->right);
 		return ;
 	}
 	if (cmd->type == REDIR)
 	{
-		redircmd = (t_redircmd *)cmd;
+		redir_node = (t_redir *)cmd;
 		while (cmd && cmd->type != EXEC)
 		{
-			redircmd = (t_redircmd *)cmd;
-			if (redircmd->redir_type == '-' && redircmd->heredoc_fdin != -1)
-				close(redircmd->heredoc_fdin);
-			cmd = redircmd->link;
+			redir_node = (t_redir *)cmd;
+			if (redir_node->redir_type == '-' && redir_node->heredoc_fdin != -1)
+				close(redir_node->heredoc_fdin);
+			cmd = redir_node->link;
 		}
 	}
 }
@@ -37,7 +37,7 @@ void	exec_tree(t_cmd *cmd, char **envp)
 	{
 		redir_recursive(cmd, envp);
 		while (cmd && cmd->type == REDIR)
-			cmd = ((t_redircmd *)cmd)->link;
+			cmd = ((t_redir *)cmd)->link;
 		exec_tree(cmd, envp);
 	}
 	close_all_fds(shell()->cmd);
@@ -46,13 +46,13 @@ void	exec_tree(t_cmd *cmd, char **envp)
 
 int	exec_recursive(t_cmd *cmd, char **envp)
 {
-	int			exit_flag;
-	t_execcmd	*execcmd;
-	char		**expanded_argv;
+	int		exit_flag;
+	t_exec	*exec_node;
+	char	**expanded_argv;
 
 	exit_flag = 0;
-	execcmd = (t_execcmd *)cmd;
-	expanded_argv = expansion(execcmd);
+	exec_node = (t_exec *)cmd;
+	expanded_argv = expansion(exec_node);
 	if (!expanded_argv[0])
 	{
 		clear_av(expanded_argv);
@@ -70,21 +70,21 @@ int	exec_recursive(t_cmd *cmd, char **envp)
 
 void	redir_recursive(t_cmd *cmd, char **envp)
 {
-	t_redircmd	*redircmd;
+	t_redir	*redir_node;
 
-	redircmd = (t_redircmd *)cmd;
-	if (redircmd->link && redircmd->link->type == REDIR)
-		redir_recursive(redircmd->link, envp);
-	if (redircmd->redir_type == '-')
+	redir_node = (t_redir *)cmd;
+	if (redir_node->link && redir_node->link->type == REDIR)
+		redir_recursive(redir_node->link, envp);
+	if (redir_node->redir_type == '-')
 	{
-		dup2(redircmd->heredoc_fdin, STDIN_FILENO);
-		close(redircmd->heredoc_fdin);
+		dup2(redir_node->heredoc_fdin, STDIN_FILENO);
+		close(redir_node->heredoc_fdin);
 		return ;
 	}
-	close(redircmd->fd);
-	if (safe_open(redircmd))
+	close(redir_node->fd);
+	if (safe_open(redir_node))
 		exit_frees(shell()->cmd, shell()->envp_l, envp, EXIT_FAILURE);
-	free(redircmd->end_file);
+	free(redir_node->end_file);
 }
 
 int	pipe_recursive(t_cmd *cmd, char **envp)

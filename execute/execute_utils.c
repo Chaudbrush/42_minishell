@@ -1,21 +1,21 @@
-#include "execute.h"
+#include "../includes/execute.h"
 
 static int	heredoc_exit(char *ptr);
-static void	read_line_heredoc(t_redircmd *redircmd, char *ptr);
+static void	read_line_heredoc(t_redir *redir_node, char *ptr);
 
-int	safe_open(t_redircmd *redircmd)
+int	safe_open(t_redir *redir_node)
 {
 	int	err;
 
 	err = 0;
-	if (!argv_redir_update(redircmd->file, &redircmd->end_file))
+	if (!argv_redir_update(redir_node->file, &redir_node->end_file))
 		err = 1;
-	if (!err && open(redircmd->end_file, redircmd->mode, 0644) < 0)
+	if (!err && open(redir_node->end_file, redir_node->mode, 0644) < 0)
 	{
 		ft_putstr_fd("err: no such file or directory: ", STDERR_FILENO);
-		ft_putstr_fd(redircmd->end_file, STDERR_FILENO);
+		ft_putstr_fd(redir_node->end_file, STDERR_FILENO);
 		ft_putstr_fd("\n", STDERR_FILENO);
-		free(redircmd->end_file);
+		free(redir_node->end_file);
 		err = 1;
 	}
 	return (err);
@@ -35,25 +35,25 @@ void	exit_frees(t_cmd *cmd_tree, t_envp *envp_list,
 
 void	preprocess_heredoc(t_cmd *cmd)
 {
-	t_redircmd	*redircmd;
+	t_redir	*redir_node;
 
 	if (cmd->type == PIPE)
 	{
-		preprocess_heredoc(((t_pipecmd *) cmd)->left);
-		preprocess_heredoc(((t_pipecmd *) cmd)->right);
+		preprocess_heredoc(((t_pipe *) cmd)->left);
+		preprocess_heredoc(((t_pipe *) cmd)->right);
 	}
 	if (cmd->type == REDIR)
 	{
-		redircmd = (t_redircmd *)cmd;
-		if (redircmd->link && (redircmd->link)->type != EXEC)
-			preprocess_heredoc(((t_redircmd *)cmd)->link);
-		if (redircmd->redir_type == '-')
-			read_line_heredoc(redircmd, NULL);
+		redir_node = (t_redir *)cmd;
+		if (redir_node->link && (redir_node->link)->type != EXEC)
+			preprocess_heredoc(((t_redir *)cmd)->link);
+		if (redir_node->redir_type == '-')
+			read_line_heredoc(redir_node, NULL);
 		return ;
 	}
 }
 
-static void	read_line_heredoc(t_redircmd *redircmd, char *ptr)
+static void	read_line_heredoc(t_redir *redir, char *ptr)
 {
 	int			hd_pipe[2];
 
@@ -64,9 +64,9 @@ static void	read_line_heredoc(t_redircmd *redircmd, char *ptr)
 		exit(EXIT_FAILURE);
 	}
 	shell()->doc_exp = 0;
-	if (!ft_strchr(redircmd->file, '\"') && !ft_strchr(redircmd->file, '\''))
+	if (!ft_strchr(redir->file, '\"') && !ft_strchr(redir->file, '\''))
 		shell()->doc_exp = 1;
-	remove_quotes(redircmd->file, &shell()->expan_delim);
+	remove_quotes(redir->file, &shell()->expan_delim);
 	while (1)
 	{
 		ptr = readline(">");
@@ -76,7 +76,7 @@ static void	read_line_heredoc(t_redircmd *redircmd, char *ptr)
 	}
 	shell()->doc_exp = 0;
 	close(hd_pipe[1]);
-	redircmd->heredoc_fdin = hd_pipe[0];
+	redir->heredoc_fdin = hd_pipe[0];
 	free(shell()->expan_delim);
 }
 

@@ -1,4 +1,4 @@
-#include "execute.h"
+#include "../includes/execute.h"
 
 static int	handle_flags(char *str, char *str_ptr);
 static char	*create_exec(char *str);
@@ -8,7 +8,7 @@ void	pipe_left(int pipe_in, int pipe_out, t_cmd *cmd, char **envp)
 	close(pipe_in);
 	dup2(pipe_out, STDOUT_FILENO);
 	close(pipe_out);
-	exec_tree(((t_pipecmd *)cmd)->left, envp);
+	exec_tree(((t_pipe *)cmd)->left, envp);
 }
 
 void	pipe_right(int pipe_in, int pipe_out, t_cmd *cmd, char **envp)
@@ -16,13 +16,8 @@ void	pipe_right(int pipe_in, int pipe_out, t_cmd *cmd, char **envp)
 	dup2(pipe_in, STDIN_FILENO);
 	close(pipe_in);
 	close(pipe_out);
-	exec_tree(((t_pipecmd *)cmd)->right, envp);
+	exec_tree(((t_pipe *)cmd)->right, envp);
 }
-/* void 	ft_close(int fd)
-{
-	if (fd > 2)
-		close(fd);
-}*/
 
 int	execute_cmd(char **expanded_argv, char **envp)
 {
