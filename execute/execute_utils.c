@@ -67,6 +67,8 @@ static void	read_line_heredoc(t_redir *redir, char *ptr)
 	if (!ft_strchr(redir->file, '\"') && !ft_strchr(redir->file, '\''))
 		shell()->doc_exp = 1;
 	remove_quotes(redir->file, &shell()->expan_delim);
+	close(hd_pipe[1]);
+	redir->heredoc_fdin = hd_pipe[0];
 	while (1)
 	{
 		ptr = readline(">");
@@ -75,8 +77,6 @@ static void	read_line_heredoc(t_redir *redir, char *ptr)
 		check_and_expand(ptr, hd_pipe[1]);
 	}
 	shell()->doc_exp = 0;
-	close(hd_pipe[1]);
-	redir->heredoc_fdin = hd_pipe[0];
 	free(shell()->expan_delim);
 }
 

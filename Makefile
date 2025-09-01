@@ -22,7 +22,7 @@ PARSE := $(addprefix parse/, parse_free.c parse_get_token.c \
 
 READLINE := $(addprefix readline/, peek_token.c readline.c)
 
-RUN_CMD := $(addprefix runcmd/, runcmd.c struct_inits.c)
+RUN_CMD := $(addprefix runcmd/, runcmd.c struct_inits.c builtin_exec.c)
 
 SIGNAL := $(addprefix signals/, signals.c)
 
