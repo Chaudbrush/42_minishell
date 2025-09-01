@@ -84,7 +84,7 @@ static int	heredoc_exit(char *ptr)
 {
 	if (!ptr)
 	{
-		ft_putstr_fd("-minishell: warning: here-document delimited \
+		ft_putstr_fd("minishell: warning: here-document delimited \
 by end-of-file (wanted `", 1);
 		ft_putstr_fd(shell()->expan_delim, 1);
 		ft_putstr_fd("')\n", 1);

@@ -2,6 +2,7 @@
 
 void	handle_pwd(void)
 {
-	printf("%s\n", shell()->pwd);
+	ft_putstr_fd(shell()->pwd, STDOUT_FILENO);
+	write(STDOUT_FILENO, "\n", 1);
 	shell()->exit_flag = 0;
 }
