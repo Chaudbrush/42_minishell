@@ -16,9 +16,10 @@ typedef struct s_exec
 {
 	int		type;
 	int		builtin_heredoc;
+	char	*tmp_str;
 	char	**argv;
-	char	**eargv;
-	int		max_size;
+//	char	**eargv;
+//	int		max_size;
 	int		size;
 }	t_exec;
 
@@ -47,8 +48,16 @@ typedef struct s_redir
 }	t_redir;
 
 // Structs inits
-t_cmd	*init_t_exec(void);
-t_cmd	*init_t_redir(char *sfile, char *efile, int mode, int fd);
-t_cmd	*init_t_pipe(t_cmd *left, t_cmd *right, t_list **cmd_list);
+t_cmd	*exec_node(char *str);
+t_cmd	*pipe_node(t_cmd *left, t_cmd *right);
+t_cmd	*redir_node(char *str, int type, int mode, int fd);
+
+
+// CLEAN UP
+
+// // Structs inits
+// t_cmd	*init_t_exec(void);
+// t_cmd	*init_t_redir(char *sfile, char *efile, int mode, int fd);
+// t_cmd	*init_t_pipe(t_cmd *left, t_cmd *right, t_list **cmd_list);
 
 #endif

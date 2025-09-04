@@ -32,4 +32,20 @@ int		ft_exists_wskip(char **str, char *end_str, char *set);
 // Parse
 t_cmd	*parsecmd(char *str, char *end_str);
 
+void	exec_to_argv(t_cmd *cmd);
+t_cmd	*parse_expression(char **av, int *i, int prec);
+t_cmd	*handle_redir(t_cmd *left, char token, char **av, int *i);
+char	*correct_string(t_cmd *left, char *str);
+t_cmd	*parse_str(char *str, int *i);
+void	attach_exec(t_cmd *left, char *str);
+void	get_word(char *str, int *i, int *len);
+t_cmd	*create_redir(t_cmd *cmd, char token, char *str);
+int		get_precedence(char c);
+char	new_get_token(char *str);
+
+// Move Later
+char	**create_tokens(char *str);
+int		check_tokens(char **av);
+
+
 #endif

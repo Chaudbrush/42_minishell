@@ -17,12 +17,14 @@ EXECUTE := $(addprefix execute/, execute_utils.c execute.c \
 EXPAN_CMD := $(addprefix expansion/, argv_merge.c copy_expansion.c \
 			expansion_utils.c expansion.c get_expansion_len.c)
 
-PARSE := $(addprefix parse/, parse_free.c parse_get_token.c \
+#PARSE := $(addprefix parse/, parse_free.c parse_get_token.c \
 			parse_helper.c parse_utils.c parse.c)
+		
+PARSE := $(addprefix parse/, new.c parse_free.c parsing.c struct_inits.c)
 
 READLINE := $(addprefix readline/, peek_token.c readline.c)
 
-RUN_CMD := $(addprefix runcmd/, runcmd.c struct_inits.c builtin_exec.c)
+RUN_CMD := $(addprefix runcmd/, runcmd.c builtin_exec.c)
 
 SIGNAL := $(addprefix signals/, signals.c)
 

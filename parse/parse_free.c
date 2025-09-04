@@ -6,16 +6,13 @@ void	free_trees(t_cmd *cmd)
 		return ;
 	if (cmd->type == EXEC)
 	{
-		if (((t_exec *)cmd)->builtin_heredoc)
-			clear_av(((t_exec *)cmd)->argv);
-		else
-			free(((t_exec *)cmd)->argv);
-		free(((t_exec *)cmd)->eargv);
+		clear_av(((t_exec *)cmd)->argv);
 		free(cmd);
 	}
 	else if (cmd->type == REDIR)
 	{
 		free_trees(((t_redir *)cmd)->link);
+		free(((t_redir *)cmd)->file);
 		free(cmd);
 	}
 	else if (cmd->type == PIPE)
@@ -26,32 +23,4 @@ void	free_trees(t_cmd *cmd)
 	}
 	cmd = NULL;
 	return ;
-}
-
-void	free_list(t_list **cmd_list, int free_cmd)
-{
-	t_cmd	*cmd;
-	t_list	*next;
-
-	while (*cmd_list)
-	{
-		cmd = (t_cmd *)((*cmd_list)->content);
-		if (free_cmd)
-		{
-			if (cmd->type == EXEC)
-			{
-				free(((t_exec *)cmd)->argv);
-				free(((t_exec *)cmd)->eargv);
-				free(cmd);
-			}
-			else if (cmd->type == REDIR || cmd->type == PIPE)
-				free(cmd);
-			cmd = NULL;
-		}
-		(*cmd_list)->content = NULL;
-		next = (*cmd_list)->next;
-		free(*cmd_list);
-		*cmd_list = next;
-	}
-	cmd_list = NULL;
 }
