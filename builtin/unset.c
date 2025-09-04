@@ -25,4 +25,5 @@ void	handle_unset(char **av)
 		i++;
 	}
 	shell()->exit_flag = 0;
+	update_sorted_envp();
 }

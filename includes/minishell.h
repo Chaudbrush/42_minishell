@@ -37,6 +37,7 @@ typedef struct s_shell
 	t_cmd			*cmd;
 	char			*expan_delim;
 	char			**envp_av;
+	char			**sorted_export;
 	int				exit_flag;
 	int				level;
 	char			pwd[1024];

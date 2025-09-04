@@ -7,13 +7,13 @@ void	run_cmd(char *str)
 
 	if (!*str)
 		return ;
-	shell()->has_child = 1;
 	cmd = parsecmd(str, str + ft_strlen(str));
 	if (!cmd)
 	{
 		shell()->exit_flag = 2;
 		return ;
 	}
+	shell()->has_child = 1;
 	shell()->cmd = cmd;
 	if (cmd->type != PIPE)
 		if (exec_builtin(cmd))

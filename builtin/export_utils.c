@@ -50,8 +50,7 @@ void	print_export(void)
 	char	**argv;
 
 	j = 0;
-	argv = envp_to_av();
-	sort_argv(argv);
+	argv = shell()->sorted_export;
 	while (argv[j])
 	{
 		if (argv[j][0] == '_' && argv[j][1] == '=')
@@ -69,7 +68,6 @@ void	print_export(void)
 		}
 		j++;
 	}
-	free(argv);
 }
 
 static void	print_error(char *str)

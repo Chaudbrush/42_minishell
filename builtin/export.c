@@ -14,22 +14,20 @@ void	handle_export(char **av)
 	shell()->exit_flag = 0;
 	if (i == 1)
 		return (print_export());
-	else
+	i = 1;
+	while (av[i])
 	{
-		i = 1;
-		while (av[i])
+		if (check_invalid(av[i]))
 		{
-			if (check_invalid(av[i]))
-			{
-				i++;
-				continue ;
-			}
-			str = create_string(av[i]);
-			if (!str)
-				break ;
-			create_node(av, str, &i);
+			i++;
+			continue ;
 		}
+		str = create_string(av[i]);
+		if (!str)
+			break ;
+		create_node(av, str, &i);
 	}
+	update_sorted_envp();
 }
 
 static char	*create_string(char *str)

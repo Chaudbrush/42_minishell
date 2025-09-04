@@ -27,10 +27,8 @@ void	handle_exit(char **av)
 		else
 			handle_valid(av);
 	}
-	clear_envp(shell()->envp_l);
-	free_trees(shell()->cmd);
 	clear_av(av);
-	exit (0);
+	exit_frees(shell()->cmd, shell()->envp_l, NULL, 0);
 }
 
 static void	handle_valid(char **av)

@@ -1,5 +1,15 @@
 #include "../includes/builtin.h"
 
+void	update_sorted_envp(void)
+{
+	char	**argv;
+
+	free(shell()->sorted_export);
+	argv = envp_to_av();
+	sort_argv(argv);
+	shell()->sorted_export = argv;
+}
+
 int	is_builtin(char **av)
 {
 	if (!*av)

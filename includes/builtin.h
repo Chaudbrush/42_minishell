@@ -47,5 +47,6 @@ char	**create_av(char *str);
 
 // Unset
 void	handle_unset(char **av);
+void	update_sorted_envp(void);
 
 #endif

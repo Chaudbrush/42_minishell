@@ -24,6 +24,7 @@ int	safe_open(t_redir *redir_node)
 void	exit_frees(t_cmd *cmd_tree, t_envp *envp_list,
 					char **envp_av, int exit_flag)
 {
+	free(shell()->sorted_export);
 	if (envp_list)
 		clear_envp(shell()->envp_l);
 	if (envp_av)
