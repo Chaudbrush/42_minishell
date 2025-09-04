@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cmd_struct.h                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/04 20:39:50 by vloureir          #+#    #+#             */
+/*   Updated: 2025/09/04 20:39:51 by vloureir         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef CMD_STRUCT_H
 # define CMD_STRUCT_H
 
@@ -16,9 +28,8 @@ typedef struct s_exec
 {
 	int		type;
 	int		builtin_heredoc;
+	char	*tmp_str;
 	char	**argv;
-	char	**eargv;
-	int		max_size;
 	int		size;
 }	t_exec;
 
@@ -39,7 +50,7 @@ typedef struct s_redir
 	int		type;
 	t_cmd	*link;
 	char	*file;
-	char	*end_file;
+	char	*end_file; // Do we need this? Why is it used in exec?
 	int		mode;
 	int		fd;
 	char	redir_type;
@@ -47,8 +58,8 @@ typedef struct s_redir
 }	t_redir;
 
 // Structs inits
-t_cmd	*init_t_exec(void);
-t_cmd	*init_t_redir(char *sfile, char *efile, int mode, int fd);
-t_cmd	*init_t_pipe(t_cmd *left, t_cmd *right, t_list **cmd_list);
+t_cmd	*exec_node(char *str);
+t_cmd	*pipe_node(t_cmd *left, t_cmd *right);
+t_cmd	*redir_node(char *str, int type, int mode, int fd);
 
 #endif

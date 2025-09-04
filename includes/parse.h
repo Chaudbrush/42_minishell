@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/04 20:40:06 by vloureir          #+#    #+#             */
+/*   Updated: 2025/09/04 20:40:07 by vloureir         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PARSE_H
 # define PARSE_H
 
@@ -8,28 +20,27 @@ typedef struct s_cmd	t_cmd;
 typedef struct s_pipe	t_pipe;
 typedef struct s_redir	t_redir;
 
+// Parse
+t_cmd	*parse_expression(char **av, int *i, int prec);
+
+// Parse Corrections
+void	exec_to_argv(t_cmd *cmd);
+void	attach_exec(t_cmd *left, char *str);
+char	*correct_string(t_cmd *left, char *str);
+
 // Parse Free
 void	free_trees(t_cmd *cmd);
-void	free_list(t_list **cmd_list, int free_cmd);
-
-// Parse Get Token
-void	skip_word(char **str, char *end_str);
-char	get_token(char **str, char *end_str, char **ptr, char **end_ptr);
-
-// Parse Helper
-t_cmd	*create_token_redir(char token, t_cmd *cmd,
-			char *ptr, char *ptr_end);
-int		update_exec_argv(char **str, char *end_str,
-			t_exec *exec, int arg_i);
 
 // Parse Utils
-void	nullify(t_cmd *cmd);
-void	double_argv_size(t_exec *cmd);
+int		get_precedence(char c);
+char	new_get_token(char *str);
 int		char_presence(char c, char *str);
-void	skip_whitespace(char **start, char *end);
-int		ft_exists_wskip(char **str, char *end_str, char *set);
+void	get_word(char *str, int *i, int *len);
 
-// Parse
-t_cmd	*parsecmd(char *str, char *end_str);
+// Tokens
+char	**create_tokens(char *str);
+
+// Token Errors
+int		check_tokens(char **av);
 
 #endif

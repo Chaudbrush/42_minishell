@@ -1,7 +1,16 @@
-#include "../includes/builtin.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   split_utils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/04 20:38:54 by vloureir          #+#    #+#             */
+/*   Updated: 2025/09/04 20:38:55 by vloureir         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-static void	clear_q_list(t_list *list);
-static char	**lst_to_argv(t_list *list);
+#include "../includes/builtin.h"
 
 char	**create_av(char *str)
 {
@@ -14,7 +23,7 @@ char	**create_av(char *str)
 	return (result);
 }
 
-static char	**lst_to_argv(t_list *list)
+char	**lst_to_argv(t_list *list)
 {
 	int		i;
 	int		size;
@@ -24,7 +33,6 @@ static char	**lst_to_argv(t_list *list)
 	argv = malloc(sizeof(char *) * (size + 1));
 	if (!argv)
 		return (NULL);
-	argv[size] = NULL;
 	i = 0;
 	while (i < size)
 	{
@@ -32,10 +40,11 @@ static char	**lst_to_argv(t_list *list)
 		list = list->next;
 		i++;
 	}
+	argv[size] = NULL;
 	return (argv);
 }
 
-static void	clear_q_list(t_list *list)
+void	clear_q_list(t_list *list)
 {
 	t_list	*ptr;
 

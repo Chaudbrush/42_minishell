@@ -22,6 +22,7 @@ int	main(int argc, char **argv, char **envp)
 		free(shell()->line);
 		shell()->line = NULL;
 	}
+	free(shell()->sorted_export);
 	clear_envp(shell()->envp_l);
 	return (0);
 }

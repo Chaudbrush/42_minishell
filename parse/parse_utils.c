@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_utils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/04 20:39:14 by vloureir          #+#    #+#             */
+/*   Updated: 2025/09/04 20:39:15 by vloureir         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/parse.h"
 
 int	char_presence(char c, char *str)
@@ -11,62 +23,66 @@ int	char_presence(char c, char *str)
 	return (0);
 }
 
-void	skip_whitespace(char **start, char *end)
+char	new_get_token(char *str)
 {
-	while (*start < end && char_presence(**start, " \t\r\n\v"))
-		*start = *start + 1;
+	if (!str || !str[0])
+		return (0);
+	else if (str[0] == '|')
+		return ('|');
+	else if (str[0] == '>')
+	{
+		if (str[1])
+			return ('+');
+		else
+			return ('>');
+	}
+	else if (str[0] == '<')
+	{
+		if (str[1])
+			return ('-');
+		else
+			return ('<');
+	}
+	else
+		return ('w');
 }
 
-int	ft_exists_wskip(char **str, char *end_str, char *set)
+int	get_precedence(char c)
 {
-	skip_whitespace(str, end_str);
-	return (char_presence(**str, set));
+	if (c == 'w' || !c)
+		return (0);
+	else if (c == '>' || c == '<' || c == '+' || c == '-')
+		return (1);
+	else if (c == '|')
+		return (2);
+	return (0);
 }
 
-void	nullify(t_cmd *cmd)
+void	get_word(char *str, int *i, int *len)
 {
-	int		i;
-	t_exec	*exec_node;
+	char	quotes;
 
-	i = 0;
-	if (cmd == NULL)
-		return ;
-	if (cmd->type == EXEC)
+	quotes = 0;
+	while (str[*i] && !char_presence(str[*i], " \t\n\v\f\r"))
 	{
-		exec_node = (t_exec *)cmd;
-		while (exec_node->eargv[i])
-			*(exec_node->eargv[i++]) = 0;
+		if (str[*i] == '\'' || str[*i] == '\"')
+		{
+			quotes = str[*i];
+			(*i)++;
+			(*len)++;
+			while (str[*i] != quotes && str[*i])
+			{
+				(*i)++;
+				(*len)++;
+			}
+			if (str[*i])
+			{
+				(*i)++;
+				(*len)++;
+			}
+			continue ;
+		}
+		(*i)++;
+		(*len)++;
 	}
-	else if (cmd->type == PIPE)
-	{
-		nullify(((t_pipe *) cmd)->left);
-		nullify(((t_pipe *) cmd)->right);
-	}
-	else if (cmd->type == REDIR)
-	{
-		nullify(((t_redir *)cmd)->link);
-		*((t_redir *) cmd)->end_file = '\0';
-	}
-}
-
-void	double_argv_size(t_exec *cmd)
-{
-	char	**new_argv;
-	char	**new_eargv;
-	int		i;
-
-	new_argv = safe_malloc(sizeof(char *) * (cmd->max_size * 2));
-	new_eargv = safe_malloc(sizeof(char *) * (cmd->max_size * 2));
-	i = 0;
-	while (i < cmd->max_size)
-	{
-		new_argv[i] = cmd->argv[i];
-		new_eargv[i] = cmd->eargv[i];
-		i++;
-	}
-	cmd->max_size *= 2;
-	free(cmd->argv);
-	free(cmd->eargv);
-	cmd->argv = new_argv;
-	cmd->eargv = new_eargv;
 }

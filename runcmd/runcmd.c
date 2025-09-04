@@ -1,32 +1,33 @@
 #include "../includes/runcmd.h"
 
+static int	parse_line(char *str, t_cmd **cmd);
+
 void	run_cmd(char *str)
 {
-	t_cmd	*cmd;	
 	int		waitval;
 
 	if (!*str)
 		return ;
-	cmd = parsecmd(str, str + ft_strlen(str));
-	if (!cmd)
+	shell()->has_child = 1;
+	if (parse_line(str, &shell()->cmd) == 1)
+		return ;
+	if (!shell()->cmd)
 	{
 		shell()->exit_flag = 2;
 		return ;
 	}
-	shell()->has_child = 1;
-	shell()->cmd = cmd;
-	if (cmd->type != PIPE)
-		if (exec_builtin(cmd))
+	if (shell()->cmd->type != PIPE)
+		if (exec_builtin(shell()->cmd))
 			return ;
 	if (safe_fork() == 0)
 	{
 		shell()->envp_av = envp_to_av();
-		preprocess_heredoc(cmd);
-		exec_tree(cmd, shell()->envp_av);
+		preprocess_heredoc(shell()->cmd);
+		exec_tree(shell()->cmd, shell()->envp_av);
 	}
 	waitpid(-1, &waitval, 0);
 	reset_child_flag(waitval);
-	free_trees(cmd);
+	free_trees(shell()->cmd);
 }
 
 void	reset_child_flag(int value)
@@ -49,4 +50,22 @@ void	reset_child_flag(int value)
 		shell()->exit_flag = 130;
 	}
 	shell()->has_child = 0;
+}
+
+static int	parse_line(char *str, t_cmd **cmd)
+{
+	int		i;
+	char	**av;
+
+	i = 0;
+	av = create_tokens(str);
+	if (check_tokens(av))
+	{
+		clear_av(av);
+		return (1);
+	}
+	*cmd = parse_expression(av, &i, -5);
+	exec_to_argv(*cmd);
+	clear_av(av);
+	return (0);
 }

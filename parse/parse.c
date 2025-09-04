@@ -1,105 +1,89 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/04 20:39:20 by vloureir          #+#    #+#             */
+/*   Updated: 2025/09/04 20:39:21 by vloureir         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/parse.h"
 
-static t_cmd	*parseredirects(t_cmd *cmd, char **str,
-				char *end_str, t_list **cmd_list)
+static t_cmd	*parse_str(char *str, int *i);
+static t_cmd	*create_redir(t_cmd *cmd, char token, char *str);
+static t_cmd	*handle_redir(t_cmd *left, char token, char **av, int *i);
+
+t_cmd	*parse_expression(char **av, int *i, int prec)
 {
 	char	token;
-	char	*ptr;
-	char	*ptr_end;
+	t_cmd	*left;
+	t_cmd	*right;
 
-	token = 0;
-	ptr = NULL;
-	ptr_end = NULL;
-	while (ft_exists_wskip(str, end_str, "<>"))
-	{
-		token = get_token(str, end_str, 0, 0);
-		if (get_token(str, end_str, &ptr, &ptr_end) != 'w')
-		{
-			free_list(cmd_list, 1);
-			ft_putstr_fd("Syntax error: Missing filename or delimiter.\n", 2);
-			return (NULL);
-		}
-		cmd = create_token_redir(token, cmd, ptr, ptr_end);
-		((t_redir *)cmd)->redir_type = token;
-		ft_lstadd_front(cmd_list, ft_lstnew(cmd));
-	}
-	return (cmd);
-}
-
-static t_cmd	*parsestr(char **str, char *end_str, t_list **cmd_list)
-{
-	int		argc;
-	t_exec	*exec_node;
-	t_cmd	*ret;
-
-	argc = 0;
-	exec_node = (t_exec *)init_t_exec();
-	if (!cmd_list)
-		*cmd_list = ft_lstnew(exec_node);
-	else
-		ft_lstadd_front(cmd_list, ft_lstnew(exec_node));
-	ret = parseredirects((t_cmd *)exec_node, str, end_str, cmd_list);
-	if (!ret)
+	if (!av[*i])
 		return (NULL);
-	while (!ft_exists_wskip(str, end_str, "<>|()") && *str < end_str)
+	left = parse_str(av[*i], i);
+	token = new_get_token(av[*i]);
+	while (get_precedence(token) == 1)
 	{
-		if (!update_exec_argv(str, end_str, exec_node, argc))
-			break ;
-		argc++;
-		ret = parseredirects(ret, str, end_str, cmd_list);
-		if (!ret)
-			return (NULL);
+		(*i)++;
+		left = handle_redir(left, token, av, i);
+		token = new_get_token(av[*i]);
 	}
-	exec_node->argv[argc] = 0;
-	exec_node->eargv[argc] = 0;
-	return (ret);
-}
-
-static int	pipe_syntax_err(t_pipe *pipe)
-{
-	t_exec	*right_exec;
-	t_exec	*left_exec;
-
-	right_exec = (t_exec *)(pipe->right);
-	left_exec = (t_exec *)(pipe->left);
-	if ((pipe->left->type == EXEC && !left_exec->argv[0])
-		|| (pipe->right->type == EXEC && !right_exec->argv[0]))
-		return (ft_putstr_fd("syntax error near unexpected token `|'\n", 2)
-			, 1);
-	return (0);
-}
-
-static t_cmd	*parsepipe(char **str, char *end_str, t_list **cmd_list)
-{
-	t_cmd	*cmd;
-	t_cmd	*right_cmd;
-
-	cmd = parsestr(str, end_str, cmd_list);
-	if (!cmd)
-		return (NULL);
-	if (ft_exists_wskip(str, end_str, "|"))
+	if (new_get_token(av[*i]) == '|')
 	{
-		get_token(str, end_str, 0, 0);
-		right_cmd = parsepipe(str, end_str, cmd_list);
-		if (!right_cmd)
-			return (NULL);
-		cmd = init_t_pipe(cmd, right_cmd, cmd_list);
-		if (pipe_syntax_err((t_pipe *)cmd))
-			return (free_list(cmd_list, 1), (NULL));
+		(*i)++;
+		right = parse_expression(av, i, prec + 1);
+		left = pipe_node(left, right);
 	}
-	return (cmd);
+	return (left);
 }
 
-t_cmd	*parsecmd(char *str, char *end_str)
+static t_cmd	*create_redir(t_cmd *cmd, char token, char *str)
 {
-	t_cmd	*cmd;
-	t_list	*cmd_list;
+	t_cmd	*redir;
 
-	cmd_list = NULL;
-	cmd = parsepipe(&str, end_str, &cmd_list);
-	if (!cmd)
+	redir = NULL;
+	if (token == '<')
+		redir = redir_node(str, token, O_RDONLY, 0);
+	else if (token == '-')
+		redir = redir_node(str, token, O_RDONLY, 0);
+	else if (token == '>')
+		redir = redir_node(str, token, O_WRONLY | O_TRUNC | O_CREAT, 1);
+	else if (token == '+')
+		redir = redir_node(str, token, O_WRONLY | O_CREAT | O_APPEND, 1);
+	((t_redir *)redir)->link = cmd;
+	return (redir);
+}
+
+static t_cmd	*parse_str(char *str, int *i)
+{
+	char	token;
+	t_cmd	*node;
+
+	node = NULL;
+	token = new_get_token(str);
+	if (!token)
 		return (NULL);
-	free_list(&cmd_list, 0);
-	nullify(cmd);
-	return (cmd);
+	if (token == 'w')
+	{
+		node = exec_node(str);
+		(*i)++;
+	}
+	else if (get_precedence(token) == 1)
+		node = exec_node("");
+	return (node);
+}
+
+static t_cmd	*handle_redir(t_cmd *left, char token, char **av, int *i)
+{
+	t_cmd	*node;
+	char	*str;
+
+	str = correct_string(left, av[*i]);
+	node = create_redir(left, token, str);
+	(*i)++;
+	return (node);
 }

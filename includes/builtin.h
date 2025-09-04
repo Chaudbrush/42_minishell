@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/04 20:39:47 by vloureir          #+#    #+#             */
+/*   Updated: 2025/09/04 20:39:48 by vloureir         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef BUILTIN_H
 # define BUILTIN_H
 
@@ -44,6 +56,8 @@ t_list	*quote_split(char *str, char *sep);
 // Split Utils
 void	clear_av(char **av);
 char	**create_av(char *str);
+void	clear_q_list(t_list *list);
+char	**lst_to_argv(t_list *list);
 
 // Unset
 void	handle_unset(char **av);
