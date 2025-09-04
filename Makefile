@@ -16,11 +16,9 @@ EXECUTE := $(addprefix execute/, execute_utils.c execute.c \
 
 EXPAN_CMD := $(addprefix expansion/, argv_merge.c copy_expansion.c \
 			expansion_utils.c expansion.c get_expansion_len.c)
-
-#PARSE := $(addprefix parse/, parse_free.c parse_get_token.c \
-			parse_helper.c parse_utils.c parse.c)
 		
-PARSE := $(addprefix parse/, new.c parse_free.c parsing.c struct_inits.c)
+PARSE := $(addprefix parse/, parse_correction.c parse_free.c parse.c \
+			parse_utils.c struct_inits.c token_errors.c tokens.c)
 
 READLINE := $(addprefix readline/, peek_token.c readline.c)
 

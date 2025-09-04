@@ -10,8 +10,6 @@ t_cmd	*exec_node(char *str)
 	new->tmp_str = ft_strdup(str);
 	new->argv = NULL;
 	new->type = EXEC;
-	// new->size = 0;
-	// new->builtin_heredoc = 0;
 	return ((t_cmd *)new);
 }
 
