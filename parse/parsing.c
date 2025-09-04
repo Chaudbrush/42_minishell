@@ -204,11 +204,36 @@ static int	get_size(char **av)
 
 	if (!av)
 		return (0);
-	i = -1;
-	while (av[++i])
+	i = 0;
+	while (av[i])
 		i++;
-	printf("size: %d\n", i); // DELETE
 	return (i);
+}
+
+int	count_words(char *str)
+{
+	int	i;
+	int	flag;
+	int	words;
+
+	i = 0;
+	words = 0;
+	while (str[i])
+	{
+		flag = 1;
+		while (str[i] && char_presence(str[i], " \t\n\f\v\r"))
+			i++;
+		while (str[i] && !char_presence(str[i], " \t\n\f\v\r"))
+		{
+			if (flag)
+			{
+				flag = 0;
+				words++;
+			}
+			i++;
+		}
+	}
+	return (words);
 }
 
 void	exec_to_argv(t_cmd *cmd)
@@ -223,8 +248,10 @@ void	exec_to_argv(t_cmd *cmd)
 		exe = (t_exec *)cmd;
 		tmp = exe->tmp_str;
 		printf("tmp: [%s]\n", tmp);
+		printf("words: %d\n", count_words(tmp));
 		exe->argv = create_av(tmp);
 		exe->size = get_size(exe->argv);
+		printf("size: %d\n", exe->size); // DELETE
 		free(tmp);
 	}
 	else if (cmd->type == REDIR)
