@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   argv_merge.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zali <zali@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 09:37:12 by zali              #+#    #+#             */
-/*   Updated: 2025/09/05 09:37:13 by zali             ###   ########.fr       */
+/*   Updated: 2025/09/05 15:52:09 by vloureir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,9 @@ char	**argv_correction(char **strs)
 	char	**tmp;
 	char	**new_av;
 
-	if (!*strs)
+	// if (!*strs)
+	// 	return (strs);
+	if (!*strs || !strs[0][0]) // NOT CORRECT YET, NOT HANDLING THE "HELLO WORLD THING"
 		return (strs);
 	k = 0;
 	new_av = NULL;
