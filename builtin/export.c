@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zali <zali@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 20:38:42 by vloureir          #+#    #+#             */
-/*   Updated: 2025/09/04 20:38:43 by vloureir         ###   ########.fr       */
+/*   Updated: 2025/09/05 09:48:40 by zali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ static void	create_node(char **av, char *str, int *index)
 		if (!ft_strchr(av[*index], '='))
 		{
 			*index += 1;
+			free(str);
 			return ;
 		}
 		free(node->data);
