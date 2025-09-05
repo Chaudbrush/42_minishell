@@ -1,6 +1,0 @@
-{
-	"files.associations": {
-		"runcmd.h": "c",
-		"minishell.h": "c"
-	}
-}
