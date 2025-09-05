@@ -6,7 +6,7 @@
 /*   By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 20:39:26 by vloureir          #+#    #+#             */
-/*   Updated: 2025/09/04 20:39:27 by vloureir         ###   ########.fr       */
+/*   Updated: 2025/09/05 11:34:11 by vloureir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ int	check_tokens(char **av)
 	int	i;
 
 	i = 0;
+	if (!av[0])
+		return (1);
 	if (av[i][0] == '|')
 		return (pipe_error());
 	while (av[i])
