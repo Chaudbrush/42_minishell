@@ -6,7 +6,7 @@
 /*   By: zali <zali@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 09:36:13 by zali              #+#    #+#             */
-/*   Updated: 2025/09/05 09:36:15 by zali             ###   ########.fr       */
+/*   Updated: 2025/09/05 11:24:19 by zali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ static void	read_line_heredoc(t_redir *redir, char *ptr)
 	if (!ft_strchr(redir->file, '\"') && !ft_strchr(redir->file, '\''))
 		shell()->doc_exp = 1;
 	remove_quotes(redir->file, &shell()->expan_delim);
-	close(hd_pipe[1]);
 	redir->heredoc_fdin = hd_pipe[0];
 	while (1)
 	{
@@ -89,6 +88,7 @@ static void	read_line_heredoc(t_redir *redir, char *ptr)
 			break ;
 		check_and_expand(ptr, hd_pipe[1]);
 	}
+	close(hd_pipe[1]);
 	shell()->doc_exp = 0;
 	free(shell()->expan_delim);
 }
