@@ -6,7 +6,7 @@
 /*   By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 20:38:36 by vloureir          #+#    #+#             */
-/*   Updated: 2025/09/04 20:38:37 by vloureir         ###   ########.fr       */
+/*   Updated: 2025/09/06 20:30:28 by vloureir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	handle_env(char **av)
 		return ;
 	if (av[1])
 	{
-		ft_putstr_fd("error: arguments are not accepted\n", STDERR_FILENO);
+		ft_putstr_fd("-error: arguments are not accepted\n", STDERR_FILENO);
 		shell()->exit_flag = 1;
 		return ;
 	}
