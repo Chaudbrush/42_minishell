@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   readline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zali <zali@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 09:35:09 by zali              #+#    #+#             */
-/*   Updated: 2025/09/05 09:35:11 by zali             ###   ########.fr       */
+/*   Updated: 2025/09/06 16:32:31 by vloureir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,14 @@ int	ft_getline(void)
 	add_history(shell()->line);
 	if (check_quotes(shell()->line))
 	{
-		ft_putstr_fd("syntax error: open quotes\n", STDERR_FILENO);
+		ft_putstr_fd("-error: invalid syntax, open quotes\n", STDERR_FILENO);
 		shell()->exit_flag = 2;
 		return (1);
 	}
 	if (check_invalid_tokens(shell()->line))
 	{
-		ft_putstr_fd("syntax error: token '()\\' are not supported \n", 2);
+		ft_putstr_fd("-error: invalid syntax, tokens '()\\' are not \
+supported \n", STDERR_FILENO);
 		shell()->exit_flag = 2;
 		return (1);
 	}

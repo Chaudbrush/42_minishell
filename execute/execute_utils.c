@@ -6,7 +6,7 @@
 /*   By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 09:36:13 by zali              #+#    #+#             */
-/*   Updated: 2025/09/06 10:06:38 by vloureir         ###   ########.fr       */
+/*   Updated: 2025/09/06 16:39:25 by vloureir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,8 @@ int	safe_open(t_redir *redir_node)
 		err = 1;
 	if (!err && open(redir_node->end_file, redir_node->mode, 0644) < 0)
 	{
-		ft_putstr_fd("minishell: ", STDERR_FILENO);
-		ft_putstr_fd(redir_node->end_file, STDERR_FILENO);
-		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+		ft_putstr_fd("-error: ", STDERR_FILENO);
+		perror(redir_node->end_file);
 		free(redir_node->end_file);
 		err = 1;
 	}
@@ -98,7 +97,7 @@ static int	heredoc_exit(char *ptr)
 {
 	if (!ptr)
 	{
-		ft_putstr_fd("minishell: warning: here-document delimited \
+		ft_putstr_fd("-error: warning: here-document delimited \
 by end-of-file (wanted `", 1);
 		ft_putstr_fd(shell()->expan_delim, 1);
 		ft_putstr_fd("')\n", 1);

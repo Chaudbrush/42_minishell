@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   recursive_help.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zali <zali@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 09:36:43 by zali              #+#    #+#             */
-/*   Updated: 2025/09/05 09:36:45 by zali             ###   ########.fr       */
+/*   Updated: 2025/09/06 16:41:35 by vloureir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,12 +62,12 @@ static int	handle_flags(char *str, char *str_ptr)
 	}
 	else if (S_ISDIR(flag.st_mode) && errno == EACCES && ft_strchr(str, '/'))
 	{
-		ft_putstr_fd("error: ", STDERR_FILENO);
+		ft_putstr_fd("-error: ", STDERR_FILENO);
 		ft_putstr_fd(str, STDERR_FILENO);
 		ft_putstr_fd(": Is a directory\n", STDERR_FILENO);
 		return (126);
 	}
-	if (str[0] == '.' && str[1] == '/')
+	if ((str[0] == '.' && str[1] == '/') || str[0] == '/')
 		perror(str);
 	else
 	{

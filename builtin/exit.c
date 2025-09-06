@@ -6,7 +6,7 @@
 /*   By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 20:38:37 by vloureir          #+#    #+#             */
-/*   Updated: 2025/09/06 10:06:50 by vloureir         ###   ########.fr       */
+/*   Updated: 2025/09/06 16:27:08 by vloureir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	handle_exit(char **av)
 			handle_invalid(av);
 		else if (i > 2)
 		{
-			ft_putstr_fd("exit: too many arguments\n", STDERR_FILENO);
+			ft_putstr_fd("-error: exit: too many arguments\n", STDERR_FILENO);
 			if (!shell()->exit_flag)
 				shell()->exit_flag = 1;
 			return ;
@@ -55,7 +55,7 @@ static void	handle_valid(char **av)
 
 static void	handle_invalid(char **av)
 {
-	ft_putstr_fd("exit: ", STDERR_FILENO);
+	ft_putstr_fd("-error: exit: ", STDERR_FILENO);
 	ft_putstr_fd(av[1], STDERR_FILENO);
 	ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
 	clear_av(av);

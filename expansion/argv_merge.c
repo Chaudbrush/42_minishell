@@ -6,7 +6,7 @@
 /*   By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 09:37:12 by zali              #+#    #+#             */
-/*   Updated: 2025/09/06 08:52:34 by vloureir         ###   ########.fr       */
+/*   Updated: 2025/09/06 16:33:56 by vloureir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,7 @@ int	argv_redir_update(char *src, char **dest)
 		return (free(*dest), 0);
 	if (!strs[0] || (strs[0] && strs[1]))
 	{
-		ft_putstr_fd(src, STDERR_FILENO);
-		ft_putstr_fd(": ambiguous redirect\n", STDERR_FILENO);
+		ft_putstr_fd("-error: : No such file or directory\n", STDERR_FILENO);
 		free(*dest);
 		clear_av(strs);
 		return (0);

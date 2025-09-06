@@ -6,7 +6,7 @@
 /*   By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 20:38:40 by vloureir          #+#    #+#             */
-/*   Updated: 2025/09/04 20:38:41 by vloureir         ###   ########.fr       */
+/*   Updated: 2025/09/06 16:27:58 by vloureir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	print_export(void)
 
 static void	print_error(char *str)
 {
-	ft_putstr_fd("export: ", STDERR_FILENO);
+	ft_putstr_fd("-error: export: ", STDERR_FILENO);
 	ft_putstr_fd(str, STDERR_FILENO);
 	ft_putstr_fd(": not a valid identifier\n", STDERR_FILENO);
 }

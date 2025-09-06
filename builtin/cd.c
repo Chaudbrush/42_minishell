@@ -6,7 +6,7 @@
 /*   By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 20:38:33 by vloureir          #+#    #+#             */
-/*   Updated: 2025/09/04 20:38:34 by vloureir         ###   ########.fr       */
+/*   Updated: 2025/09/06 16:26:06 by vloureir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static void	handle_cd_errors(char **av, char *tmp, char *buff, int i)
 
 	if (i > 2)
 	{
-		ft_putstr_fd("cd: too many arguments\n", STDERR_FILENO);
+		ft_putstr_fd("-error: cd: too many arguments\n", STDERR_FILENO);
 		shell()->exit_flag = 1;
 		return ;
 	}
@@ -59,8 +59,8 @@ static void	handle_cd_errors(char **av, char *tmp, char *buff, int i)
 	{
 		shell()->exit_flag = 0;
 		if (!getcwd(buffer, 4096))
-			ft_putstr_fd("cd: error retrieving current directory: getcwd: \
-cannot access parent directories: No such file or directory\n", 2);
+			ft_putstr_fd("-error: cd: error retrieving current directory: \
+getcwd: cannot access parent directories: No such file or directory\n", 2);
 		else
 			update_pwd(tmp, buff);
 		return ;
@@ -82,7 +82,7 @@ static void	handle_home(char *str, char *buff)
 	node = getenv_list("HOME");
 	if (!node)
 	{
-		ft_putstr_fd("cd: HOME not set\n", STDERR_FILENO);
+		ft_putstr_fd("-error: cd: HOME not set\n", STDERR_FILENO);
 		shell()->exit_flag = 1;
 		return ;
 	}
@@ -108,7 +108,7 @@ static void	handle_oldpwd(char *str, char *buff)
 	node = getenv_list("OLDPWD");
 	if (!node)
 	{
-		ft_putstr_fd("cd: OLDPWD not set\n", STDERR_FILENO);
+		ft_putstr_fd("-error: cd: OLDPWD not set\n", STDERR_FILENO);
 		shell()->exit_flag = 1;
 		return ;
 	}

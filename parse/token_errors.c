@@ -6,7 +6,7 @@
 /*   By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 20:39:26 by vloureir          #+#    #+#             */
-/*   Updated: 2025/09/05 11:34:11 by vloureir         ###   ########.fr       */
+/*   Updated: 2025/09/06 16:30:05 by vloureir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ static int	check_redirs(char **av, int i)
 		flag = 1;
 	if (flag)
 	{
-		ft_putstr_fd("syntax error near unexpected token `", STDERR_FILENO);
+		ft_putstr_fd("-error: syntax error near unexpected token `",
+			STDERR_FILENO);
 		ft_putchar_fd(av[i][0], STDERR_FILENO);
 		ft_putstr_fd("'\n", STDERR_FILENO);
 		shell()->exit_flag = 2;
@@ -61,7 +62,7 @@ static int	check_redirs(char **av, int i)
 
 static int	pipe_error(void)
 {
-	ft_putstr_fd("syntax error near unexpected token `|'\n", 2);
+	ft_putstr_fd("-error: syntax error near unexpected token `|'\n", 2);
 	shell()->exit_flag = 2;
 	return (1);
 }
