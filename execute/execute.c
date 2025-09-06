@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zali <zali@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 09:36:22 by zali              #+#    #+#             */
-/*   Updated: 2025/09/05 09:36:24 by zali             ###   ########.fr       */
+/*   Updated: 2025/09/06 09:26:20 by vloureir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,10 @@ int	pipe_recursive(t_cmd *cmd, char **envp)
 	int	right_pid;
 
 	if (pipe(pipe_fd) < 0)
-		exit(EXIT_FAILURE);
+	{
+		perror("pipe error");
+		exit_frees(shell()->cmd, shell()->envp_l, envp, EXIT_FAILURE);
+	}
 	left_pid = safe_fork();
 	if (left_pid == 0)
 		pipe_left(pipe_fd[0], pipe_fd[1], cmd, envp);

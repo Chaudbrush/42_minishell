@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zali <zali@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 09:36:13 by zali              #+#    #+#             */
-/*   Updated: 2025/09/05 11:24:19 by zali             ###   ########.fr       */
+/*   Updated: 2025/09/06 10:06:38 by vloureir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ int	safe_open(t_redir *redir_node)
 		err = 1;
 	if (!err && open(redir_node->end_file, redir_node->mode, 0644) < 0)
 	{
-		ft_putstr_fd("err: no such file or directory: ", STDERR_FILENO);
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
 		ft_putstr_fd(redir_node->end_file, STDERR_FILENO);
-		ft_putstr_fd("\n", STDERR_FILENO);
+		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
 		free(redir_node->end_file);
 		err = 1;
 	}
@@ -74,7 +74,8 @@ static void	read_line_heredoc(t_redir *redir, char *ptr)
 	if (pipe(hd_pipe) < 0)
 	{
 		perror("pipe error");
-		exit(EXIT_FAILURE);
+		exit_frees(shell()->cmd, shell()->envp_l,
+			shell()->envp_av, EXIT_FAILURE);
 	}
 	shell()->doc_exp = 0;
 	if (!ft_strchr(redir->file, '\"') && !ft_strchr(redir->file, '\''))

@@ -6,7 +6,7 @@
 /*   By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 09:37:12 by zali              #+#    #+#             */
-/*   Updated: 2025/09/05 15:52:09 by vloureir         ###   ########.fr       */
+/*   Updated: 2025/09/06 08:52:34 by vloureir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,7 @@ char	**argv_correction(char **strs)
 	char	**tmp;
 	char	**new_av;
 
-	// if (!*strs)
-	// 	return (strs);
-	if (!*strs || !strs[0][0]) // NOT CORRECT YET, NOT HANDLING THE "HELLO WORLD THING"
+	if (!*strs || !strs[0][0])
 		return (strs);
 	k = 0;
 	new_av = NULL;

@@ -6,7 +6,7 @@
 /*   By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 20:38:37 by vloureir          #+#    #+#             */
-/*   Updated: 2025/09/04 20:38:38 by vloureir         ###   ########.fr       */
+/*   Updated: 2025/09/06 10:06:50 by vloureir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	handle_exit(char **av)
 			handle_valid(av);
 	}
 	clear_av(av);
-	exit_frees(shell()->cmd, shell()->envp_l, NULL, 0);
+	exit_frees(shell()->cmd, shell()->envp_l, shell()->envp_av, 0);
 }
 
 static void	handle_valid(char **av)
@@ -48,10 +48,9 @@ static void	handle_valid(char **av)
 	int	ex_flag;
 
 	ex_flag = ft_atoi(av[1]);
-	clear_envp(shell()->envp_l);
-	free_trees(shell()->cmd);
 	clear_av(av);
-	exit ((unsigned char)ex_flag);
+	exit_frees(shell()->cmd, shell()->envp_l,
+		shell()->envp_av, (unsigned char)ex_flag);
 }
 
 static void	handle_invalid(char **av)
@@ -59,10 +58,8 @@ static void	handle_invalid(char **av)
 	ft_putstr_fd("exit: ", STDERR_FILENO);
 	ft_putstr_fd(av[1], STDERR_FILENO);
 	ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
-	clear_envp(shell()->envp_l);
-	free_trees(shell()->cmd);
 	clear_av(av);
-	exit (2);
+	exit_frees(shell()->cmd, shell()->envp_l, shell()->envp_av, 2);
 }
 
 static int	not_num(char *str)
