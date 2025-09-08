@@ -6,7 +6,7 @@
 /*   By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 09:36:13 by zali              #+#    #+#             */
-/*   Updated: 2025/09/06 16:39:25 by vloureir         ###   ########.fr       */
+/*   Updated: 2025/09/07 11:38:00 by vloureir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ static int	heredoc_exit(char *ptr)
 {
 	if (!ptr)
 	{
-		ft_putstr_fd("-error: warning: here-document delimited \
+		ft_putstr_fd("-warning: here-document delimited \
 by end-of-file (wanted `", 1);
 		ft_putstr_fd(shell()->expan_delim, 1);
 		ft_putstr_fd("')\n", 1);

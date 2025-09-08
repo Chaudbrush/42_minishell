@@ -6,7 +6,7 @@
 /*   By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 20:39:14 by vloureir          #+#    #+#             */
-/*   Updated: 2025/09/04 20:39:15 by vloureir         ###   ########.fr       */
+/*   Updated: 2025/09/08 08:56:31 by vloureir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,11 @@ char	new_get_token(char *str)
 int	get_precedence(char c)
 {
 	if (c == 'w' || !c)
-		return (0);
+		return (EXEC);
 	else if (c == '>' || c == '<' || c == '+' || c == '-')
-		return (1);
+		return (REDIR);
 	else if (c == '|')
-		return (2);
+		return (PIPE);
 	return (0);
 }
 

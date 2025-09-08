@@ -6,7 +6,7 @@
 /*   By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 20:39:20 by vloureir          #+#    #+#             */
-/*   Updated: 2025/09/04 20:39:21 by vloureir         ###   ########.fr       */
+/*   Updated: 2025/09/08 08:56:39 by vloureir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,13 @@ t_cmd	*parse_expression(char **av, int *i, int prec)
 		return (NULL);
 	left = parse_str(av[*i], i);
 	token = new_get_token(av[*i]);
-	while (get_precedence(token) == 1)
+	while (get_precedence(token) == REDIR)
 	{
 		(*i)++;
 		left = handle_redir(left, token, av, i);
 		token = new_get_token(av[*i]);
 	}
-	if (new_get_token(av[*i]) == '|')
+	if (get_precedence(token) == PIPE)
 	{
 		(*i)++;
 		right = parse_expression(av, i, prec + 1);

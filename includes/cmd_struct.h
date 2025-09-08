@@ -6,7 +6,7 @@
 /*   By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 20:39:50 by vloureir          #+#    #+#             */
-/*   Updated: 2025/09/04 20:39:51 by vloureir         ###   ########.fr       */
+/*   Updated: 2025/09/08 08:56:18 by vloureir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@
 
 enum
 {
-	PIPE,
 	EXEC,
-	REDIR
+	REDIR,
+	PIPE
 };
 
 typedef struct s_exec
