@@ -6,7 +6,7 @@
 /*   By: zali <zali@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 09:35:49 by zali              #+#    #+#             */
-/*   Updated: 2025/09/05 09:35:52 by zali             ###   ########.fr       */
+/*   Updated: 2025/09/15 10:05:57 by zali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ int	main(int argc, char **argv, char **envp)
 			continue ;
 		if (!shell()->line)
 			break ;
-		run_cmd(shell()->line);
+		if (*shell()->line)
+			run_cmd(shell()->line);
 		free(shell()->line);
 		shell()->line = NULL;
 	}

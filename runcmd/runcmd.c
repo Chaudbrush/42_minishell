@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   runcmd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zali <zali@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 09:35:28 by zali              #+#    #+#             */
-/*   Updated: 2025/09/08 08:59:15 by vloureir         ###   ########.fr       */
+/*   Updated: 2025/09/15 10:05:59 by zali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ void	run_cmd(char *str)
 {
 	int		waitval;
 
-	if (!*str)
-		return ;
 	shell()->has_child = 1;
 	if (parse_line(str, &shell()->cmd) == 1)
 		return ;
@@ -28,9 +26,11 @@ void	run_cmd(char *str)
 		shell()->exit_flag = 2;
 		return ;
 	}
-	if (shell()->cmd->type != PIPE)
-		if (exec_builtin(shell()->cmd))
-			return ;
+	if (shell()->cmd->type != PIPE && exec_builtin(shell()->cmd))
+	{
+		shell()->has_child = 0;
+		return ;
+	}
 	if (safe_fork() == 0)
 	{
 		shell()->envp_av = envp_to_av();

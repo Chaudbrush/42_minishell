@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_struct.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zali <zali@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 20:39:50 by vloureir          #+#    #+#             */
-/*   Updated: 2025/09/08 08:56:18 by vloureir         ###   ########.fr       */
+/*   Updated: 2025/09/15 09:55:27 by zali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ enum
 typedef struct s_exec
 {
 	int		type;
-	int		builtin_heredoc;
 	char	*tmp_str;
 	char	**argv;
 	int		size;

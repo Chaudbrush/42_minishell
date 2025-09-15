@@ -6,7 +6,7 @@
 /*   By: zali <zali@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 09:35:20 by zali              #+#    #+#             */
-/*   Updated: 2025/09/05 09:35:22 by zali             ###   ########.fr       */
+/*   Updated: 2025/09/15 09:54:55 by zali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ static	void	built_in_exec_fork(t_exec *exec, t_cmd *cmd,
 				char **expanded_argv)
 {
 	free(exec->argv);
-	exec->builtin_heredoc = 1;
 	exec->argv = expanded_argv;
 	preprocess_heredoc(cmd);
 	redir_recursive(cmd, NULL);
