@@ -6,7 +6,7 @@
 /*   By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 09:36:13 by zali              #+#    #+#             */
-/*   Updated: 2025/09/07 11:38:00 by vloureir         ###   ########.fr       */
+/*   Updated: 2025/09/15 10:52:36 by vloureir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ static void	read_line_heredoc(t_redir *redir, char *ptr)
 		shell()->doc_exp = 1;
 	remove_quotes(redir->file, &shell()->expan_delim);
 	redir->heredoc_fdin = hd_pipe[0];
+	 shell()->active_fd = hd_pipe[1];
 	while (1)
 	{
 		ptr = readline(">");

@@ -3,19 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_exec.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zali <zali@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 09:35:20 by zali              #+#    #+#             */
-/*   Updated: 2025/09/15 09:54:55 by zali             ###   ########.fr       */
+/*   Updated: 2025/09/15 10:48:39 by vloureir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/runcmd.h"
 
-static int	builtin_parent(char *str)
+static int	builtin_parent(char **str)
 {
-	if (!ft_strcmp(str, "cd") || !ft_strcmp(str, "exit")
-		|| !ft_strcmp(str, "unset") || !ft_strcmp(str, "export"))
+	if (!ft_strcmp(*str, "export") && *(str + 1))
+		return (1);
+	if (!ft_strcmp(*str, "cd") || !ft_strcmp(*str, "exit")
+		|| !ft_strcmp(*str, "unset"))
 		return (1);
 	return (0);
 }
@@ -23,7 +25,7 @@ static int	builtin_parent(char *str)
 static	void	built_in_exec_fork(t_exec *exec, t_cmd *cmd,
 				char **expanded_argv)
 {
-	free(exec->argv);
+	clear_av(exec->argv);
 	exec->argv = expanded_argv;
 	preprocess_heredoc(cmd);
 	redir_recursive(cmd, NULL);
@@ -35,7 +37,7 @@ static int	builtin_exec_check(t_cmd *cmd, char **expanded_argv,
 {
 	int	exit_val;
 
-	if (*expanded_argv && builtin_parent(*expanded_argv))
+	if (*expanded_argv && builtin_parent(expanded_argv))
 	{
 		if (temp->type == REDIR)
 		{

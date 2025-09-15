@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zali <zali@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 20:39:33 by vloureir          #+#    #+#             */
-/*   Updated: 2025/09/15 10:05:56 by zali             ###   ########.fr       */
+/*   Updated: 2025/09/15 10:53:17 by vloureir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ static void	doc_handler(int signal)
 	rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();
+	if (shell()->active_fd != -1)
+		close(shell()->active_fd);
 	exit(shell()->exit_flag);
 }
 

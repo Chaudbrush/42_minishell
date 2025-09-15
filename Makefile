@@ -34,7 +34,7 @@ HEADER := $(addprefix includes/, builtin.h cmd_struct.h envp.h execute.h \
 
 INC := -Iincludes
 
-# VAL := --leak-check=full --show-leak-kinds=all --track-origins=yes --show-reachable=yes \
+#VAL := --leak-check=full --show-leak-kinds=all --track-origins=yes --show-reachable=yes \
 			--trace-children=yes --track-fds=all --suppressions=readline.supp
 
 VAL := --leak-check=full --show-leak-kinds=all --track-origins=yes \
@@ -76,3 +76,11 @@ valrun: $(NAME)
 	valgrind $(VAL) ./$(NAME)
 
 .PHONY: all clean fclean re valrun
+
+# readline.supp
+# {
+# 	ignore_libreadline_conditional_jump_errors
+# 		Memcheck:Leak
+# 		...
+# 		obj:*/libreadline.so.*
+# }

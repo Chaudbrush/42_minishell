@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zali <zali@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 09:35:49 by zali              #+#    #+#             */
-/*   Updated: 2025/09/15 10:05:57 by zali             ###   ########.fr       */
+/*   Updated: 2025/09/15 10:51:46 by vloureir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	main(int argc, char **argv, char **envp)
 	sort_argv(sorted_av);
 	shell()->sorted_export = sorted_av;
 	sig_handler_parent();
+	shell()->active_fd = -1;
 	while (42)
 	{
 		if (ft_getline() == 1)
