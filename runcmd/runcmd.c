@@ -6,7 +6,7 @@
 /*   By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 09:35:28 by zali              #+#    #+#             */
-/*   Updated: 2025/09/15 10:26:33 by vloureir         ###   ########.fr       */
+/*   Updated: 2025/09/15 13:25:41 by vloureir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ static int	parse_line(char *str, t_cmd **cmd)
 	if (check_tokens(av))
 	{
 		clear_av(av);
+		shell()->has_child = 0;
 		return (1);
 	}
 	*cmd = parse_expression(av, &i, -5);
