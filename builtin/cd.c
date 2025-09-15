@@ -6,16 +6,16 @@
 /*   By: vloureir <vloureir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 20:38:33 by vloureir          #+#    #+#             */
-/*   Updated: 2025/09/06 16:26:06 by vloureir         ###   ########.fr       */
+/*   Updated: 2025/09/15 11:49:37 by vloureir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/builtin.h"
 
-static void	update_pwd(char *str, char *buff);
-static void	handle_home(char *str, char *buff);
-static void	handle_oldpwd(char *str, char *buff);
-static void	handle_cd_errors(char **av, char *tmp, char *buff, int i);
+static void	update_pwd(char *buff);
+static void	handle_home(char *buff);
+static void	handle_oldpwd(char *buff);
+static void	handle_cd_errors(char **av, char *buff, int i);
 
 void	handle_cd(char **av)
 {
@@ -28,11 +28,11 @@ void	handle_cd(char **av)
 	i = av_size(av);
 	tmp = getcwd(buff, 4096);
 	if (!tmp || i > 2)
-		return (handle_cd_errors(av, tmp, buff, i));
+		return (handle_cd_errors(av, buff, i));
 	else if (!av[1] || !ft_strcmp(av[1], "~"))
-		handle_home(tmp, buff);
+		handle_home(buff);
 	else if (ft_strcmp(av[1], "-") == 0)
-		handle_oldpwd(tmp, buff);
+		handle_oldpwd(buff);
 	else if (chdir(av[1]) == -1)
 	{
 		perror(shell()->line);
@@ -40,12 +40,12 @@ void	handle_cd(char **av)
 	}
 	else
 	{
-		update_pwd(tmp, buff);
+		update_pwd(buff);
 		shell()->exit_flag = 0;
 	}
 }
 
-static void	handle_cd_errors(char **av, char *tmp, char *buff, int i)
+static void	handle_cd_errors(char **av, char *buff, int i)
 {
 	char	buffer[4096];
 
@@ -62,7 +62,7 @@ static void	handle_cd_errors(char **av, char *tmp, char *buff, int i)
 			ft_putstr_fd("-error: cd: error retrieving current directory: \
 getcwd: cannot access parent directories: No such file or directory\n", 2);
 		else
-			update_pwd(tmp, buff);
+			update_pwd(buff);
 		return ;
 	}
 	else
@@ -71,10 +71,10 @@ getcwd: cannot access parent directories: No such file or directory\n", 2);
 		shell()->exit_flag = 1;
 		return ;
 	}
-	update_pwd(tmp, buff);
+	update_pwd(buff);
 }
 
-static void	handle_home(char *str, char *buff)
+static void	handle_home(char *buff)
 {
 	char	*tmp;
 	t_envp	*node;
@@ -97,10 +97,10 @@ static void	handle_home(char *str, char *buff)
 		}
 		shell()->exit_flag = 0;
 	}
-	update_pwd(str, buff);
+	update_pwd(buff);
 }
 
-static void	handle_oldpwd(char *str, char *buff)
+static void	handle_oldpwd(char *buff)
 {
 	char	*tmp;
 	t_envp	*node;
@@ -125,14 +125,13 @@ static void	handle_oldpwd(char *str, char *buff)
 	}
 	ft_putstr_fd(tmp, STDOUT_FILENO);
 	write(STDOUT_FILENO, "\n", 1);
-	update_pwd(str, buff);
+	update_pwd(buff);
 }
 
-static void	update_pwd(char *str, char *buff)
+static void	update_pwd(char *buff)
 {
 	t_envp	*node;
 
-	(void)str;
 	node = getenv_list("OLDPWD");
 	if (node)
 	{
@@ -155,4 +154,5 @@ static void	update_pwd(char *str, char *buff)
 	}
 	else
 		ft_strlcpy(shell()->pwd, getcwd(buff, 4096), 1024);
+	update_sorted_envp();
 }
