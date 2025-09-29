@@ -39,9 +39,10 @@ This project is designed to improve understanding of processes, file descriptors
 ## Installation and Usage
 
 ```bash
-# Build Essentials
+# Build Requirements
 sudo apt update
 sudo apt install build-essential
+sudo apt install  libreadline-dev
 
 # Clone the repository
 git clone https://github.com/Chaudbrush/42_minishell.git
